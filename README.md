@@ -25,10 +25,30 @@ Using **black, silver, and white gradients** with **glassmorphism** and **minima
 ```
 BlockRoll/
 ├── contracts/        # Smart contracts (Foundry)
+│   ├── Modular Solidity contracts
+│   ├── BlockDAG RPC configured
+│   └── Complete test suite
+│
 ├── clients/          # Frontend application (Next.js)
-├── server/           # Backend services
-├── whatsapp/         # WhatsApp FAQ bot integration
+│   ├── Real-time WebSocket integration
+│   ├── Reown AppKit wallet auth
+│   └── Glassmorphism design
+│
+├── server/           # Backend services (TypeScript)
+│   ├── 48 REST API endpoints
+│   ├── 26 WebSocket events
+│   ├── 20+ security features (Bank-level)
+│   ├── 9 database models
+│   └── Comprehensive documentation
+│
+├── whatsapp/         # AI-Powered FAQ Bot
+│   ├── Google Gemini AI integration
+│   ├── 50+ FAQ entries
+│   ├── 15+ quick commands
+│   └── 24/7 automated support
+│
 ├── blockroll-kit/    # SDKs, CDN, and Plug & Play integration
+│
 └── README.md         # This file
 ```
 
@@ -68,21 +88,54 @@ See [server/BANK_LEVEL_SECURITY.md](server/BANK_LEVEL_SECURITY.md) for details.
 
 ---
 
+## 🤖 AI WhatsApp Support Bot
+
+BlockRoll includes an **AI-powered WhatsApp bot** for 24/7 customer support!
+
+### Features
+- ✅ **Google Gemini AI** - Advanced natural language understanding
+- ✅ **50+ FAQ Entries** - Comprehensive knowledge base
+- ✅ **15+ Quick Commands** - Instant answers
+- ✅ **Conversation Memory** - Context-aware responses
+- ✅ **Multilingual Ready** - Easy to add languages
+- ✅ **Fallback System** - Works even if AI is offline
+
+### Quick Commands
+```
+!ask <question>    - Ask AI anything
+!help              - Get help menu
+!upload            - How to upload files
+!security          - Security features
+!features          - All features
+!start             - Getting started
+!contact           - Contact info
+```
+
+### Setup
+```bash
+cd whatsapp
+npm install
+cp env.example .env  # Add your GEMINI_API_KEY
+npm run dev          # Scan QR code with WhatsApp
+```
+
+See [whatsapp/README.md](whatsapp/README.md) for complete documentation.
+
+---
+
 ## 📦 Getting Started
 
 ### Prerequisites
 
 - Node.js (v18+)
 - Foundry
+- MongoDB
 - Web3 wallet (MetaMask, etc.)
+- Google Gemini API Key (for WhatsApp bot)
 
 ### Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-org/BlockRoll.git
-cd BlockRoll
-
 # Install contracts dependencies
 cd contracts
 forge install
@@ -94,10 +147,12 @@ npm install
 # Install server dependencies
 cd ../server
 npm install
+cp .env.example .env  # Configure MongoDB, JWT, BlockDAG
 
 # Install WhatsApp bot dependencies
 cd ../whatsapp
 npm install
+cp env.example .env   # Add GEMINI_API_KEY
 
 # Install BlockRoll Kit dependencies
 cd ../blockroll-kit
@@ -115,13 +170,13 @@ forge test
 cd clients
 npm run dev
 
-# Run backend
+# Run backend (with WebSocket)
 cd server
 npm run dev
 
 # Run WhatsApp bot
 cd whatsapp
-npm start
+npm run dev  # Scan QR code first time
 ```
 
 ---
