@@ -107,13 +107,13 @@ export class ConfigManager {
    */
   private loadDefaultConfig(): AppConfig {
     // Load admin numbers from environment
-    const adminNumbersEnv = process.env.BLOCKSEND_ADMIN_NUMBERS || '';
+    const adminNumbersEnv = process.env.BLOCKROLL_ADMIN_NUMBERS || '';
     const adminNumbers = adminNumbersEnv.split(',').filter(num => num.trim()).map(num => num.trim());
     
     // Load logging configuration from environment
     const logLevel = (process.env.LOG_LEVEL as 'debug' | 'info' | 'warn' | 'error') || 'info';
     const enableFileLogging = process.env.ENABLE_FILE_LOGGING === 'true';
-    const logFilePath = process.env.LOG_FILE_PATH || join(process.cwd(), 'logs', 'blocksend-bot.log');
+    const logFilePath = process.env.LOG_FILE_PATH || join(process.cwd(), 'logs', 'blockroll-bot.log');
     
     // Load session path from environment
     const sessionPath = process.env.SESSION_PATH || join(process.cwd(), 'sessions');

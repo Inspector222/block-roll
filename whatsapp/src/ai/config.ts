@@ -1,5 +1,5 @@
 /**
- * AI configuration and API key management for BlockSend WhatsApp Bot
+ * AI configuration and API key management for BlockRoll WhatsApp Bot
  */
 
 import { GoogleGenAI } from "@google/genai";
@@ -71,7 +71,7 @@ export class ApiKeyManager {
 export const apiKeyManager = new ApiKeyManager();
 
 /**
- * Default AI configuration for BlockSend with environment variable support
+ * Default AI configuration for BlockRoll with environment variable support
  */
 export const DEFAULT_AI_CONFIG = {
   model: process.env.GEMINI_MODEL || "gemini-1.5-flash",

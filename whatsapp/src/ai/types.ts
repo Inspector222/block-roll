@@ -1,5 +1,5 @@
 /**
- * AI utility types and interfaces for BlockSend WhatsApp Bot
+ * AI utility types and interfaces for BlockRoll WhatsApp Bot
  */
 
 export interface AIRequest {
@@ -14,8 +14,8 @@ export interface AIResponse {
   [key: string]: any;
 }
 
-export interface BlockSendContext {
-  userType: 'customer' | 'seller' | 'unknown';
+export interface BlockRollContext {
+  userType: 'user' | 'admin' | 'unknown';
   userPhone?: string;
   userMessage: string;
   isGroup?: boolean;
@@ -25,21 +25,22 @@ export interface BlockSendContext {
 export interface MessageAnalysis {
   intent: string;
   entities: string[];
-  flowOption: 'payment' | 'escrow' | 'wallet' | 'support' | 'other';
+  flowOption: 'file_operation' | 'security' | 'sharing' | 'support' | 'other';
   confidence: number;
   requiresEscalation: boolean;
 }
 
-export interface PaymentContext {
-  amount?: number;
-  currency?: string;
-  recipient?: string;
-  purpose?: string;
-  isInternational?: boolean;
+export interface FileContext {
+  fileName?: string;
+  fileType?: string;
+  recipientWallet?: string;
+  accessLevel?: 'view' | 'edit' | 'download';
+  expiryDate?: string;
+  isEmergencyAccess?: boolean;
 }
 
 export interface SupportContext {
-  userType: 'customer' | 'seller';
+  userType: 'user' | 'admin';
   userPhone?: string;
   userQuestion: string;
   urgency: 'low' | 'medium' | 'high';
@@ -50,17 +51,4 @@ export interface EscalationDecision {
   reason: string;
   confidence: number;
   urgency: 'low' | 'medium' | 'high';
-}
-
-export interface ProductInfo {
-  name: string;
-  price: number;
-  description: string;
-  category: string;
-  seller: string;
-  stock?: number;
-  weight_kg?: number;
-  color?: string[];
-  sizes?: string[];
-  key_features?: string[];
 }

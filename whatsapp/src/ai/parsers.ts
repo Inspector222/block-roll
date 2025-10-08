@@ -1,31 +1,31 @@
 /**
- * AI parsers for BlockSend WhatsApp Bot
+ * AI parsers for BlockRoll WhatsApp Bot
  */
 
 import { Type } from "@google/genai";
 import { parseStructured } from './client';
-import { MessageAnalysis, PaymentContext } from './types';
+import { MessageAnalysis, FileContext } from './types';
 
 /**
- * Schema for parsing user messages and extracting BlockSend-specific intents
+ * Schema for parsing user messages and extracting BlockRoll-specific intents
  */
-export const blockSendParserSchema = {
+export const blockRollParserSchema = {
   type: Type.OBJECT,
   properties: {
     intent: {
       type: Type.STRING,
       enum: [
-        "send_money",
-        "receive_money", 
-        "create_wallet",
-        "check_balance",
-        "view_transactions",
-        "escrow_payment",
-        "release_escrow",
-        "dispute_escrow",
+        "upload_file",
+        "share_file", 
+        "revoke_access",
+        "download_file",
+        "view_files",
+        "check_security",
+        "setup_emergency_access",
+        "create_workspace",
         "get_support",
         "check_status",
-        "cancel_transaction",
+        "get_api_key",
         "other"
       ],
       description: "The user's primary intent or action"
@@ -33,23 +33,23 @@ export const blockSendParserSchema = {
     entities: {
       type: Type.ARRAY,
       items: { type: Type.STRING },
-      description: "Relevant entities like amounts, currencies, phone numbers, transaction IDs"
+      description: "Relevant entities like file names, wallet addresses, file IDs"
     },
     flowOption: {
       type: Type.STRING,
-      enum: ["payment", "escrow", "wallet", "support", "other"],
+      enum: ["file_operation", "security", "sharing", "support", "other"],
       description: "The main flow the user wants to access"
     },
-    paymentContext: {
+    fileContext: {
       type: Type.OBJECT,
       properties: {
-        amount: { type: Type.NUMBER },
-        currency: { type: Type.STRING },
-        recipient: { type: Type.STRING },
-        purpose: { type: Type.STRING },
-        isInternational: { type: Type.BOOLEAN }
+        fileName: { type: Type.STRING },
+        fileType: { type: Type.STRING },
+        recipientWallet: { type: Type.STRING },
+        accessLevel: { type: Type.STRING },
+        expiryDate: { type: Type.STRING }
       },
-      description: "Payment-related information extracted from the message"
+      description: "File-related information extracted from the message"
     },
     confidence: {
       type: Type.NUMBER,
@@ -63,44 +63,46 @@ export const blockSendParserSchema = {
     }
   },
   required: ["intent", "flowOption", "confidence", "requiresEscalation"],
-  propertyOrdering: ["intent", "entities", "flowOption", "paymentContext", "confidence", "requiresEscalation"]
+  propertyOrdering: ["intent", "entities", "flowOption", "fileContext", "confidence", "requiresEscalation"]
 };
 
 const systemInstruction = `
-You are a professional AI parser for BlockSend, a WhatsApp-first global payment platform powered by BlockDAG technology.
+You are a professional AI parser for BlockRoll, a non-custodial data exchange and storage platform powered by BlockDAG blockchain.
 
-Your job is to analyze user messages and extract structured information for payment processing, escrow services, and customer support.
+Your job is to analyze user messages and extract structured information for file operations, security queries, and customer support.
 
 Key responsibilities:
-- Identify the user's primary intent (send_money, receive_money, create_wallet, check_balance, etc.)
-- Extract relevant entities (amounts, currencies, phone numbers, transaction IDs)
-- Determine the appropriate flow (payment, escrow, wallet, support)
-- Extract payment context when applicable (amount, currency, recipient, purpose)
+- Identify the user's primary intent (upload_file, share_file, revoke_access, check_security, etc.)
+- Extract relevant entities (file names, wallet addresses, file IDs, file types)
+- Determine the appropriate flow (file_operation, security, sharing, support)
+- Extract file context when applicable (file name, type, recipient wallet, access level)
 - Assess confidence level (0-1) in your analysis
 - Determine if human escalation is needed
 
-BlockSend features:
-- Global money transfers with AI-powered fraud protection
-- Escrow services for secure transactions
-- WhatsApp integration for easy payments
-- Multi-currency support
-- Real-time transaction tracking
+BlockRoll features:
+- Encrypted file storage (AES-256-GCM)
+- Secure file sharing by wallet address
+- Non-custodial (users control their data)
+- Emergency Access mode for digital inheritance
+- Team Workspaces for collaboration
+- AI Guardian security monitoring
+- Real-time notifications
 
 Guidelines:
-- For payment amounts, extract numbers and currency codes (USD, EUR, NGN, etc.)
-- For recipients, look for phone numbers, usernames, or "to [name]"
-- For international transfers, look for country names or international indicators
-- Set requiresEscalation to true for disputes, fraud concerns, or complex issues
+- For file sharing, look for wallet addresses (0x...)
+- For access levels, identify: view, edit, download
+- For security issues, set requiresEscalation to true
+- Set requiresEscalation to true for disputes, security concerns, or complex issues
 - Be conservative with confidence scores - use 0.8+ only when very certain
 - Return JSON matching the exact schema provided
 `;
 
 /**
- * Parse user message for BlockSend-specific flows and intents
+ * Parse user message for BlockRoll-specific flows and intents
  */
-export async function parseBlockSendMessage(userMessage: string): Promise<MessageAnalysis> {
+export async function parseBlockRollMessage(userMessage: string): Promise<MessageAnalysis> {
   try {
-    const result = await parseStructured(userMessage, blockSendParserSchema, systemInstruction);
+    const result = await parseStructured(userMessage, blockRollParserSchema, systemInstruction);
     
     return {
       intent: result.intent,
@@ -110,7 +112,7 @@ export async function parseBlockSendMessage(userMessage: string): Promise<Messag
       requiresEscalation: result.requiresEscalation
     };
   } catch (error) {
-    console.error('Error parsing BlockSend message:', error);
+    console.error('Error parsing BlockRoll message:', error);
     
     // Fallback response
     return {
@@ -124,19 +126,19 @@ export async function parseBlockSendMessage(userMessage: string): Promise<Messag
 }
 
 /**
- * Parse payment-specific context from user message
+ * Parse file-specific context from user message
  */
-export async function parsePaymentContext(userMessage: string): Promise<PaymentContext | null> {
+export async function parseFileContext(userMessage: string): Promise<FileContext | null> {
   try {
-    const result = await parseStructured(userMessage, blockSendParserSchema, systemInstruction);
+    const result = await parseStructured(userMessage, blockRollParserSchema, systemInstruction);
     
-    if (result.paymentContext) {
-      return result.paymentContext as PaymentContext;
+    if (result.fileContext) {
+      return result.fileContext as FileContext;
     }
     
     return null;
   } catch (error) {
-    console.error('Error parsing payment context:', error);
+    console.error('Error parsing file context:', error);
     return null;
   }
 }
@@ -146,7 +148,7 @@ export async function parsePaymentContext(userMessage: string): Promise<PaymentC
  */
 export async function classifyIntent(userMessage: string): Promise<string> {
   try {
-    const analysis = await parseBlockSendMessage(userMessage);
+    const analysis = await parseBlockRollMessage(userMessage);
     return analysis.intent;
   } catch (error) {
     console.error('Error classifying intent:', error);

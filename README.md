@@ -29,7 +29,7 @@ BlockRoll/
 │   ├── BlockDAG RPC configured
 │   └── Complete test suite
 │
-├── clients/          # Frontend application (Next.js)
+├── frontend/          # Frontend application (Next.js)
 │   ├── Real-time WebSocket integration
 │   ├── Reown AppKit wallet auth
 │   └── Glassmorphism design

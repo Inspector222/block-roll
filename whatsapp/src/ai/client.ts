@@ -1,5 +1,5 @@
 /**
- * Core Gemini AI client with retry logic and error handling for BlockSend
+ * Core Gemini AI client with retry logic and error handling for BlockRoll
  */
 
 import { Type } from "@google/genai";
