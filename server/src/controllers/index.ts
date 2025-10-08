@@ -5,4 +5,5 @@ export { BaseController } from './BaseController';
 export { default as FileController } from './FileController';
 export { default as NotificationController } from './NotificationController';
 export { default as WorkspaceController } from './WorkspaceController';
+export { default as SecurityController } from './SecurityController';
 

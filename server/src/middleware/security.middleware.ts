@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
 import crypto from 'crypto';
+import { NextFunction, Request, Response } from 'express';
+import { logger } from '../config/logger';
 import SecurityService from '../services/SecurityService';
 import { AuthorizationError } from '../utils/errors';
-import { logger } from '../config/logger';
 
 // Extend Express Request
 declare global {

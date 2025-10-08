@@ -1,7 +1,7 @@
 {
-  "name": "whatsapp-web-js-test",
+  "name": "blockroll-whatsapp-bot",
   "version": "1.0.0",
-  "description": "TypeScript project to test WhatsApp Web.js functionality",
+  "description": "BlockRoll AI-Powered FAQ WhatsApp Bot - Non-custodial data exchange platform support",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",

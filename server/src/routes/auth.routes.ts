@@ -1,11 +1,20 @@
 import { Router } from 'express';
 import { AuthController } from '../controllers';
-import { authenticateWithAutoRefresh, strictLimiter } from '../middleware';
+import {
+  authenticateWithAutoRefresh,
+  strictLimiter,
+  bruteForceProtection,
+} from '../middleware';
 
 const router = Router();
 
-// Public routes
-router.post('/connect-wallet', strictLimiter, AuthController.connectWallet);
+// Public routes with brute force protection
+router.post(
+  '/connect-wallet',
+  strictLimiter,
+  bruteForceProtection,
+  AuthController.connectWallet
+);
 router.post('/refresh', strictLimiter, AuthController.refreshToken);
 
 // Protected routes with auto-refresh
