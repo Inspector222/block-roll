@@ -5,5 +5,7 @@ export { default as WorkspaceService } from './WorkspaceService';
 export { default as NotificationService } from './NotificationService';
 export { default as AdminService } from './AdminService';
 export { default as SocketService } from './SocketService';
+export { default as SecurityService } from './SecurityService';
+export { default as SessionService } from './SessionService';
 export { BaseService } from './BaseService';
 

@@ -8,7 +8,15 @@ import http from 'http';
 import config from './config';
 import Database from './config/database';
 import { logger, morganStream } from './config/logger';
-import { errorHandler, generalLimiter, notFoundHandler } from './middleware';
+import {
+  errorHandler,
+  generalLimiter,
+  notFoundHandler,
+  deviceFingerprinting,
+  contentSecurityPolicy,
+  preventParameterPollution,
+  ipSecurityCheck,
+} from './middleware';
 import routes from './routes';
 import SocketManager from './config/socket';
 
@@ -32,14 +40,22 @@ class Server {
    * Initialize middleware
    */
   private initializeMiddleware(): void {
-    // Security
+    // Security headers
     this.app.use(helmet());
+    this.app.use(contentSecurityPolicy);
+    
+    // CORS with credentials
     this.app.use(
       cors({
         origin: config.cors.origin,
         credentials: true,
       })
     );
+
+    // Advanced security middleware
+    this.app.use(deviceFingerprinting);
+    this.app.use(preventParameterPollution);
+    this.app.use(ipSecurityCheck);
 
     // Rate limiting
     this.app.use(generalLimiter);
@@ -61,7 +77,7 @@ class Server {
       this.app.use(morgan('combined', { stream: morganStream }));
     }
 
-    logger.info('✅ Middleware initialized');
+    logger.info('✅ Middleware initialized (with bank-level security)');
   }
 
   /**

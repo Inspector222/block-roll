@@ -9,4 +9,7 @@ export {
     IWorkspace,
     IWorkspaceMember, default as Workspace
 } from './Workspace.model';
+export { default as SecurityLog, ISecurityLog, SecurityEventType } from './SecurityLog.model';
+export { default as Session, ISession, IDeviceInfo } from './Session.model';
+export { default as AccountSecurity, IAccountSecurity, ILoginAttempt } from './AccountSecurity.model';
 
