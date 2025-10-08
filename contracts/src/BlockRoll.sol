@@ -58,6 +58,10 @@ contract BlockRoll {
         adminRole = new AdminRole(address(fileRegistry));
         accessControl = new AccessControlModule(address(fileRegistry));
 
+        // Add trusted callers to FileRegistry
+        fileRegistry.addTrustedCaller(address(accessControl));
+        fileRegistry.addTrustedCaller(address(adminRole));
+
         emit BlockRollDeployed(
             address(fileRegistry),
             address(accessControl),
@@ -82,6 +86,7 @@ contract BlockRoll {
     ) external returns (bytes32 fileId) {
         fileId = fileRegistry.registerFile(
             fileHash,
+            msg.sender,
             receiver,
             expiryDate,
             encryptedKeyRef
@@ -113,6 +118,7 @@ contract BlockRoll {
 
         fileId = fileRegistry.registerFile(
             fileHash,
+            msg.sender,
             receiver,
             expiryDate,
             encryptedKeyRef
@@ -129,7 +135,7 @@ contract BlockRoll {
      * @param newReceiver The new receiver address
      */
     function shareFile(bytes32 fileId, address newReceiver) external {
-        accessControl.grantAccess(fileId, newReceiver);
+        accessControl.grantAccess(fileId, msg.sender, newReceiver);
 
         emit FileShared(fileId, msg.sender, newReceiver);
     }
@@ -139,7 +145,7 @@ contract BlockRoll {
      * @param fileId The file ID
      */
     function revokeFileAccess(bytes32 fileId) external {
-        accessControl.revokeAccess(fileId);
+        accessControl.revokeAccess(fileId, msg.sender);
     }
 
     /**
@@ -198,7 +204,7 @@ contract BlockRoll {
      * @param contact The emergency contact address
      */
     function addEmergencyContact(bytes32 fileId, address contact) external {
-        accessControl.addEmergencyContact(fileId, contact);
+        accessControl.addEmergencyContact(fileId, msg.sender, contact);
     }
 
     /**

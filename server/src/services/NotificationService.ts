@@ -2,6 +2,7 @@ import { INotification, Notification, NotificationType } from '../models';
 import { AuthorizationError, NotFoundError } from '../utils/errors';
 import { Validators } from '../utils/validators';
 import { BaseService } from './BaseService';
+import SocketService from './SocketService';
 
 export interface CreateNotificationData {
   type: NotificationType;
@@ -37,7 +38,22 @@ export class NotificationService extends BaseService {
         data: data.data,
       });
 
-      this.logInfo('Notification created', {
+      // Send real-time notification via WebSocket
+      await SocketService.sendNotification(userId, {
+        id: notification._id.toString(),
+        type: data.type,
+        title: data.title,
+        message: data.message,
+        priority: data.priority || 'medium',
+        data: data.data,
+        timestamp: notification.createdAt.toISOString(),
+      });
+
+      // Update unread count
+      const unreadCount = await Notification.getUnreadCount(userId as any);
+      await SocketService.updateUnreadCount(userId, unreadCount);
+
+      this.logInfo('Notification created and sent via WebSocket', {
         userId,
         notificationId: notification._id,
         type: data.type,
@@ -101,6 +117,10 @@ export class NotificationService extends BaseService {
       }
 
       await notification.markAsRead();
+
+      // Update unread count via WebSocket
+      const unreadCount = await Notification.getUnreadCount(userId as any);
+      await SocketService.updateUnreadCount(userId, unreadCount);
 
       this.logInfo('Notification marked as read', { notificationId, userId });
 

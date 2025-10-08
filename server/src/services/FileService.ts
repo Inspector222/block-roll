@@ -7,6 +7,7 @@ import {
 } from '../utils/errors';
 import { Validators } from '../utils/validators';
 import { BaseService } from './BaseService';
+import SocketService from './SocketService';
 
 export interface UploadFileData {
   fileName: string;
@@ -83,7 +84,36 @@ export class FileService extends BaseService {
         data: { fileId: file._id },
       });
 
-      this.logInfo('File uploaded successfully', {
+      // Send real-time events via WebSocket
+      await SocketService.notifyFileUploaded(ownerId, {
+        fileId: file._id.toString(),
+        fileName: data.fileName,
+        owner: ownerId,
+        receiver: data.receiver,
+        action: 'uploaded',
+        timestamp: new Date().toISOString(),
+      });
+
+      // Notify receiver via WebSocket
+      await SocketService.notifyFileShared(ownerId, data.receiver, {
+        fileId: file._id.toString(),
+        fileName: data.fileName,
+        owner: ownerId,
+        receiver: data.receiver,
+        action: 'shared',
+        timestamp: new Date().toISOString(),
+      });
+
+      // Notify admins
+      await SocketService.notifyAdminFileUploaded({
+        fileId: file._id.toString(),
+        fileName: data.fileName,
+        owner: ownerId,
+        action: 'uploaded',
+        timestamp: new Date().toISOString(),
+      });
+
+      this.logInfo('File uploaded successfully with real-time notifications', {
         fileId: file._id,
         ownerId,
         fileName: data.fileName,
@@ -184,7 +214,17 @@ export class FileService extends BaseService {
         });
       }
 
-      this.logInfo('File shared', {
+      // Send real-time WebSocket events
+      await SocketService.notifyFileShared(ownerId, recipientWallet, {
+        fileId: file._id.toString(),
+        fileName: file.fileName,
+        owner: ownerId,
+        receiver: recipientWallet,
+        action: 'shared',
+        timestamp: new Date().toISOString(),
+      });
+
+      this.logInfo('File shared with real-time notification', {
         fileId,
         ownerId,
         recipientWallet,

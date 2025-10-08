@@ -3,6 +3,7 @@ import { AuthenticationError, NotFoundError, ValidationError } from '../utils/er
 import { JWTPayload, JWTService } from '../utils/jwt';
 import { Validators } from '../utils/validators';
 import { BaseService } from './BaseService';
+import SocketService from './SocketService';
 
 export class AuthService extends BaseService {
   constructor() {
@@ -35,6 +36,13 @@ export class AuthService extends BaseService {
         });
         isNewUser = true;
         this.logInfo('New user created', { walletAddress: normalizedAddress });
+
+        // Notify admins of new user (real-time)
+        await SocketService.notifyAdminUserJoined({
+          userId: user._id.toString(),
+          walletAddress: normalizedAddress,
+          createdAt: user.createdAt,
+        });
       }
 
       // Check if user is admin

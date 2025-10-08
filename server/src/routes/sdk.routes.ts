@@ -1,14 +1,14 @@
 import { Router } from 'express';
 import { ApiKeyController } from '../controllers';
-import { authenticate, authenticateApiKey, apiKeyLimiter } from '../middleware';
+import { authenticateWithAutoRefresh, authenticateApiKey, apiKeyLimiter } from '../middleware';
 
 const router = Router();
 
 // Public route for API key verification (SDK/CDN use)
 router.post('/verify', apiKeyLimiter, authenticateApiKey, ApiKeyController.verifyApiKey);
 
-// Protected routes
-router.use(authenticate);
+// Protected routes with auto-refresh
+router.use(authenticateWithAutoRefresh);
 
 router.post('/create', ApiKeyController.createApiKey);
 router.get('/my-keys', ApiKeyController.getMyApiKeys);

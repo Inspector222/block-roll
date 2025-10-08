@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { AdminController } from '../controllers';
-import { authenticate, requireAdmin } from '../middleware';
+import { authenticateWithAutoRefresh, requireAdmin } from '../middleware';
 
 const router = Router();
 
-// All routes require authentication and admin role
-router.use(authenticate);
+// All routes require authentication with auto-refresh and admin role
+router.use(authenticateWithAutoRefresh);
 router.use(requireAdmin);
 
 router.get('/stats', AdminController.getPlatformStats);

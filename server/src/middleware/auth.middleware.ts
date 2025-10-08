@@ -94,7 +94,13 @@ export const optionalAuth = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const token = JWTService.extractTokenFromHeader(req.headers.authorization);
+    // Try to get token from cookie first
+    let token = req.cookies?.accessToken;
+
+    // Fallback to Authorization header
+    if (!token) {
+      token = JWTService.extractTokenFromHeader(req.headers.authorization);
+    }
 
     if (token) {
       try {

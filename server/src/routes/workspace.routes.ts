@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { WorkspaceController } from '../controllers';
-import { authenticate } from '../middleware';
+import { authenticateWithAutoRefresh } from '../middleware';
 
 const router = Router();
 
-// All routes require authentication
-router.use(authenticate);
+// All routes require authentication with auto-refresh
+router.use(authenticateWithAutoRefresh);
 
 router.post('/create', WorkspaceController.createWorkspace);
 router.get('/my-workspaces', WorkspaceController.getMyWorkspaces);

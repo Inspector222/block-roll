@@ -1,25 +1,31 @@
 import compression from 'compression';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { Application } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import http from 'http';
 import config from './config';
 import Database from './config/database';
 import { logger, morganStream } from './config/logger';
 import { errorHandler, generalLimiter, notFoundHandler } from './middleware';
 import routes from './routes';
+import SocketManager from './config/socket';
 
 class Server {
   private app: Application;
+  private httpServer: http.Server;
   private port: number;
 
   constructor() {
     this.app = express();
+    this.httpServer = http.createServer(this.app);
     this.port = config.port;
 
     this.initializeMiddleware();
     this.initializeRoutes();
     this.initializeErrorHandling();
+    this.initializeWebSocket();
   }
 
   /**
@@ -41,6 +47,9 @@ class Server {
     // Body parsing
     this.app.use(express.json({ limit: '10mb' }));
     this.app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+    // Cookie parsing
+    this.app.use(cookieParser());
 
     // Compression
     this.app.use(compression());
@@ -90,6 +99,15 @@ class Server {
   }
 
   /**
+   * Initialize WebSocket
+   */
+  private initializeWebSocket(): void {
+    const socketManager = SocketManager.getInstance();
+    socketManager.initialize(this.httpServer);
+    logger.info('✅ WebSocket initialized');
+  }
+
+  /**
    * Connect to database
    */
   private async connectDatabase(): Promise<void> {
@@ -111,15 +129,16 @@ class Server {
       // Connect to database
       await this.connectDatabase();
 
-      // Start server
-      this.app.listen(this.port, () => {
+      // Start HTTP server (with Socket.IO)
+      this.httpServer.listen(this.port, () => {
         logger.info('='.repeat(50));
         logger.info(`🚀 BlockRoll Server Started`);
         logger.info('='.repeat(50));
         logger.info(`Environment: ${config.env}`);
         logger.info(`Port: ${this.port}`);
-        logger.info(`URL: http://${config.host}:${this.port}`);
+        logger.info(`HTTP: http://${config.host}:${this.port}`);
         logger.info(`API: http://${config.host}:${this.port}/api/v1`);
+        logger.info(`WebSocket: ws://${config.host}:${this.port}`);
         logger.info('='.repeat(50));
       });
 

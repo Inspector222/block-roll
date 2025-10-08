@@ -124,6 +124,7 @@ The server will start at `http://localhost:5000`
 ```bash
 curl -X POST http://localhost:5000/api/v1/auth/connect-wallet \
   -H "Content-Type: application/json" \
+  -c cookies.txt \
   -d '{
     "walletAddress": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
   }'
@@ -137,29 +138,33 @@ Response:
   "message": "Logged in successfully",
   "data": {
     "user": {...},
-    "accessToken": "eyJhbGciOiJIUzI1NiIs...",
-    "refreshToken": "eyJhbGciOiJIUzI1NiIs...",
     "isNewUser": false
   }
 }
 ```
 
-### Using Access Token
+**Note:** Tokens are **NOT** in the response body. They're set as **httpOnly cookies** automatically!
+
+### Using httpOnly Cookies
 
 ```bash
+# Cookies are automatically included
 curl -X GET http://localhost:5000/api/v1/auth/me \
-  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+  -b cookies.txt
+# No Authorization header needed!
 ```
 
 ## 📤 File Upload Example
 
 ```bash
 curl -X POST http://localhost:5000/api/v1/file/upload \
-  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -b cookies.txt \
   -F "file=@/path/to/file.pdf" \
   -F "fileName=document.pdf" \
   -F "receiver=0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
 ```
+
+**Note:** Cookies automatically included with `-b cookies.txt` - no Authorization header needed!
 
 ## 🔑 API Key Usage (SDK/CDN)
 
@@ -167,7 +172,7 @@ curl -X POST http://localhost:5000/api/v1/file/upload \
 
 ```bash
 curl -X POST http://localhost:5000/api/v1/sdk/create \
-  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -b cookies.txt \
   -H "Content-Type: application/json" \
   -d '{
     "sdkType": "react",
@@ -175,12 +180,17 @@ curl -X POST http://localhost:5000/api/v1/sdk/create \
   }'
 ```
 
-### 2. Use API Key
+**Note:** Creating API keys requires authentication (cookie-based)
+
+### 2. Use API Key (SDK/CDN)
 
 ```bash
+# API keys use headers (not cookies) - for SDK/CDN integration
 curl -X POST http://localhost:5000/api/v1/sdk/verify \
   -H "x-api-key: br_your_api_key_here"
 ```
+
+**Note:** API keys are used by SDK/CDN clients and bypass cookie authentication
 
 ## 🧪 Testing
 

@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { NotificationController } from '../controllers';
-import { authenticate } from '../middleware';
+import { authenticateWithAutoRefresh } from '../middleware';
 
 const router = Router();
 
-// All routes require authentication
-router.use(authenticate);
+// All routes require authentication with auto-refresh
+router.use(authenticateWithAutoRefresh);
 
 router.get('/', NotificationController.getNotifications);
 router.get('/unread', NotificationController.getUnreadNotifications);

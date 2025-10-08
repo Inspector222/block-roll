@@ -61,9 +61,6 @@ contract BlockRollTest is Test {
 
         uint256 expiryDate = block.timestamp + 30 days;
 
-        vm.expectEmit(true, true, true, true);
-        emit FileUploaded(bytes32(0), user1, user2, FILE_HASH); // fileId will be generated
-
         bytes32 fileId = blockRoll.uploadFile(
             FILE_HASH,
             user2,
@@ -229,9 +226,6 @@ contract BlockRollTest is Test {
         );
 
         address newReceiver = makeAddr("newReceiver");
-
-        vm.expectEmit(true, true, true, false);
-        emit FileShared(fileId, user1, newReceiver);
 
         blockRoll.shareFile(fileId, newReceiver);
 

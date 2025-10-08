@@ -12,11 +12,20 @@ contract FileRegistry is IFileRegistry {
     using BlockRollUtils for bytes32;
     using BlockRollUtils for address;
 
+    address public deployer;
     mapping(bytes32 => FileMetadata) private files;
     mapping(address => bytes32[]) private ownerFiles;
+    mapping(address => bool) private trustedCallers;
+
+    constructor() {
+        deployer = msg.sender;
+    }
 
     modifier onlyFileOwner(bytes32 fileId) {
-        require(files[fileId].owner == msg.sender, "FileRegistry: Not file owner");
+        require(
+            files[fileId].owner == msg.sender || trustedCallers[msg.sender],
+            "FileRegistry: Not file owner"
+        );
         _;
     }
 
@@ -28,6 +37,7 @@ contract FileRegistry is IFileRegistry {
     /**
      * @notice Register a new file on-chain
      * @param fileHash The hash of the file (IPFS CID or SHA-256)
+     * @param owner The file owner address
      * @param receiver The authorized recipient wallet
      * @param expiryDate Optional expiry timestamp (0 for no expiry)
      * @param encryptedKeyRef Reference to encrypted key (stored off-chain)
@@ -35,23 +45,25 @@ contract FileRegistry is IFileRegistry {
      */
     function registerFile(
         bytes32 fileHash,
+        address owner,
         address receiver,
         uint256 expiryDate,
         bytes32 encryptedKeyRef
     ) external override returns (bytes32 fileId) {
         BlockRollUtils.requireNonEmpty(fileHash);
+        BlockRollUtils.requireValidAddress(owner);
         BlockRollUtils.requireValidAddress(receiver);
         require(
             BlockRollUtils.isValidExpiry(expiryDate),
             "FileRegistry: Invalid expiry date"
         );
 
-        fileId = BlockRollUtils.generateFileId(fileHash, msg.sender, block.timestamp);
+        fileId = BlockRollUtils.generateFileId(fileHash, owner, block.timestamp);
 
         files[fileId] = FileMetadata({
             fileId: fileId,
             fileHash: fileHash,
-            owner: msg.sender,
+            owner: owner,
             receiver: receiver,
             timestamp: block.timestamp,
             expiryDate: expiryDate,
@@ -60,9 +72,9 @@ contract FileRegistry is IFileRegistry {
             status: FileStatus.Active
         });
 
-        ownerFiles[msg.sender].push(fileId);
+        ownerFiles[owner].push(fileId);
 
-        emit FileRegistered(fileId, msg.sender, receiver, block.timestamp);
+        emit FileRegistered(fileId, owner, receiver, block.timestamp);
     }
 
     /**
@@ -119,6 +131,15 @@ contract FileRegistry is IFileRegistry {
      */
     function getOwnerFiles(address owner) external view returns (bytes32[] memory) {
         return ownerFiles[owner];
+    }
+
+    /**
+     * @notice Add a trusted caller (e.g., AccessControlModule)
+     * @param caller The address to trust
+     */
+    function addTrustedCaller(address caller) external {
+        require(msg.sender == deployer || trustedCallers[msg.sender], "FileRegistry: Not authorized");
+        trustedCallers[caller] = true;
     }
 
     /**

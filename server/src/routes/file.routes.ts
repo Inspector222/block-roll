@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 import { FileController } from '../controllers';
-import { authenticate, uploadLimiter } from '../middleware';
+import { authenticateWithAutoRefresh, uploadLimiter } from '../middleware';
 import config from '../config';
 
 const router = Router();
@@ -14,8 +14,8 @@ const upload = multer({
   },
 });
 
-// All routes require authentication
-router.use(authenticate);
+// All routes require authentication with auto-refresh
+router.use(authenticateWithAutoRefresh);
 
 // File operations
 router.post('/upload', uploadLimiter, upload.single('file'), FileController.uploadFile);

@@ -64,8 +64,9 @@ server/
 ### Core Technologies
 - **Node.js** with **TypeScript** for type safety
 - **Express** for API framework
+- **Socket.IO** for real-time WebSocket communication
 - **Mongoose** for MongoDB ODM
-- **JWT** for authentication
+- **JWT** with **httpOnly Cookies** for secure authentication
 - **Winston** for logging
 - **Express Rate Limit** for rate limiting
 
@@ -76,6 +77,8 @@ server/
 - ✅ **Centralized error handling**
 - ✅ **Standardized API responses**
 - ✅ **Middleware-based authentication and validation**
+- ✅ **Auto-refresh authentication** - Bank-level security with seamless UX
+- ✅ **Real-time WebSocket** - Instant notifications and live updates
 
 ## 📦 Models
 
@@ -278,14 +281,23 @@ npm run format
 
 ## 🔒 Security
 
-- JWT-based authentication
-- API key hashing
+### 🏦 Bank-Level Authentication
+- **httpOnly Cookie Authentication** - Tokens never exposed to JavaScript (XSS protection)
+- **Automatic Token Refresh** - Seamless token rotation when expired (like banking apps)
+- **Token Rotation** - New tokens generated on every refresh
+- **SameSite Cookies** - CSRF protection
+- **Secure Cookies** - HTTPS-only in production
+- **Sliding Expiration** - Stay logged in for 30 days with activity
+
+### 🛡️ Additional Security
+- JWT-based authentication (access + refresh tokens)
+- API key hashing (SHA-256)
 - Rate limiting on all endpoints
 - Input validation and sanitization
-- SQL injection protection (MongoDB)
-- XSS protection
-- CORS configuration
+- MongoDB injection protection
+- CORS configuration with credentials
 - Helmet security headers
+- Comprehensive logging and monitoring
 
 ## 📊 Logging
 

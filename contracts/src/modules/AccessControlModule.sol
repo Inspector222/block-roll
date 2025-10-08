@@ -14,9 +14,9 @@ contract AccessControlModule is IAccessControl {
     mapping(bytes32 => address[]) private emergencyContacts;
     mapping(bytes32 => mapping(address => bool)) private emergencyAccessGranted;
 
-    modifier onlyFileOwner(bytes32 fileId) {
+    modifier onlyFileOwner(bytes32 fileId, address caller) {
         IFileRegistry.FileMetadata memory file = fileRegistry.getFileMetadata(fileId);
-        require(file.owner == msg.sender, "AccessControl: Not file owner");
+        require(file.owner == caller, "AccessControl: Not file owner");
         _;
     }
 
@@ -37,12 +37,13 @@ contract AccessControlModule is IAccessControl {
     /**
      * @notice Grant access to a receiver
      * @param fileId The file ID
+     * @param caller The address calling this function (original caller from BlockRoll)
      * @param receiver The address to grant access to
      */
-    function grantAccess(bytes32 fileId, address receiver)
+    function grantAccess(bytes32 fileId, address caller, address receiver)
         external
         override
-        onlyFileOwner(fileId)
+        onlyFileOwner(fileId, caller)
         fileActive(fileId)
     {
         require(receiver != address(0), "AccessControl: Invalid receiver");
@@ -54,11 +55,12 @@ contract AccessControlModule is IAccessControl {
     /**
      * @notice Revoke access from current receiver
      * @param fileId The file ID
+     * @param caller The address calling this function (original caller from BlockRoll)
      */
-    function revokeAccess(bytes32 fileId)
+    function revokeAccess(bytes32 fileId, address caller)
         external
         override
-        onlyFileOwner(fileId)
+        onlyFileOwner(fileId, caller)
     {
         IFileRegistry.FileMetadata memory file = fileRegistry.getFileMetadata(fileId);
         
@@ -121,11 +123,12 @@ contract AccessControlModule is IAccessControl {
     /**
      * @notice Add emergency contact for a file
      * @param fileId The file ID
+     * @param caller The address calling this function (original caller from BlockRoll)
      * @param contact The emergency contact address
      */
-    function addEmergencyContact(bytes32 fileId, address contact)
+    function addEmergencyContact(bytes32 fileId, address caller, address contact)
         external
-        onlyFileOwner(fileId)
+        onlyFileOwner(fileId, caller)
     {
         require(contact != address(0), "AccessControl: Invalid contact");
         require(
@@ -140,11 +143,12 @@ contract AccessControlModule is IAccessControl {
     /**
      * @notice Remove emergency contact
      * @param fileId The file ID
+     * @param caller The address calling this function (original caller from BlockRoll)
      * @param contact The emergency contact address to remove
      */
-    function removeEmergencyContact(bytes32 fileId, address contact)
+    function removeEmergencyContact(bytes32 fileId, address caller, address contact)
         external
-        onlyFileOwner(fileId)
+        onlyFileOwner(fileId, caller)
     {
         emergencyAccessGranted[fileId][contact] = false;
     }

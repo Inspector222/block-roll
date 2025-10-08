@@ -44,6 +44,7 @@ interface IFileRegistry {
 
     function registerFile(
         bytes32 fileHash,
+        address owner,
         address receiver,
         uint256 expiryDate,
         bytes32 encryptedKeyRef

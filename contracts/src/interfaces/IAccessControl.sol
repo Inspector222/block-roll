@@ -23,9 +23,9 @@ interface IAccessControl {
         address indexed triggeredBy
     );
 
-    function grantAccess(bytes32 fileId, address receiver) external;
+    function grantAccess(bytes32 fileId, address caller, address receiver) external;
 
-    function revokeAccess(bytes32 fileId) external;
+    function revokeAccess(bytes32 fileId, address caller) external;
 
     function emergencyAccess(bytes32 fileId) external;
 
