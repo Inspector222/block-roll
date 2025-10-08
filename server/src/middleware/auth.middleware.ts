@@ -1,0 +1,174 @@
+import { Request, Response, NextFunction } from 'express';
+import { JWTService, JWTPayload } from '../utils/jwt';
+import { AuthenticationError, AuthorizationError } from '../utils/errors';
+import { User, ApiKey } from '../models';
+
+// Extend Express Request type
+declare global {
+  namespace Express {
+    interface Request {
+      user?: JWTPayload;
+      apiKey?: any;
+    }
+  }
+}
+
+/**
+ * Authenticate user with JWT token
+ */
+export const authenticate = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const token = JWTService.extractTokenFromHeader(req.headers.authorization);
+
+    if (!token) {
+      throw new AuthenticationError('No token provided');
+    }
+
+    const payload = JWTService.verifyAccessToken(token);
+
+    // Verify user still exists
+    const user = await User.findById(payload.userId);
+    if (!user) {
+      throw new AuthenticationError('User not found');
+    }
+
+    req.user = payload;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Authenticate with API key
+ */
+export const authenticateApiKey = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const apiKey = req.headers['x-api-key'] as string;
+
+    if (!apiKey) {
+      throw new AuthenticationError('No API key provided');
+    }
+
+    const key = await ApiKey.findByKey(apiKey);
+
+    if (!key) {
+      throw new AuthenticationError('Invalid API key');
+    }
+
+    // Check if key is expired
+    if (key.isExpired) {
+      throw new AuthenticationError('API key has expired');
+    }
+
+    // Increment usage count
+    await key.incrementUsage();
+
+    req.apiKey = key;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Optional authentication - doesn't throw if not authenticated
+ */
+export const optionalAuth = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const token = JWTService.extractTokenFromHeader(req.headers.authorization);
+
+    if (token) {
+      try {
+        const payload = JWTService.verifyAccessToken(token);
+        const user = await User.findById(payload.userId);
+        if (user) {
+          req.user = payload;
+        }
+      } catch {
+        // Ignore authentication errors for optional auth
+      }
+    }
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Require admin role
+ */
+export const requireAdmin = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  if (!req.user) {
+    throw new AuthenticationError('Authentication required');
+  }
+
+  if (req.user.role !== 'admin') {
+    throw new AuthorizationError('Admin access required');
+  }
+
+  next();
+};
+
+/**
+ * Require specific permissions for API key
+ */
+export const requirePermissions = (...permissions: string[]) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
+    if (!req.apiKey) {
+      throw new AuthenticationError('API key required');
+    }
+
+    const hasPermission = permissions.every((permission) =>
+      req.apiKey.permissions.includes(permission)
+    );
+
+    if (!hasPermission) {
+      throw new AuthorizationError(
+        `Missing required permissions: ${permissions.join(', ')}`
+      );
+    }
+
+    next();
+  };
+};
+
+/**
+ * Require wallet ownership
+ */
+export const requireWalletOwnership = (walletAddressParam: string = 'walletAddress') => {
+  return (req: Request, res: Response, next: NextFunction): void => {
+    if (!req.user) {
+      throw new AuthenticationError('Authentication required');
+    }
+
+    const walletAddress =
+      req.params[walletAddressParam] || req.body[walletAddressParam];
+
+    if (
+      !walletAddress ||
+      walletAddress.toLowerCase() !== req.user.walletAddress.toLowerCase()
+    ) {
+      throw new AuthorizationError('Wallet ownership required');
+    }
+
+    next();
+  };
+};

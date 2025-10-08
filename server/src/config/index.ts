@@ -1,0 +1,94 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+interface Config {
+  env: string;
+  port: number;
+  host: string;
+  mongodb: {
+    uri: string;
+    dbName: string;
+  };
+  jwt: {
+    secret: string;
+    expiresIn: string;
+    refreshSecret: string;
+    refreshExpiresIn: string;
+  };
+  blockdag: {
+    rpcUrl: string;
+    chainId: number;
+    contractAddress: string;
+  };
+  encryption: {
+    key: string;
+    algorithm: string;
+  };
+  redis: {
+    host: string;
+    port: number;
+    password?: string;
+  };
+  rateLimit: {
+    windowMs: number;
+    maxRequests: number;
+  };
+  upload: {
+    maxFileSize: number;
+    uploadDir: string;
+  };
+  cors: {
+    origin: string;
+  };
+  admin: {
+    walletAddress: string;
+  };
+}
+
+const config: Config = {
+  env: process.env.NODE_ENV || 'development',
+  port: parseInt(process.env.PORT || '5000', 10),
+  host: process.env.HOST || 'localhost',
+  mongodb: {
+    uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/blockroll',
+    dbName: process.env.DB_NAME || 'blockroll',
+  },
+  jwt: {
+    secret: process.env.JWT_SECRET || 'your_jwt_secret_change_in_production',
+    expiresIn: process.env.JWT_EXPIRES_IN || '7d',
+    refreshSecret: process.env.REFRESH_TOKEN_SECRET || 'your_refresh_secret',
+    refreshExpiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN || '30d',
+  },
+  blockdag: {
+    rpcUrl: process.env.BLOCKDAG_RPC_URL || 'https://rpc.primordial.bdagscan.com',
+    chainId: parseInt(process.env.BLOCKDAG_CHAIN_ID || '1', 10),
+    contractAddress: process.env.BLOCKDAG_CONTRACT_ADDRESS || '',
+  },
+  encryption: {
+    key: process.env.ENCRYPTION_KEY || 'change_this_32_char_key_for_prod',
+    algorithm: process.env.ENCRYPTION_ALGORITHM || 'aes-256-gcm',
+  },
+  redis: {
+    host: process.env.REDIS_HOST || 'localhost',
+    port: parseInt(process.env.REDIS_PORT || '6379', 10),
+    password: process.env.REDIS_PASSWORD,
+  },
+  rateLimit: {
+    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000', 10),
+    maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100', 10),
+  },
+  upload: {
+    maxFileSize: parseInt(process.env.MAX_FILE_SIZE || '104857600', 10), // 100MB
+    uploadDir: process.env.UPLOAD_DIR || './uploads',
+  },
+  cors: {
+    origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  },
+  admin: {
+    walletAddress: process.env.ADMIN_WALLET_ADDRESS || '',
+  },
+};
+
+export default config;
+

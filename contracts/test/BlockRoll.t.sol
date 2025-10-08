@@ -39,7 +39,7 @@ contract BlockRollTest is Test {
         blockRoll = new BlockRoll();
     }
 
-    function testDeployment() public {
+    function testDeployment() public view {
         assertEq(blockRoll.owner(), owner);
         assertEq(blockRoll.getVersion(), "1.0.0");
 
@@ -173,12 +173,13 @@ contract BlockRollTest is Test {
         vm.stopPrank();
     }
 
-    function testFailUploadWithInvalidAPIKey() public {
+    function test_RevertWhen_UploadWithInvalidAPIKey() public {
         bytes32 invalidAPIKey = keccak256("invalid-key");
 
         vm.startPrank(user1);
 
-        // This should fail
+        // This should revert
+        vm.expectRevert();
         blockRoll.uploadFileWithAPIKey(
             invalidAPIKey,
             FILE_HASH,
@@ -237,7 +238,7 @@ contract BlockRollTest is Test {
         vm.stopPrank();
     }
 
-    function testFailRevokeAccessByNonOwner() public {
+    function test_RevertWhen_NonOwnerRevokesAccess() public {
         vm.prank(user1);
         bytes32 fileId = blockRoll.uploadFile(
             FILE_HASH,
@@ -246,8 +247,9 @@ contract BlockRollTest is Test {
             ENCRYPTED_KEY_REF
         );
 
-        // User2 tries to revoke (should fail)
+        // User2 tries to revoke (should revert)
         vm.prank(user2);
+        vm.expectRevert();
         blockRoll.revokeFileAccess(fileId);
     }
 
