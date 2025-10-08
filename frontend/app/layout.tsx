@@ -32,7 +32,7 @@ export default async function RootLayout({
     <html lang="en" className="dark">
       <body className={`font-sans ${GeistSans.variable} ${playfair.variable}`}>
         <Suspense fallback={<div>Loading...</div>}>
-          <ContextProvider cookies={cookies}>{children}</AppKitProvider>
+          <ContextProvider cookies={cookies}>{children}</ContextProvider>
         </Suspense>
         <Analytics />
       </body>
