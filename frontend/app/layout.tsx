@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import { GeistSans } from "geist/font/sans"
 import { Playfair_Display } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
-import { AppKitProvider } from "@/providers/appkit-provider"
+import ContextProvider from '@/context'
 import { headers } from "next/headers"
 import { Suspense } from "react"
 import "./globals.css"
@@ -32,7 +32,7 @@ export default async function RootLayout({
     <html lang="en" className="dark">
       <body className={`font-sans ${GeistSans.variable} ${playfair.variable}`}>
         <Suspense fallback={<div>Loading...</div>}>
-          <AppKitProvider cookies={cookies}>{children}</AppKitProvider>
+          <ContextProvider cookies={cookies}>{children}</AppKitProvider>
         </Suspense>
         <Analytics />
       </body>
