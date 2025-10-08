@@ -41,6 +41,12 @@ interface Config {
   cors: {
     origin: string;
   };
+  cookie: {
+    httpOnly: boolean;
+    secure: boolean;
+    sameSite: 'strict' | 'lax' | 'none';
+    maxAge: number;
+  };
   admin: {
     walletAddress: string;
   };
@@ -84,6 +90,12 @@ const config: Config = {
   },
   cors: {
     origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  },
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   },
   admin: {
     walletAddress: process.env.ADMIN_WALLET_ADDRESS || '',

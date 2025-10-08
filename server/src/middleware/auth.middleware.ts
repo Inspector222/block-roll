@@ -14,7 +14,7 @@ declare global {
 }
 
 /**
- * Authenticate user with JWT token
+ * Authenticate user with JWT token from httpOnly cookie
  */
 export const authenticate = async (
   req: Request,
@@ -22,7 +22,13 @@ export const authenticate = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const token = JWTService.extractTokenFromHeader(req.headers.authorization);
+    // Try to get token from httpOnly cookie first
+    let token = req.cookies?.accessToken;
+
+    // Fallback to Authorization header (for backwards compatibility/SDK use)
+    if (!token) {
+      token = JWTService.extractTokenFromHeader(req.headers.authorization);
+    }
 
     if (!token) {
       throw new AuthenticationError('No token provided');
