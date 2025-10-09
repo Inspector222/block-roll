@@ -16,10 +16,13 @@ interface Config {
     refreshSecret: string;
     refreshExpiresIn: string;
   };
-  blockdag: {
+  blockchain: {
     rpcUrl: string;
     chainId: number;
-    contractAddress: string;
+    blockRollAddress: string;
+    apiKeyManagerAddress: string;
+    privateKey: string;
+    network: string;
   };
   encryption: {
     key: string;
@@ -66,10 +69,13 @@ const config: Config = {
     refreshSecret: process.env.REFRESH_TOKEN_SECRET || 'your_refresh_secret',
     refreshExpiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN || '30d',
   },
-  blockdag: {
-    rpcUrl: process.env.BLOCKDAG_RPC_URL || 'https://rpc.primordial.bdagscan.com',
-    chainId: parseInt(process.env.BLOCKDAG_CHAIN_ID || '1', 10),
-    contractAddress: process.env.BLOCKDAG_CONTRACT_ADDRESS || '',
+  blockchain: {
+    rpcUrl: process.env.BLOCKCHAIN_RPC_URL || process.env.BLOCKDAG_RPC_URL || 'https://rpc.primordial.bdagscan.com',
+    chainId: parseInt(process.env.BLOCKCHAIN_CHAIN_ID || process.env.BLOCKDAG_CHAIN_ID || '1', 10),
+    blockRollAddress: process.env.BLOCKROLL_CONTRACT_ADDRESS || '',
+    apiKeyManagerAddress: process.env.API_KEY_MANAGER_ADDRESS || '',
+    privateKey: process.env.BLOCKCHAIN_PRIVATE_KEY || '',
+    network: process.env.BLOCKCHAIN_NETWORK || 'blockdag',
   },
   encryption: {
     key: process.env.ENCRYPTION_KEY || 'change_this_32_char_key_for_prod',

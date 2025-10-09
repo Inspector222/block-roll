@@ -1,13 +1,9 @@
-import { Navbar } from "@/components/landing/navbar"
-import { Footer } from "@/components/landing/footer"
-import { Code, Terminal, Book, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Book, Code, Terminal, Zap } from "lucide-react"
 
 export default function DevelopersPage() {
   return (
-    <main className="min-h-screen">
-      <Navbar />
-
+    <>
       {/* Hero */}
       <section className="pt-32 pb-20 px-4 lg:px-8">
         <div className="container mx-auto max-w-4xl text-center">
@@ -140,8 +136,6 @@ await blockroll.share(result.cid, {
           </div>
         </div>
       </section>
-
-      <Footer />
-    </main>
+    </>
   )
 }

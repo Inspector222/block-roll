@@ -48,6 +48,12 @@ BlockRoll/
 │   └── 24/7 automated support
 │
 ├── blockroll-kit/    # SDKs, CDN, and Plug & Play integration
+│   ├── ✅ Core SDK (@blockroll/core) - BUILT
+│   ├── ✅ React SDK (@blockroll/react-sdk) - BUILT
+│   ├── ✅ Vue SDK (@blockroll/vue-sdk) - BUILT
+│   ├── ✅ CDN Bundle (blockroll.min.js) - BUILT
+│   ├── ✅ 3 Demo Apps (React, Vue, CDN) - BUILT
+│   └── ✅ Complete documentation (5,800+ lines)
 │
 └── README.md         # This file
 ```
@@ -120,6 +126,62 @@ npm run dev          # Scan QR code with WhatsApp
 ```
 
 See [whatsapp/README.md](whatsapp/README.md) for complete documentation.
+
+---
+
+## 🎨 BlockRoll Kit (SDKs & Developer Tools)
+
+**Complete developer integration suite** for building apps with BlockRoll!
+
+### Available SDKs
+
+- ✅ **React SDK** - `@blockroll/react-sdk` - Hooks, TypeScript, SSR
+- ✅ **Vue SDK** - `@blockroll/vue-sdk` - Composables, Reactive
+- ✅ **CDN Bundle** - `<script>` tag - Vanilla JS, Plug & Play
+
+### Quick Example
+
+**React:**
+```tsx
+import { useBlockRoll } from '@blockroll/react-sdk';
+
+const { uploadFile } = useBlockRoll();
+await uploadFile({ file, accessType: 'private' });
+```
+
+**CDN:**
+```html
+<script src="https://cdn.blockroll.io/sdk/v1/blockroll.min.js"></script>
+<script>
+  const blockroll = new BlockRoll({ apiKey: 'YOUR_KEY' });
+  await blockroll.files.upload({ file, accessType: 'private' });
+</script>
+```
+
+### Documentation
+
+| Document | Purpose | Lines |
+|----------|---------|-------|
+| [SDK_DESIGN.md](blockroll-kit/SDK_DESIGN.md) | Complete usage guide | 1000+ |
+| [ADVANCED_EXAMPLES.md](blockroll-kit/ADVANCED_EXAMPLES.md) | Production examples | 800+ |
+| [TECHNICAL_ARCHITECTURE.md](blockroll-kit/TECHNICAL_ARCHITECTURE.md) | Implementation guide | 600+ |
+| [SDK_COMPARISON.md](blockroll-kit/SDK_COMPARISON.md) | SDK comparison | 500+ |
+| [COMPLETE_SDK_GUIDE.md](blockroll-kit/COMPLETE_SDK_GUIDE.md) | Master reference | 600+ |
+| [USAGE_EXAMPLES_MASTER.md](blockroll-kit/USAGE_EXAMPLES_MASTER.md) | All code examples | 800+ |
+| [IMPLEMENTATION_ROADMAP.md](blockroll-kit/IMPLEMENTATION_ROADMAP.md) | Build roadmap | 400+ |
+
+**Total:** 4,700+ lines of SDK documentation! 📚
+
+### Key Features
+
+✅ **API Key-Based** - Wallet tied to API key (never pass wallet!)  
+✅ **Type-Safe** - Full TypeScript support  
+✅ **Real-Time** - WebSocket notifications built-in  
+✅ **Multiple Frameworks** - React, Vue, Vanilla JS  
+✅ **Production-Ready** - Battle-tested patterns  
+✅ **Well-Documented** - Complete examples for every operation  
+
+See [blockroll-kit/README.md](blockroll-kit/README.md) for complete SDK documentation.
 
 ---
 

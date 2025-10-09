@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlockRoll CDN Demo</title>
+  <script src="https://cdn.blockroll.io/sdk/v1/blockroll.min.js"></script>
+  <!-- Or use local build: -->
+  <!-- <script src="../../cdn/dist/blockroll.min.js"></script> -->
+  
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .section {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+    }
+    .file-card {
+      background: #f9f9f9;
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+    .notification {
+      padding: 0.75rem;
+      background: #e3f2fd;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+    }
+    .notification.read {
+      background: #f9f9f9;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: #0066cc;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 0.5rem;
+    }
+    button:hover {
+      background: #0052a3;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    input[type="text"], input[type="file"] {
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-right: 0.5rem;
+    }
+    .error {
+      padding: 1rem;
+      background: #fee;
+      color: #c00;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎲 BlockRoll CDN Demo</h1>
+  
+  <div id="error" class="error" style="display: none;"></div>
+
+  <!-- Upload Section -->
+  <div class="section">
+    <h2>📤 Upload File</h2>
+    <input type="file" id="fileInput" />
+    <button onclick="uploadFile()">Upload</button>
+    <p id="uploadStatus"></p>
+  </div>
+
+  <!-- Files List -->
+  <div class="section">
+    <h2>📁 My Files <span id="fileCount">(0)</span></h2>
+    <button onclick="loadFiles()">Refresh Files</button>
+    <div id="filesList"></div>
+  </div>
+
+  <!-- Notifications -->
+  <div class="section">
+    <h2>🔔 Notifications <span id="unreadCount">(0)</span></h2>
+    <button onclick="loadNotifications()">Refresh</button>
+    <div id="notificationsList"></div>
+  </div>
+
+  <script>
+    // Initialize BlockRoll
+    const blockroll = new BlockRoll({
+      apiKey: 'YOUR_API_KEY_HERE', // Replace with your API key
+      baseURL: 'http://localhost:5000/api/v1', // Your backend URL
+      realtime: true, // Enable WebSocket
+    });
+
+    console.log('✅ BlockRoll initialized');
+
+    // ==================== Upload File ====================
+    async function uploadFile() {
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
+      
+      if (!file) {
+        alert('Please select a file');
+        return;
+      }
+
+      const statusEl = document.getElementById('uploadStatus');
+      statusEl.textContent = 'Uploading...';
+
+      try {
+        const result = await blockroll.files.upload({
+          file: file,
+          accessType: 'private',
+          encryption: true,
+          onProgress: (percent) => {
+            statusEl.textContent = `Uploading... ${percent}%`;
+          },
+        });
+
+        statusEl.textContent = `✅ Uploaded! File ID: ${result.fileId}`;
+        fileInput.value = '';
+        
+        // Refresh files list
+        loadFiles();
+      } catch (error) {
+        statusEl.textContent = `❌ Error: ${error.message}`;
+        showError(error.message);
+      }
+    }
+
+    // ==================== Load Files ====================
+    async function loadFiles() {
+      try {
+        const result = await blockroll.files.list({
+          page: 1,
+          limit: 20,
+        });
+
+        document.getElementById('fileCount').textContent = `(${result.total})`;
+
+        const container = document.getElementById('filesList');
+        container.innerHTML = '';
+
+        if (result.data.length === 0) {
+          container.innerHTML = '<p>No files yet. Upload your first file!</p>';
+          return;
+        }
+
+        result.data.forEach((file) => {
+          const div = document.createElement('div');
+          div.className = 'file-card';
+          div.innerHTML = `
+            <h3>${file.name}</h3>
+            <p>Size: ${Math.round(file.size / 1024)} KB | Type: ${file.type}</p>
+            <p>Status: ${file.status} | Access: ${file.accessType}</p>
+            <button onclick="downloadFile('${file.id}', '${file.name}')">Download</button>
+            <input type="text" id="share-${file.id}" placeholder="Wallet (0x...)" />
+            <button onclick="shareFile('${file.id}')">Share</button>
+            <button onclick="deleteFile('${file.id}')" style="background: #c00;">Delete</button>
+          `;
+          container.appendChild(div);
+        });
+      } catch (error) {
+        console.error('Error loading files:', error);
+        showError(error.message);
+      }
+    }
+
+    // ==================== Download File ====================
+    async function downloadFile(fileId, fileName) {
+      try {
+        const blob = await blockroll.files.download(fileId);
+        
+        // Create download link
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName || 'download';
+        a.click();
+        URL.revokeObjectURL(url);
+        
+        alert('Download started!');
+      } catch (error) {
+        alert('Download failed: ' + error.message);
+      }
+    }
+
+    // ==================== Share File ====================
+    async function shareFile(fileId) {
+      const wallet = document.getElementById(`share-${fileId}`).value;
+      
+      if (!wallet) {
+        alert('Please enter a wallet address');
+        return;
+      }
+
+      if (!/^0x[a-fA-F0-9]{40}$/.test(wallet)) {
+        alert('Invalid wallet address format');
+        return;
+      }
+
+      try {
+        await blockroll.files.share({
+          fileId: fileId,
+          recipientWallet: wallet,
+          accessLevel: 'view',
+        });
+
+        alert('File shared successfully! Recipient notified in real-time.');
+        document.getElementById(`share-${fileId}`).value = '';
+      } catch (error) {
+        alert('Share failed: ' + error.message);
+      }
+    }
+
+    // ==================== Delete File ====================
+    async function deleteFile(fileId) {
+      if (!confirm('Delete this file permanently?')) return;
+
+      try {
+        await blockroll.files.delete(fileId);
+        alert('File deleted');
+        loadFiles();
+      } catch (error) {
+        alert('Delete failed: ' + error.message);
+      }
+    }
+
+    // ==================== Load Notifications ====================
+    async function loadNotifications() {
+      try {
+        const result = await blockroll.notifications.list({ limit: 20 });
+
+        document.getElementById('unreadCount').textContent = `(${result.unreadCount})`;
+
+        const container = document.getElementById('notificationsList');
+        container.innerHTML = '';
+
+        if (result.data.length === 0) {
+          container.innerHTML = '<p>No notifications</p>';
+          return;
+        }
+
+        result.data.forEach((notif) => {
+          const div = document.createElement('div');
+          div.className = `notification ${notif.read ? 'read' : ''}`;
+          div.onclick = () => markNotificationAsRead(notif.id);
+          div.innerHTML = `
+            <p style="margin: 0; font-weight: ${notif.read ? 'normal' : 'bold'};">
+              ${notif.message}
+            </p>
+            <small>${new Date(notif.createdAt).toLocaleString()}</small>
+          `;
+          container.appendChild(div);
+        });
+      } catch (error) {
+        console.error('Error loading notifications:', error);
+      }
+    }
+
+    // ==================== Mark as Read ====================
+    async function markNotificationAsRead(notifId) {
+      try {
+        await blockroll.notifications.markAsRead(notifId);
+        loadNotifications();
+      } catch (error) {
+        console.error('Error marking as read:', error);
+      }
+    }
+
+    // ==================== Real-Time Subscriptions ====================
+    // Subscribe to real-time notifications
+    blockroll.notifications.subscribe((notification) => {
+      console.log('🔔 New notification:', notification);
+      
+      // Update unread count
+      const countEl = document.getElementById('unreadCount');
+      const currentCount = parseInt(countEl.textContent.replace(/\D/g, '')) || 0;
+      countEl.textContent = `(${currentCount + 1})`;
+
+      // Show browser notification
+      if (Notification.permission === 'granted') {
+        new Notification('BlockRoll', {
+          body: notification.message,
+          icon: 'https://blockroll.io/icon.png',
+        });
+      }
+
+      // Refresh notifications list
+      loadNotifications();
+    });
+
+    // Request notification permission
+    if (Notification.permission === 'default') {
+      Notification.requestPermission();
+    }
+
+    // ==================== Error Handling ====================
+    function showError(message) {
+      const errorEl = document.getElementById('error');
+      errorEl.textContent = `Error: ${message}`;
+      errorEl.style.display = 'block';
+      
+      setTimeout(() => {
+        errorEl.style.display = 'none';
+      }, 5000);
+    }
+
+    // ==================== Initial Load ====================
+    window.addEventListener('DOMContentLoaded', () => {
+      loadFiles();
+      loadNotifications();
+    });
+  </script>
+</body>
+</html>
+

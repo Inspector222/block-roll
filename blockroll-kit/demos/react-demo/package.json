@@ -1,0 +1,23 @@
+{
+  "name": "blockroll-react-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BlockRoll React SDK Demo Application",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@blockroll/react-sdk": "file:../../react-sdk",
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.0",
+    "typescript": "^5.3.0"
+  }
+}
+

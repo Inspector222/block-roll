@@ -1,5 +1,3 @@
-import { Navbar } from "@/components/landing/navbar"
-import { Footer } from "@/components/landing/footer"
 import { Shield, Users, AlertTriangle, Sparkles, Code, Lock, FileCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -66,9 +64,7 @@ const features = [
 
 export default function FeaturesPage() {
   return (
-    <main className="min-h-screen">
-      <Navbar />
-
+    <>
       {/* Hero */}
       <section className="pt-32 pb-20 px-4 lg:px-8">
         <div className="container mx-auto max-w-4xl text-center">
@@ -116,8 +112,6 @@ export default function FeaturesPage() {
           </div>
         </div>
       </section>
-
-      <Footer />
-    </main>
+    </>
   )
 }

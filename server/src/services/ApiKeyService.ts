@@ -1,7 +1,9 @@
+import crypto from 'crypto';
 import { ApiKey, IApiKey, User } from '../models';
 import { AuthorizationError, ConflictError, NotFoundError } from '../utils/errors';
 import { Validators } from '../utils/validators';
 import { BaseService } from './BaseService';
+import BlockchainService from './BlockchainService';
 
 export interface CreateApiKeyData {
   sdkType: 'react' | 'vue' | 'cdn' | 'custom';
@@ -44,6 +46,35 @@ export class ApiKeyService extends BaseService {
       // Add to user's API keys
       owner.apiKeys.push(apiKey._id);
       await owner.save();
+
+      // Register API key on blockchain
+      try {
+        // Use the raw key to create hash for blockchain
+        const apiKeyHash = crypto.createHash('sha256').update(key).digest('hex');
+        
+        // Assume owner has a wallet address (you may need to adjust this)
+        const developerAddress = owner.walletAddress || owner.email; // Adjust based on your User model
+
+        const blockchainResult = await BlockchainService.registerAPIKey({
+          apiKeyHash: '0x' + apiKeyHash,
+          developerAddress: developerAddress,
+        });
+
+        // Store blockchain transaction hash
+        apiKey.metadata.blockchainTxHash = blockchainResult.txHash;
+        await apiKey.save();
+
+        this.logInfo('API key registered on blockchain', {
+          apiKeyId: apiKey._id,
+          txHash: blockchainResult.txHash,
+        });
+      } catch (error) {
+        this.logError('Failed to register API key on blockchain', {
+          apiKeyId: apiKey._id,
+          error: error instanceof Error ? error.message : 'Unknown error',
+        });
+        // Continue even if blockchain registration fails
+      }
 
       this.logInfo('API key created', {
         ownerId,

@@ -7,6 +7,7 @@ import {
 } from '../utils/errors';
 import { Validators } from '../utils/validators';
 import { BaseService } from './BaseService';
+import BlockchainService from './BlockchainService';
 import SocketService from './SocketService';
 
 export interface UploadFileData {
@@ -73,6 +74,36 @@ export class FileService extends BaseService {
         },
         status: 'active',
       });
+
+      // Register file on blockchain
+      try {
+        const blockchainResult = await BlockchainService.uploadFile({
+          fileHash,
+          receiver: data.receiver,
+          expiryDate: data.expiryDate
+            ? Math.floor(data.expiryDate.getTime() / 1000)
+            : undefined,
+          encryptedKeyRef: encryptionKeyRef,
+        });
+
+        // Update file with blockchain data
+        file.metadata.blockchainFileId = blockchainResult.fileId;
+        file.metadata.blockchainTxHash = blockchainResult.txHash;
+        await file.save();
+
+        this.logInfo('File registered on blockchain', {
+          fileId: file._id,
+          blockchainFileId: blockchainResult.fileId,
+          txHash: blockchainResult.txHash,
+        });
+      } catch (error) {
+        this.logError('Failed to register file on blockchain', {
+          fileId: file._id,
+          error: error instanceof Error ? error.message : 'Unknown error',
+        });
+        // Continue with file upload even if blockchain fails
+        // You can decide to fail the entire upload or just log the error
+      }
 
       // Create notification for receiver
       await Notification.create({

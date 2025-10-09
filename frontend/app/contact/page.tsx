@@ -1,15 +1,11 @@
-import { Navbar } from "@/components/landing/navbar"
-import { Footer } from "@/components/landing/footer"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Mail, MessageCircle, Twitter, Github } from "lucide-react"
+import { Github, Mail, MessageCircle, Twitter } from "lucide-react"
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen">
-      <Navbar />
-
+    <>
       {/* Hero */}
       <section className="pt-32 pb-20 px-4 lg:px-8">
         <div className="container mx-auto max-w-4xl text-center">
@@ -108,8 +104,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-
-      <Footer />
-    </main>
+    </>
   )
 }

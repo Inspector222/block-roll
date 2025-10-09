@@ -1,41 +1,70 @@
-import { Client, LocalAuth, Message, MessageMedia } from 'whatsapp-web.js';
-import { IWhatsAppService, WhatsAppConfig, ServiceError } from '../types';
+import { Client, Message, MessageMedia, RemoteAuth } from 'whatsapp-web.js';
+import { MongoStore } from 'wwebjs-mongo';
+import { mongoDBManager } from '../config/mongodb';
+import { IWhatsAppService, ServiceError, WhatsAppConfig } from '../types';
 import { logger } from '../utils/logger';
 
 /**
- * WhatsApp service implementation
+ * WhatsApp service implementation with MongoDB session storage
  * Handles all WhatsApp Web.js client operations
  */
 export class WhatsAppService implements IWhatsAppService {
-  private client: Client;
+  private client!: Client;
   private isInitialized: boolean = false;
+  private isSessionSaved: boolean = false;
   private config: WhatsAppConfig;
 
   constructor(config: WhatsAppConfig) {
     this.config = config;
-    this.client = new Client({
-      authStrategy: new LocalAuth({
-        dataPath: config.authStrategy.dataPath
-      }),
-      puppeteer: config.puppeteer
-    });
-
-    this.setupEventListeners();
+    // Client will be initialized in initialize() method after MongoDB connects
   }
 
   /**
-   * Initialize WhatsApp client
+   * Initialize WhatsApp client with MongoDB store
    */
   public async initialize(): Promise<void> {
     try {
-      logger.info('Initializing WhatsApp service...');
-      
+      logger.info('Initializing WhatsApp service with MongoDB store...');
+
+      // Connect to MongoDB first
+      const mongoose = await mongoDBManager.connect();
+      logger.info('MongoDB connection established for session storage');
+
+      // Create MongoDB store for WhatsApp sessions
+      const store = new MongoStore({ mongoose: mongoose });
+      logger.info('MongoDB store created for WhatsApp sessions');
+
+      // Get configuration from environment
+      const clientId = process.env.SESSION_CLIENT_ID || 'blockroll-bot';
+      const backupSyncIntervalMs = parseInt(process.env.BACKUP_SYNC_INTERVAL || '300000', 10);
+
+      // Initialize WhatsApp client with RemoteAuth strategy
+      this.client = new Client({
+        authStrategy: new RemoteAuth({
+          clientId: clientId,
+          dataPath: this.config.authStrategy.dataPath,
+          store: store,
+          backupSyncIntervalMs: backupSyncIntervalMs
+        }),
+        puppeteer: this.config.puppeteer
+      });
+
+      logger.info('WhatsApp client configured with RemoteAuth', {
+        clientId,
+        backupSyncIntervalMs,
+        dataPath: this.config.authStrategy.dataPath
+      });
+
+      // Setup event listeners before initialization
+      this.setupEventListeners();
+
+      // Initialize the client
       await this.client.initialize();
       this.isInitialized = true;
-      
-      logger.info('WhatsApp service initialized successfully');
+
+      logger.info('✅ WhatsApp service initialized successfully');
     } catch (error) {
-      logger.error('Failed to initialize WhatsApp service', error);
+      logger.error('❌ Failed to initialize WhatsApp service', error);
       throw new ServiceError(
         'Failed to initialize WhatsApp client',
         error instanceof Error ? error : undefined
@@ -44,18 +73,25 @@ export class WhatsAppService implements IWhatsAppService {
   }
 
   /**
-   * Destroy WhatsApp client
+   * Destroy WhatsApp client and disconnect MongoDB
    */
   public async destroy(): Promise<void> {
     try {
-      logger.info('Destroying WhatsApp service...');
-      
-      await this.client.destroy();
+      logger.info('🛑 Destroying WhatsApp service...');
+
+      if (this.client) {
+        await this.client.destroy();
+      }
+
       this.isInitialized = false;
-      
-      logger.info('WhatsApp service destroyed successfully');
+      this.isSessionSaved = false;
+
+      // Disconnect MongoDB
+      await mongoDBManager.disconnect();
+
+      logger.info('✅ WhatsApp service destroyed successfully');
     } catch (error) {
-      logger.error('Failed to destroy WhatsApp service', error);
+      logger.error('❌ Failed to destroy WhatsApp service', error);
       throw new ServiceError(
         'Failed to destroy WhatsApp client',
         error instanceof Error ? error : undefined
@@ -68,12 +104,12 @@ export class WhatsAppService implements IWhatsAppService {
    */
   public async sendMessage(to: string, content: string): Promise<Message> {
     this.ensureInitialized();
-    
+
     try {
       logger.debug(`Sending message to ${to}: ${content.substring(0, 50)}...`);
-      
+
       const message = await this.client.sendMessage(to, content);
-      
+
       logger.info(`Message sent successfully to ${to}`);
       return message;
     } catch (error) {
@@ -90,12 +126,12 @@ export class WhatsAppService implements IWhatsAppService {
    */
   public async sendMedia(to: string, media: MessageMedia): Promise<Message> {
     this.ensureInitialized();
-    
+
     try {
       logger.debug(`Sending media to ${to}: ${media.mimetype}`);
-      
+
       const message = await this.client.sendMessage(to, media);
-      
+
       logger.info(`Media sent successfully to ${to}`);
       return message;
     } catch (error) {
@@ -112,7 +148,7 @@ export class WhatsAppService implements IWhatsAppService {
    */
   public async getChatInfo(chatId: string): Promise<any> {
     this.ensureInitialized();
-    
+
     try {
       const chat = await this.client.getChatById(chatId);
       return chat;
@@ -130,7 +166,7 @@ export class WhatsAppService implements IWhatsAppService {
    */
   public async getContactInfo(contactId: string): Promise<any> {
     this.ensureInitialized();
-    
+
     try {
       const contact = await this.client.getContactById(contactId);
       return contact;
@@ -158,11 +194,18 @@ export class WhatsAppService implements IWhatsAppService {
   }
 
   /**
+   * Check if session is saved to MongoDB
+   */
+  public getIsSessionSaved(): boolean {
+    return this.isSessionSaved;
+  }
+
+  /**
    * Get client state
    */
   public async getState(): Promise<string> {
     this.ensureInitialized();
-    
+
     try {
       return await this.client.getState();
     } catch (error) {
@@ -179,25 +222,27 @@ export class WhatsAppService implements IWhatsAppService {
    */
   private setupEventListeners(): void {
     this.client.on('qr', (qr: string) => {
-      logger.info('QR code received - scan with WhatsApp mobile app');
+      logger.info('📱 QR code received - scan with WhatsApp mobile app');
       // QR code will be handled by main application
     });
 
     this.client.on('ready', () => {
-      logger.info('WhatsApp client is ready');
+      logger.info('✅ WhatsApp client is ready');
+      logger.warn('⏳ Session is being saved to MongoDB (takes ~1 minute)...');
     });
 
     this.client.on('authenticated', () => {
-      logger.info('WhatsApp client authenticated successfully');
+      logger.info('✅ WhatsApp client authenticated successfully');
     });
 
     this.client.on('auth_failure', (msg: string) => {
-      logger.error('WhatsApp authentication failed', { message: msg });
+      logger.error('❌ WhatsApp authentication failed', { message: msg });
     });
 
     this.client.on('disconnected', (reason: string) => {
-      logger.warn('WhatsApp client disconnected', { reason });
+      logger.warn('⚠️ WhatsApp client disconnected', { reason });
       this.isInitialized = false;
+      this.isSessionSaved = false;
     });
 
     this.client.on('change_state', (state: string) => {
@@ -210,6 +255,18 @@ export class WhatsAppService implements IWhatsAppService {
         type: message.type,
         hasMedia: message.hasMedia
       });
+    });
+
+    // New event: Remote session saved to MongoDB
+    this.client.on('remote_session_saved', () => {
+      this.isSessionSaved = true;
+      logger.info('💾 ✅ Session successfully saved to MongoDB!');
+      logger.info('🎉 Bot is now fully operational and session is persisted!');
+    });
+
+    // Handle loading session from MongoDB
+    this.client.on('loading_screen', (percent: number, message: string) => {
+      logger.debug(`Loading screen: ${percent}% - ${message}`);
     });
   }
 

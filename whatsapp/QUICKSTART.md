@@ -15,7 +15,20 @@ npm install
 2. Create a new API key
 3. Copy the key
 
-### 3. Configure Environment
+### 3. Set Up MongoDB
+
+**Option A - Use MongoDB Atlas (Recommended):**
+1. Go to [mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas)
+2. Create free account & cluster
+3. Get connection string
+
+**Option B - Local MongoDB:**
+```bash
+# Install and start MongoDB locally
+mongod
+```
+
+### 4. Configure Environment
 
 ```bash
 # Create .env file
@@ -25,21 +38,28 @@ cp env.example .env
 Edit `.env`:
 ```env
 GEMINI_API_KEY=AIzaSy...your_key_here
+MONGODB_URI=mongodb://localhost:27017/blockroll-whatsapp
+# Or Atlas: mongodb+srv://user:pass@cluster.mongodb.net/blockroll-whatsapp
 ```
 
-### 4. Start the Bot
+📚 **Full MongoDB setup:** See [MONGODB_SETUP.md](./MONGODB_SETUP.md)
+
+### 5. Start the Bot
 
 ```bash
 npm run dev
 ```
 
-### 5. Scan QR Code
+### 6. Scan QR Code & Wait for Session Save
 
 1. QR code appears in terminal
 2. Open WhatsApp on your phone
 3. Settings → Linked Devices → Link a Device
 4. Scan the QR code
-5. ✅ Done!
+5. Wait for "Session saved to MongoDB" message
+6. ✅ Done!
+
+**Note:** Session is saved to MongoDB (~1 minute). Next time, no QR scan needed!
 
 ---
 

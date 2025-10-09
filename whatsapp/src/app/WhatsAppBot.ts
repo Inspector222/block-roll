@@ -21,6 +21,7 @@ import { configManager } from '../config';
 import { logger } from '../utils/logger';
 import { AppConfig, ServiceError } from '../types';
 import { registerCustomCommands } from '../commands/CustomCommands';
+import { registerMediaCommands } from '../commands/MediaCommands';
 
 /**
  * Main WhatsApp Bot application class
@@ -63,6 +64,9 @@ export class WhatsAppBot {
       
       // Register custom commands
       registerCustomCommands(this.messageService);
+      
+      // Register media commands
+      registerMediaCommands(this.messageService);
       
       // Setup client event listeners
       this.setupClientEventListeners();

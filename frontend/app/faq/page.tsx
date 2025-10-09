@@ -1,5 +1,3 @@
-import { Navbar } from "@/components/landing/navbar"
-import { Footer } from "@/components/landing/footer"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { MessageCircle } from "lucide-react"
@@ -69,9 +67,7 @@ const faqs = [
 
 export default function FAQPage() {
   return (
-    <main className="min-h-screen">
-      <Navbar />
-
+    <>
       {/* Hero */}
       <section className="pt-32 pb-20 px-4 lg:px-8">
         <div className="container mx-auto max-w-4xl text-center">
@@ -106,8 +102,6 @@ export default function FAQPage() {
           </div>
         </div>
       </section>
-
-      <Footer />
-    </main>
+    </>
   )
 }

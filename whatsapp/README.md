@@ -137,6 +137,7 @@ whatsapp/
 - **npm** or **yarn**
 - **WhatsApp mobile app** (for QR code scanning)
 - **Google Gemini API Key** from [Google AI Studio](https://makersuite.google.com/app/apikey)
+- **MongoDB** - Local or [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) (for session storage)
 
 ### Installation
 
@@ -159,6 +160,15 @@ whatsapp/
    # Or multiple keys for rotation
    GEMINI_API_KEYS=key1,key2,key3
    
+   # MongoDB (Required - for session storage)
+   MONGODB_URI=mongodb://localhost:27017/blockroll-whatsapp
+   # Or use MongoDB Atlas:
+   # MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/blockroll-whatsapp
+   
+   # Session Configuration
+   SESSION_CLIENT_ID=blockroll-bot
+   BACKUP_SYNC_INTERVAL=300000
+   
    # Model configuration
    GEMINI_MODEL=gemini-1.5-flash
    GEMINI_TEMPERATURE=0.7
@@ -167,6 +177,8 @@ whatsapp/
    # Logging
    WHATSAPP_LOG_LEVEL=info
    ```
+   
+   **📚 See [MONGODB_SETUP.md](./MONGODB_SETUP.md) for detailed MongoDB setup guide**
 
 4. **Build the project:**
    ```bash

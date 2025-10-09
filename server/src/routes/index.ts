@@ -1,11 +1,11 @@
 import { Router } from 'express';
+import adminRoutes from './admin.routes';
 import authRoutes from './auth.routes';
 import fileRoutes from './file.routes';
-import sdkRoutes from './sdk.routes';
-import workspaceRoutes from './workspace.routes';
 import notificationRoutes from './notification.routes';
-import adminRoutes from './admin.routes';
+import sdkRoutes from './sdk.routes';
 import securityRoutes from './security.routes';
+import workspaceRoutes from './workspace.routes';
 
 const router = Router();
 

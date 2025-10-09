@@ -1,8 +1,9 @@
 "use client"
 
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { ConnectButton } from "@/components/wallet/connect-button"
 import { Menu } from "lucide-react"
+import Link from "next/link"
 import { useState } from "react"
 
 export function Navbar() {
@@ -39,7 +40,7 @@ export function Navbar() {
 
           {/* Connect Wallet Button */}
           <div className="hidden md:block">
-            <appkit-button />
+            <ConnectButton />
           </div>
 
           {/* Mobile Menu Button */}
@@ -67,7 +68,7 @@ export function Navbar() {
               Contact
             </Link>
             <div className="pt-4">
-              <appkit-button />
+              <ConnectButton />
             </div>
           </div>
         )}

@@ -3,9 +3,10 @@
  * Provides intelligent FAQ responses about BlockRoll platform
  */
 
-import { apiKeyManager, DEFAULT_AI_CONFIG } from './config';
+import { BLOCKROLL_KNOWLEDGE_BASE, getAllFAQs, searchFAQs } from '../knowledge/blockroll-faq';
 import { logger } from '../utils/logger';
-import { BLOCKROLL_KNOWLEDGE_BASE, searchFAQs, getAllFAQs } from '../knowledge/blockroll-faq';
+import { geminiClient } from './client';
+import { DEFAULT_AI_CONFIG } from './config';
 
 export class BlockRollAISupport {
   private conversationHistory: Map<string, any[]> = new Map();
@@ -96,25 +97,6 @@ Answer the user's question clearly and professionally.`;
     userMessage: string
   ): Promise<string> {
     try {
-      const client = apiKeyManager.getClient();
-      const model = client.getGenerativeModel({ 
-        model: DEFAULT_AI_CONFIG.model 
-      });
-
-      // Get or initialize conversation history
-      let history = this.conversationHistory.get(userId) || [];
-
-      // Add user message to history
-      history.push({
-        role: 'user',
-        parts: [{ text: userMessage }]
-      });
-
-      // Keep only last 10 messages for context
-      if (history.length > 10) {
-        history = history.slice(-10);
-      }
-
       // Search knowledge base for relevant FAQs
       const relevantFAQs = searchFAQs(userMessage);
       let contextualInfo = '';
@@ -126,38 +108,18 @@ Answer the user's question clearly and professionally.`;
             .join('\n\n');
       }
 
-      // Start chat with history
-      const chat = model.startChat({
-        generationConfig: {
+      // Construct prompt with system instructions and user question
+      const fullPrompt = `${this.getSystemPrompt()}\n\nUser Question: ${userMessage}${contextualInfo}`;
+
+      // Generate response using geminiClient
+      const aiResponse = await geminiClient.generateTextResponse(
+        fullPrompt,
+        undefined,
+        {
           temperature: DEFAULT_AI_CONFIG.temperature,
-          maxOutputTokens: DEFAULT_AI_CONFIG.maxOutputTokens,
-        },
-        history: [
-          {
-            role: 'user',
-            parts: [{ text: this.getSystemPrompt() }]
-          },
-          {
-            role: 'model',
-            parts: [{ text: 'I understand! I\'m the BlockRoll Support Bot, ready to help users with questions about the BlockRoll platform, its features, security, and technical details. I\'ll provide clear, concise, and helpful responses based on the knowledge base. How can I help?' }]
-          },
-          ...history.slice(0, -1) // All except the last message we just added
-        ]
-      });
-
-      // Send message with contextual info
-      const result = await chat.sendMessage(userMessage + contextualInfo);
-      const response = result.response;
-      const aiResponse = response.text();
-
-      // Add AI response to history
-      history.push({
-        role: 'model',
-        parts: [{ text: aiResponse }]
-      });
-
-      // Update conversation history
-      this.conversationHistory.set(userId, history);
+          maxOutputTokens: DEFAULT_AI_CONFIG.maxOutputTokens
+        }
+      );
 
       logger.info('✅ AI response generated', { 
         userId,
@@ -169,30 +131,9 @@ Answer the user's question clearly and professionally.`;
 
     } catch (error: any) {
       logger.error('AI response generation failed', error);
-
-      // Try switching API key and retry
-      try {
-        logger.info('Retrying with different API key...');
-        apiKeyManager.switchKey();
-        
-        // Simple retry without history
-        const client = apiKeyManager.getClient();
-        const model = client.getGenerativeModel({ 
-          model: DEFAULT_AI_CONFIG.model 
-        });
-
-        const result = await model.generateContent(
-          `${this.getSystemPrompt()}\n\nUser Question: ${userMessage}`
-        );
-        
-        return result.response.text();
-        
-      } catch (retryError) {
-        logger.error('Retry also failed', retryError);
-        
-        // Fallback to knowledge base search
-        return this.getFallbackResponse(userMessage);
-      }
+      
+      // Fallback to knowledge base search
+      return this.getFallbackResponse(userMessage);
     }
   }
 

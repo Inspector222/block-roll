@@ -1,10 +1,11 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { GeistSans } from "geist/font/sans"
-import { Playfair_Display } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
+import { LayoutWrapper } from "@/components/layout/layout-wrapper"
 import ContextProvider from '@/context'
+import { Analytics } from "@vercel/analytics/next"
+import { GeistSans } from "geist/font/sans"
+import type { Metadata } from "next"
+import { Playfair_Display } from "next/font/google"
 import { headers } from "next/headers"
+import type React from "react"
 import { Suspense } from "react"
 import "./globals.css"
 
@@ -32,7 +33,9 @@ export default async function RootLayout({
     <html lang="en" className="dark">
       <body className={`font-sans ${GeistSans.variable} ${playfair.variable}`}>
         <Suspense fallback={<div>Loading...</div>}>
-          <ContextProvider cookies={cookies}>{children}</ContextProvider>
+          <ContextProvider cookies={cookies}>
+            <LayoutWrapper>{children}</LayoutWrapper>
+          </ContextProvider>
         </Suspense>
         <Analytics />
       </body>

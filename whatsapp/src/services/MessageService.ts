@@ -146,6 +146,12 @@ export class MessageService implements IMessageService {
    * Handle regular (non-command) messages
    */
   private async handleRegularMessage(context: MessageContext): Promise<void> {
+    // Check if message has media
+    if (context.message.hasMedia) {
+      await this.handleMediaMessage(context);
+      return;
+    }
+
     // Handle auto-replies for specific keywords
     const messageBody = context.message.body.toLowerCase();
     
@@ -159,6 +165,110 @@ export class MessageService implements IMessageService {
       const currentTime = new Date().toLocaleString();
       await context.message.reply(`🕐 Current time: ${currentTime}`);
     }
+  }
+
+  /**
+   * Handle messages with media attachments
+   */
+  private async handleMediaMessage(context: MessageContext): Promise<void> {
+    try {
+      logger.info('Processing media message', {
+        from: context.contact.number,
+        type: context.message.type
+      });
+
+      // Send acknowledgment
+      await context.message.reply('📥 Downloading media...');
+
+      // Download media (this is imported from services but we need to use it)
+      const media = await context.message.downloadMedia();
+
+      if (!media) {
+        await context.message.reply(
+          '❌ Failed to download media.\n\n' +
+          'Possible reasons:\n' +
+          '• Media was deleted\n' +
+          '• Media too large\n' +
+          '• Network error\n\n' +
+          'Please try sending again.'
+        );
+        return;
+      }
+
+      // Get media info
+      const fileSize = media.filesize || this.estimateBase64Size(media.data);
+      const fileSizeFormatted = this.formatFileSize(fileSize);
+      const mediaType = this.getMediaCategory(media.mimetype);
+
+      // Build response
+      let response = `✅ **Media Received!**\n\n`;
+      response += `📋 **Info:**\n`;
+      response += `• Type: ${mediaType}\n`;
+      response += `• Format: ${media.mimetype}\n`;
+      response += `• Size: ${fileSizeFormatted}\n`;
+      
+      if (media.filename) {
+        response += `• Filename: ${media.filename}\n`;
+      }
+
+      response += `\n💡 **What I can do:**\n`;
+      response += `• Process images\n`;
+      response += `• Extract text from documents\n`;
+      response += `• Analyze media content\n\n`;
+      response += `Type !media-help for more options!`;
+
+      await context.message.reply(response);
+
+      logger.info('Media processed successfully', {
+        type: mediaType,
+        size: fileSizeFormatted,
+        from: context.contact.number
+      });
+
+    } catch (error) {
+      logger.error('Error handling media message', error);
+      await context.message.reply(
+        '❌ Error processing media. Please try again or contact support.'
+      );
+    }
+  }
+
+  /**
+   * Get media category from mimetype
+   */
+  private getMediaCategory(mimetype: string): string {
+    if (mimetype.startsWith('image/')) return '📸 Image';
+    if (mimetype.startsWith('video/')) return '🎥 Video';
+    if (mimetype.startsWith('audio/')) return '🎵 Audio';
+    if (mimetype.startsWith('application/pdf')) return '📄 PDF Document';
+    if (mimetype.startsWith('application/')) return '📎 Document';
+    if (mimetype.startsWith('text/')) return '📝 Text File';
+    return '❓ Unknown';
+  }
+
+  /**
+   * Format file size for display
+   */
+  private formatFileSize(bytes: number): string {
+    const units = ['B', 'KB', 'MB', 'GB'];
+    let size = bytes;
+    let unitIndex = 0;
+
+    while (size >= 1024 && unitIndex < units.length - 1) {
+      size /= 1024;
+      unitIndex++;
+    }
+
+    return `${size.toFixed(1)} ${units[unitIndex]}`;
+  }
+
+  /**
+   * Estimate base64 data size in bytes
+   */
+  private estimateBase64Size(base64Data: string): number {
+    const padding = (base64Data.match(/=/g) || []).length;
+    const dataLength = base64Data.length - padding;
+    return Math.floor((dataLength * 3) / 4);
   }
 
   /**
