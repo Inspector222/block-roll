@@ -117,7 +117,6 @@ const AdminSchema: Schema<IAdmin> = new Schema(
       unique: true,
       lowercase: true,
       trim: true,
-      index: true,
       validate: {
         validator: function (v: string) {
           return /^0x[a-fA-F0-9]{40}$/.test(v);
@@ -191,7 +190,7 @@ const AdminSchema: Schema<IAdmin> = new Schema(
 );
 
 // Indexes
-AdminSchema.index({ walletAddress: 1 });
+// Note: walletAddress already has unique: true which creates an index automatically
 AdminSchema.index({ 'activityLog.timestamp': -1 });
 
 // Instance methods

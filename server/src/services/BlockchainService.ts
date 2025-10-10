@@ -31,17 +31,44 @@ export class BlockchainService extends BaseService {
     this.provider = new ethers.JsonRpcProvider(config.blockchain.rpcUrl);
 
     // Initialize wallet (server wallet for gas payments)
-    this.wallet = new ethers.Wallet(
-      config.blockchain.privateKey,
-      this.provider
-    );
+    // Skip if private key is not configured (e.g., development mode)
+    if (config.blockchain.privateKey && config.blockchain.privateKey.length > 0) {
+      try {
+        this.wallet = new ethers.Wallet(
+          config.blockchain.privateKey,
+          this.provider
+        );
+        this.logInfo('Blockchain wallet initialized');
+      } catch (error) {
+        this.logWarn('Invalid blockchain private key - blockchain features will be limited', { error });
+        // Create a random wallet for development
+        this.wallet = ethers.Wallet.createRandom().connect(this.provider);
+      }
+    } else {
+      this.logWarn('No blockchain private key configured - using random wallet for development');
+      // Create a random wallet for development (won't have funds but won't crash)
+      this.wallet = ethers.Wallet.createRandom().connect(this.provider);
+    }
 
-    // Initialize contracts
-    this.blockRollContract = new ethers.Contract(
-      config.blockchain.blockRollAddress,
-      BlockRollABI.abi,
-      this.wallet
-    );
+    // Initialize contracts (skip if addresses not configured)
+    if (config.blockchain.blockRollAddress && config.blockchain.blockRollAddress.length > 0) {
+      this.blockRollContract = new ethers.Contract(
+        config.blockchain.blockRollAddress,
+        BlockRollABI.abi,
+        this.wallet
+      );
+      this.logInfo('BlockRoll contract initialized', {
+        address: config.blockchain.blockRollAddress,
+      });
+    } else {
+      this.logWarn('BlockRoll contract address not configured - blockchain features will be limited');
+      // Create a dummy contract to prevent crashes
+      this.blockRollContract = new ethers.Contract(
+        ethers.ZeroAddress,
+        BlockRollABI.abi,
+        this.wallet
+      );
+    }
 
     // Initialize API Key Manager Contract (reserved for future use)
     // this.apiKeyManagerContract = new ethers.Contract(
@@ -52,7 +79,8 @@ export class BlockchainService extends BaseService {
 
     this.logInfo('Blockchain service initialized', {
       rpcUrl: config.blockchain.rpcUrl,
-      blockRollAddress: config.blockchain.blockRollAddress,
+      blockRollAddress: config.blockchain.blockRollAddress || 'NOT_CONFIGURED',
+      walletConfigured: !!config.blockchain.privateKey,
     });
   }
 

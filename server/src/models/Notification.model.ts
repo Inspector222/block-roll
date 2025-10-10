@@ -43,7 +43,6 @@ const NotificationSchema: Schema<INotification> = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: [true, 'User is required'],
-      index: true,
     },
     type: {
       type: String,
@@ -61,7 +60,6 @@ const NotificationSchema: Schema<INotification> = new Schema(
         'system',
         'admin',
       ],
-      index: true,
     },
     title: {
       type: String,
@@ -82,7 +80,6 @@ const NotificationSchema: Schema<INotification> = new Schema(
     read: {
       type: Boolean,
       default: false,
-      index: true,
     },
     priority: {
       type: String,

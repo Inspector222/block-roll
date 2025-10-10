@@ -47,7 +47,6 @@ const UserSchema: Schema<IUser> = new Schema(
       type: String,
       enum: ['user', 'admin'],
       default: 'user',
-      index: true,
     },
     apiKeys: [
       {

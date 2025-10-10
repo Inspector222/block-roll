@@ -54,12 +54,10 @@ const SecurityLogSchema: Schema<ISecurityLog> = new Schema(
     user: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      index: true,
     },
     walletAddress: {
       type: String,
       lowercase: true,
-      index: true,
     },
     eventType: {
       type: String,
@@ -86,13 +84,11 @@ const SecurityLogSchema: Schema<ISecurityLog> = new Schema(
         'session_hijack_attempt',
         'rate_limit_exceeded',
       ],
-      index: true,
     },
     severity: {
       type: String,
       enum: ['info', 'warning', 'critical'],
       default: 'info',
-      index: true,
     },
     description: {
       type: String,
@@ -101,7 +97,6 @@ const SecurityLogSchema: Schema<ISecurityLog> = new Schema(
     ipAddress: {
       type: String,
       required: true,
-      index: true,
     },
     userAgent: {
       type: String,
@@ -109,7 +104,6 @@ const SecurityLogSchema: Schema<ISecurityLog> = new Schema(
     },
     deviceFingerprint: {
       type: String,
-      index: true,
     },
     geolocation: {
       country: String,
@@ -124,7 +118,6 @@ const SecurityLogSchema: Schema<ISecurityLog> = new Schema(
     blocked: {
       type: Boolean,
       default: false,
-      index: true,
     },
   },
   {

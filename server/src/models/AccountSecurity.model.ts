@@ -72,7 +72,6 @@ const AccountSecuritySchema: Schema<IAccountSecurity> = new Schema(
       ref: 'User',
       required: true,
       unique: true,
-      index: true,
     },
     walletAddress: {
       type: String,
@@ -156,7 +155,7 @@ const AccountSecuritySchema: Schema<IAccountSecurity> = new Schema(
 );
 
 // Indexes
-AccountSecuritySchema.index({ walletAddress: 1 });
+// Note: walletAddress already has unique: true which creates an index automatically
 AccountSecuritySchema.index({ isLocked: 1 });
 AccountSecuritySchema.index({ lockExpiresAt: 1 });
 

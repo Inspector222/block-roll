@@ -43,7 +43,6 @@ const DeviceInfoSchema = new Schema(
     fingerprint: {
       type: String,
       required: true,
-      index: true,
     },
     name: String,
     os: String,
@@ -66,7 +65,6 @@ const SessionSchema: Schema<ISession> = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
-      index: true,
     },
     refreshToken: {
       type: String,
@@ -91,7 +89,6 @@ const SessionSchema: Schema<ISession> = new Schema(
     isActive: {
       type: Boolean,
       default: true,
-      index: true,
     },
     lastActivity: {
       type: Date,
@@ -101,7 +98,6 @@ const SessionSchema: Schema<ISession> = new Schema(
     expiresAt: {
       type: Date,
       required: true,
-      index: true,
     },
     revokedAt: {
       type: Date,

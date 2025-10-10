@@ -3,22 +3,22 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { Application } from 'express';
 import helmet from 'helmet';
-import morgan from 'morgan';
 import http from 'http';
+import morgan from 'morgan';
 import config from './config';
 import Database from './config/database';
 import { logger, morganStream } from './config/logger';
+import SocketManager from './config/socket';
 import {
+  contentSecurityPolicy,
+  deviceFingerprinting,
   errorHandler,
   generalLimiter,
-  notFoundHandler,
-  deviceFingerprinting,
-  contentSecurityPolicy,
-  preventParameterPollution,
   ipSecurityCheck,
+  notFoundHandler,
+  preventParameterPollution,
 } from './middleware';
 import routes from './routes';
-import SocketManager from './config/socket';
 
 class Server {
   private app: Application;
@@ -26,14 +26,20 @@ class Server {
   private port: number;
 
   constructor() {
+    console.log('📦 Creating Express app...');
     this.app = express();
     this.httpServer = http.createServer(this.app);
     this.port = config.port;
 
+    console.log('📦 Initializing middleware...');
     this.initializeMiddleware();
+    console.log('📦 Initializing routes...');
     this.initializeRoutes();
+    console.log('📦 Initializing error handling...');
     this.initializeErrorHandling();
+    console.log('📦 Initializing WebSocket...');
     this.initializeWebSocket();
+    console.log('✅ Server constructor complete');
   }
 
   /**
@@ -206,7 +212,18 @@ class Server {
 }
 
 // Create and start server
-const server = new Server();
-server.start();
+async function bootstrap() {
+  try {
+    console.log('🚀 Bootstrapping BlockRoll Server...');
+    const server = new Server();
+    console.log('✅ Server instance created');
+    await server.start();
+  } catch (error) {
+    console.error('❌ Fatal error during server startup:');
+    console.error(error);
+    process.exit(1);
+  }
+}
 
-export default server;
+// Start the server
+bootstrap();

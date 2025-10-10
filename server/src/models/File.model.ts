@@ -64,7 +64,6 @@ const FileSchema: Schema<IFile> = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: [true, 'Owner is required'],
-      index: true,
     },
     fileName: {
       type: String,
@@ -118,7 +117,6 @@ const FileSchema: Schema<IFile> = new Schema(
       type: String,
       enum: ['active', 'revoked', 'expired'],
       default: 'active',
-      index: true,
     },
     workspace: {
       type: Schema.Types.ObjectId,

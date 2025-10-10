@@ -44,7 +44,6 @@ const ApiKeySchema: Schema<IApiKey> = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: [true, 'Owner is required'],
-      index: true,
     },
     permissions: {
       type: [String],
@@ -59,7 +58,6 @@ const ApiKeySchema: Schema<IApiKey> = new Schema(
     active: {
       type: Boolean,
       default: true,
-      index: true,
     },
     usageCount: {
       type: Number,
