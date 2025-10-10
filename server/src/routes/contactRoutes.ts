@@ -13,7 +13,7 @@ import {
   validateStatsQuery,
   validateRecentContactsQuery
 } from '../middleware/contactValidation';
-import { authenticateToken, requireAdmin } from '../middleware/auth';
+import { authenticate as authenticateToken, requireAdmin } from '../middleware/auth.middleware';
 import rateLimit from 'express-rate-limit';
 
 const router = Router();

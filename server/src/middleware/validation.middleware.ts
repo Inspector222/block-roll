@@ -6,7 +6,7 @@ import { ValidationError } from '../utils/errors';
  * Validate request using express-validator
  */
 export const validate = (validations: ValidationChain[]) => {
-  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  return async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
     // Execute all validations
     for (const validation of validations) {
       await validation.run(req);
@@ -16,12 +16,6 @@ export const validate = (validations: ValidationChain[]) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      const formattedErrors = errors.array().map((error: any) => ({
-        field: error.param || error.path,
-        message: error.msg,
-        value: error.value,
-      }));
-
       throw new ValidationError('Validation failed', 'VALIDATION_ERROR');
     }
 
@@ -37,7 +31,7 @@ export const validateFileUpload = (options: {
   allowedMimeTypes?: string[];
   required?: boolean;
 }) => {
-  return (req: Request, res: Response, next: NextFunction): void => {
+  return (req: Request, _res: Response, next: NextFunction): void => {
     const file = req.file;
 
     // Check if file is required
@@ -71,7 +65,7 @@ export const validateFileUpload = (options: {
  * Sanitize request body
  */
 export const sanitizeBody = (allowedFields: string[]) => {
-  return (req: Request, res: Response, next: NextFunction): void => {
+  return (req: Request, _res: Response, next: NextFunction): void => {
     const sanitizedBody: any = {};
 
     allowedFields.forEach((field) => {

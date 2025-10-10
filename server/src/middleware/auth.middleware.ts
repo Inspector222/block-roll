@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
-import { JWTService, JWTPayload } from '../utils/jwt';
+import { NextFunction, Request, Response } from 'express';
+import { ApiKey, User } from '../models';
 import { AuthenticationError, AuthorizationError } from '../utils/errors';
-import { User, ApiKey } from '../models';
+import { JWTPayload, JWTService } from '../utils/jwt';
 
 // Extend Express Request type
 declare global {
@@ -18,7 +18,7 @@ declare global {
  */
 export const authenticate = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
@@ -54,7 +54,7 @@ export const authenticate = async (
  */
 export const authenticateApiKey = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
@@ -90,7 +90,7 @@ export const authenticateApiKey = async (
  */
 export const optionalAuth = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
@@ -125,7 +125,7 @@ export const optionalAuth = async (
  */
 export const requireAdmin = (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): void => {
   if (!req.user) {
@@ -143,7 +143,7 @@ export const requireAdmin = (
  * Require specific permissions for API key
  */
 export const requirePermissions = (...permissions: string[]) => {
-  return (req: Request, res: Response, next: NextFunction): void => {
+  return (req: Request, _res: Response, next: NextFunction): void => {
     if (!req.apiKey) {
       throw new AuthenticationError('API key required');
     }
@@ -166,7 +166,7 @@ export const requirePermissions = (...permissions: string[]) => {
  * Require wallet ownership
  */
 export const requireWalletOwnership = (walletAddressParam: string = 'walletAddress') => {
-  return (req: Request, res: Response, next: NextFunction): void => {
+  return (req: Request, _res: Response, next: NextFunction): void => {
     if (!req.user) {
       throw new AuthenticationError('Authentication required');
     }

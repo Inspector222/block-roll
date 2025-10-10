@@ -100,7 +100,7 @@ const SessionSchema: Schema<ISession> = new Schema(
     timestamps: true,
     toJSON: {
       virtuals: true,
-      transform: function (doc, ret) {
+      transform: function (_doc, ret: any) {
         delete ret.__v;
         delete ret.refreshToken;
         return ret;
@@ -110,7 +110,7 @@ const SessionSchema: Schema<ISession> = new Schema(
 );
 
 // Compound indexes
-SecurityLogSchema.index({ user: 1, isActive: 1 });
+SessionSchema.index({ user: 1, isActive: 1 });
 SessionSchema.index({ user: 1, 'deviceInfo.fingerprint': 1 });
 SessionSchema.index({ expiresAt: 1, isActive: 1 });
 

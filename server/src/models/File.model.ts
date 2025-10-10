@@ -124,7 +124,7 @@ const FileSchema: Schema<IFile> = new Schema(
     timestamps: true,
     toJSON: {
       virtuals: true,
-      transform: function (doc, ret) {
+      transform: function (_doc, ret: any) {
         delete ret.__v;
         return ret;
       },
@@ -161,7 +161,7 @@ FileSchema.methods.grantAccess = function (walletAddress: string): void {
 
 FileSchema.methods.revokeAccess = function (walletAddress: string): void {
   this.accessList = this.accessList.filter(
-    (addr) => addr !== walletAddress.toLowerCase()
+    (addr: string) => addr !== walletAddress.toLowerCase()
   );
 };
 

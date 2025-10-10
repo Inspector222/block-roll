@@ -10,7 +10,7 @@ export const errorHandler = (
   error: Error | AppError,
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ): Response => {
   let statusCode = 500;
   let message = 'Internal Server Error';
@@ -116,7 +116,7 @@ export const errorHandler = (
 export const notFoundHandler = (
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ): Response => {
   return res.status(404).json({
     success: false,

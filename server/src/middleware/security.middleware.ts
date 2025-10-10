@@ -24,7 +24,7 @@ declare global {
  */
 export const bruteForceProtection = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
@@ -63,7 +63,7 @@ export const bruteForceProtection = async (
  */
 export const deviceFingerprinting = (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): void => {
   try {
@@ -102,7 +102,7 @@ export const deviceFingerprinting = (
  */
 export const suspiciousActivityDetection = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
@@ -152,7 +152,7 @@ export const suspiciousActivityDetection = async (
  */
 export const ipSecurityCheck = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
@@ -181,7 +181,7 @@ export const ipSecurityCheck = async (
  * Banks use this for critical operations
  */
 export const verifyRequestSignature = (requiredForMethods: string[] = ['POST', 'PUT', 'DELETE']) => {
-  return (req: Request, res: Response, next: NextFunction): void => {
+  return (req: Request, _res: Response, next: NextFunction): void => {
     // Skip if method not in required list
     if (!requiredForMethods.includes(req.method)) {
       return next();
@@ -229,7 +229,7 @@ export const verifyRequestSignature = (requiredForMethods: string[] = ['POST', '
  */
 export const trackSessionActivity = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
@@ -271,7 +271,7 @@ export const trackSessionActivity = async (
  * Banks prevent XSS and injection attacks
  */
 export const contentSecurityPolicy = (
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction
 ): void => {
@@ -293,7 +293,7 @@ export const contentSecurityPolicy = (
  */
 export const preventParameterPollution = (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): void => {
   // Convert array parameters to single values (take first)

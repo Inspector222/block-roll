@@ -103,7 +103,7 @@ const WorkspaceSchema: Schema<IWorkspace> = new Schema(
     timestamps: true,
     toJSON: {
       virtuals: true,
-      transform: function (doc, ret) {
+      transform: function (_doc, ret: any) {
         delete ret.__v;
         return ret;
       },

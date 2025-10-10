@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import mongoose from 'mongoose';
 import { JWTService } from '../utils/jwt';
 import { AuthenticationError } from '../utils/errors';
 import { User } from '../models';
@@ -67,7 +68,7 @@ export const autoRefreshToken = async (
 
           // Generate new tokens
           const newPayload = {
-            userId: user._id.toString(),
+            userId: (user._id as mongoose.Types.ObjectId).toString(),
             walletAddress: user.walletAddress,
             role: user.role,
           };
@@ -94,7 +95,7 @@ export const autoRefreshToken = async (
 
           // Set user in request
           req.user = {
-            userId: user._id.toString(),
+            userId: (user._id as mongoose.Types.ObjectId).toString(),
             walletAddress: user.walletAddress,
             role: user.role,
           };

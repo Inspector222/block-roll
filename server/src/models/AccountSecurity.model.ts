@@ -148,7 +148,7 @@ const AccountSecuritySchema: Schema<IAccountSecurity> = new Schema(
     timestamps: true,
     toJSON: {
       virtuals: true,
-      transform: function (doc, ret) {
+      transform: function (_doc, ret: any) {
         delete ret.__v;
         delete ret.mfaSecret;
         delete ret.mfaBackupCodes;
@@ -233,7 +233,7 @@ AccountSecuritySchema.methods.addTrustedDevice = async function (
 AccountSecuritySchema.methods.removeTrustedDevice = async function (
   deviceFingerprint: string
 ): Promise<void> {
-  this.trustedDevices = this.trustedDevices.filter((d) => d !== deviceFingerprint);
+  this.trustedDevices = this.trustedDevices.filter((d: string) => d !== deviceFingerprint);
   await this.save();
 };
 

@@ -16,6 +16,14 @@ export interface IApiKey extends Document {
   updatedAt: Date;
   generateKey(): string;
   verifyKey(key: string): boolean;
+  incrementUsage(): Promise<void>;
+  isExpired: boolean;
+}
+
+export interface IApiKeyModel extends Model<IApiKey> {
+  findByKey(key: string): Promise<IApiKey | null>;
+  findActiveByOwner(ownerId: mongoose.Types.ObjectId): Promise<IApiKey[]>;
+  revokeExpired(): Promise<number>;
 }
 
 const ApiKeySchema: Schema<IApiKey> = new Schema(
@@ -73,7 +81,7 @@ const ApiKeySchema: Schema<IApiKey> = new Schema(
     timestamps: true,
     toJSON: {
       virtuals: true,
-      transform: function (doc, ret) {
+      transform: function (_doc, ret: any) {
         delete ret.__v;
         delete ret.hashedKey;
         delete ret.key;
@@ -147,7 +155,7 @@ ApiKeySchema.statics.revokeExpired = async function () {
   return result.modifiedCount;
 };
 
-const ApiKey: Model<IApiKey> = mongoose.model<IApiKey>('ApiKey', ApiKeySchema);
+const ApiKey = mongoose.model<IApiKey, IApiKeyModel>('ApiKey', ApiKeySchema);
 
 export default ApiKey;
 
