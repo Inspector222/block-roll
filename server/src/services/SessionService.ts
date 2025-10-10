@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import { BaseService } from './BaseService';
 import Session, { ISession } from '../models/Session.model';
-import { User } from '../models';
+import { /* User */ } from '../models';
 import { NotFoundError, AuthorizationError } from '../utils/errors';
 import SecurityService from './SecurityService';
 

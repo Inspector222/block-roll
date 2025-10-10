@@ -42,7 +42,7 @@ export class WorkspaceService extends BaseService {
           Validators.assertValidWalletAddress(member.wallet);
           members.push({
             wallet: member.wallet.toLowerCase(),
-            role: member.role,
+            role: member.role as any, // Members cannot be added as owner, but keep the type
             joinedAt: new Date(),
           });
         }
@@ -56,7 +56,7 @@ export class WorkspaceService extends BaseService {
       });
 
       // Add workspace to creator
-      creator.workspaces.push(workspace._id);
+      creator.workspaces.push(workspace._id as any);
       await creator.save();
 
       // Send notifications to added members

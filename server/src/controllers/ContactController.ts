@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 import ContactService from '../services/ContactService';
 import { BaseController } from './BaseController';
-import { validationResult } from 'express-validator';
 
 class ContactController extends BaseController {
   constructor() {
@@ -49,7 +49,7 @@ class ContactController extends BaseController {
         message: 'Thank you for your message! We\'ll get back to you within 24 hours.',
         contactId: contact._id,
         autoResponderSent: contact.autoResponderSent
-      }, 201);
+      }, 'Contact form submitted successfully', 201);
 
     } catch (error) {
       this.logError('Failed to create contact', error);

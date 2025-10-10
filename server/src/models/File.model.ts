@@ -22,6 +22,15 @@ export interface IFile extends Document {
   metadata?: Record<string, any>;
   createdAt: Date;
   updatedAt: Date;
+  hasAccess(walletAddress: string): boolean;
+  grantAccess(walletAddress: string): void;
+  revokeAccess(walletAddress: string): void;
+  isExpired: boolean;
+}
+
+export interface IFileModel extends Model<IFile> {
+  findByOwner(ownerId: mongoose.Types.ObjectId): Promise<IFile[]>;
+  findExpiredFiles(): Promise<IFile[]>;
 }
 
 const EmergencyAccessSchema = new Schema(
@@ -177,7 +186,7 @@ FileSchema.statics.findExpiredFiles = function () {
   });
 };
 
-const File: Model<IFile> = mongoose.model<IFile>('File', FileSchema);
+const File = mongoose.model<IFile, IFileModel>('File', FileSchema);
 
 export default File;
 

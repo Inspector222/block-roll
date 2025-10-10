@@ -1,20 +1,20 @@
 import { Router } from 'express';
-import ContactController from '../controllers/ContactController';
-import {
-  validateContactForm,
-  validateContactId,
-  validateContactUpdate,
-  validateContactFilters,
-  validateTagOperation,
-  validateTagParam,
-  validateBulkUpdate,
-  validateEmailTest,
-  validateSearchQuery,
-  validateStatsQuery,
-  validateRecentContactsQuery
-} from '../middleware/contactValidation';
-import { authenticate as authenticateToken, requireAdmin } from '../middleware/auth.middleware';
 import rateLimit from 'express-rate-limit';
+import ContactController from '../controllers/ContactController';
+import { authenticate as authenticateToken, requireAdmin } from '../middleware/auth.middleware';
+import {
+    validateBulkUpdate,
+    validateContactFilters,
+    validateContactForm,
+    validateContactId,
+    validateContactUpdate,
+    validateEmailTest,
+    validateRecentContactsQuery,
+    validateSearchQuery,
+    validateStatsQuery,
+    validateTagOperation,
+    validateTagParam
+} from '../middleware/contactValidation';
 
 const router = Router();
 
@@ -28,9 +28,9 @@ const contactFormLimiter = rateLimit({
   },
   standardHeaders: true,
   legacyHeaders: false,
-  skip: (req) => {
+  skip: (req): boolean => {
     // Skip rate limiting for admin users
-    return req.user && req.user.role === 'admin';
+    return !!(req.user && req.user.role === 'admin');
   }
 });
 

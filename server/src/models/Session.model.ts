@@ -25,6 +25,17 @@ export interface ISession extends Document {
   revokedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
+  updateActivity(): Promise<void>;
+  revoke(): Promise<void>;
+  isInactive(minutes?: number): boolean;
+  isExpired: boolean;
+}
+
+export interface ISessionModel extends Model<ISession> {
+  findActiveSessions(userId: mongoose.Types.ObjectId): Promise<ISession[]>;
+  revokeAllSessions(userId: mongoose.Types.ObjectId): Promise<number>;
+  revokeExpiredSessions(): Promise<number>;
+  findByDevice(userId: mongoose.Types.ObjectId, fingerprint: string): Promise<ISession | null>;
 }
 
 const DeviceInfoSchema = new Schema(
@@ -189,7 +200,7 @@ SessionSchema.statics.findByDevice = function (
   });
 };
 
-const Session: Model<ISession> = mongoose.model<ISession>('Session', SessionSchema);
+const Session = mongoose.model<ISession, ISessionModel>('Session', SessionSchema);
 
 export default Session;
 

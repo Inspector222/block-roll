@@ -1,11 +1,10 @@
 import { ethers } from 'ethers';
-import { BaseService } from './BaseService';
 import config from '../config';
 import { ValidationError } from '../utils/errors';
+import { BaseService } from './BaseService';
 
 // Import contract ABIs (we'll need to generate these)
 import BlockRollABI from '../contracts/BlockRoll.json';
-import APIKeyManagerABI from '../contracts/APIKeyManager.json';
 
 interface FileUploadParams {
   fileHash: string;
@@ -23,7 +22,7 @@ export class BlockchainService extends BaseService {
   private provider: ethers.JsonRpcProvider;
   private wallet: ethers.Wallet;
   private blockRollContract: ethers.Contract;
-  private apiKeyManagerContract: ethers.Contract;
+  // private apiKeyManagerContract: ethers.Contract; // Reserved for future use
 
   constructor() {
     super('BlockchainService');
@@ -44,11 +43,12 @@ export class BlockchainService extends BaseService {
       this.wallet
     );
 
-    this.apiKeyManagerContract = new ethers.Contract(
-      config.blockchain.apiKeyManagerAddress,
-      APIKeyManagerABI.abi,
-      this.wallet
-    );
+    // Initialize API Key Manager Contract (reserved for future use)
+    // this.apiKeyManagerContract = new ethers.Contract(
+    //   config.blockchain.apiKeyManagerAddress,
+    //   APIKeyManagerABI.abi,
+    //   this.wallet
+    // );
 
     this.logInfo('Blockchain service initialized', {
       rpcUrl: config.blockchain.rpcUrl,
@@ -61,7 +61,7 @@ export class BlockchainService extends BaseService {
    */
   async uploadFile(
     params: FileUploadParams,
-    userWallet?: string
+    _userWallet?: string
   ): Promise<{ fileId: string; txHash: string }> {
     return this.executeWithErrorHandling(async () => {
       // Validate addresses
@@ -159,7 +159,7 @@ export class BlockchainService extends BaseService {
         receiver: params.receiver,
       });
 
-      const tx = await contractWithDeveloperWallet.uploadFileWithAPIKey(
+      const tx = await (contractWithDeveloperWallet as any).uploadFileWithAPIKey(
         apiKeyHashBytes32,
         fileHashBytes32,
         params.receiver,
@@ -251,7 +251,7 @@ export class BlockchainService extends BaseService {
         newReceiver,
       });
 
-      const tx = await contractWithUserWallet.shareFile(fileId, newReceiver);
+      const tx = await (contractWithUserWallet as any).shareFile(fileId, newReceiver);
       const receipt = await tx.wait();
 
       this.logInfo('File shared on blockchain', {
@@ -278,7 +278,7 @@ export class BlockchainService extends BaseService {
         fileId,
       });
 
-      const tx = await contractWithUserWallet.revokeFileAccess(fileId);
+      const tx = await (contractWithUserWallet as any).revokeFileAccess(fileId);
       const receipt = await tx.wait();
 
       this.logInfo('File access revoked on blockchain', {

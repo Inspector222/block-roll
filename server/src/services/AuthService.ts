@@ -39,7 +39,7 @@ export class AuthService extends BaseService {
 
         // Notify admins of new user (real-time)
         await SocketService.notifyAdminUserJoined({
-          userId: user._id.toString(),
+          userId: (user._id as any).toString(),
           walletAddress: normalizedAddress,
           createdAt: user.createdAt,
         });
@@ -54,7 +54,7 @@ export class AuthService extends BaseService {
 
       // Generate tokens
       const payload: Omit<JWTPayload, 'iat' | 'exp'> = {
-        userId: user._id.toString(),
+        userId: (user._id as any).toString(),
         walletAddress: user.walletAddress,
         role: user.role,
       };
@@ -80,8 +80,8 @@ export class AuthService extends BaseService {
    */
   async verifyWalletSignature(
     walletAddress: string,
-    signature: string,
-    message: string
+    _signature: string,
+    _message: string
   ): Promise<boolean> {
     return this.executeWithErrorHandling(async () => {
       // In a real implementation, you would verify the signature using ethers.js
@@ -112,7 +112,7 @@ export class AuthService extends BaseService {
 
       // Generate new tokens
       const newPayload: Omit<JWTPayload, 'iat' | 'exp'> = {
-        userId: user._id.toString(),
+        userId: (user._id as any).toString(),
         walletAddress: user.walletAddress,
         role: user.role,
       };

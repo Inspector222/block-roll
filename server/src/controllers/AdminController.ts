@@ -8,7 +8,7 @@ export class AdminController extends BaseController {
    * Get platform statistics
    * GET /admin/stats
    */
-  getPlatformStats = this.catchAsync(async (req: Request, res: Response) => {
+  getPlatformStats = this.catchAsync(async (_req: Request, res: Response) => {
     const stats = await AdminService.getPlatformStats();
 
     return this.sendSuccess(res, { stats }, 'Platform stats retrieved');

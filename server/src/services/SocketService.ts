@@ -8,7 +8,7 @@ import {
   StatsUpdateData,
   ActivityData,
   WorkspaceEventData,
-  AdminEventData,
+  /* AdminEventData */
 } from '../types/socket.events';
 
 export class SocketService extends BaseService {

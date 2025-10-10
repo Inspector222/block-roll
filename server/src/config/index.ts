@@ -53,6 +53,20 @@ interface Config {
   admin: {
     walletAddress: string;
   };
+  email: {
+    service: string;
+    user: string;
+    password: string;
+    from: string;
+    adminEmail: string;
+    host?: string;
+    port?: number;
+    secure?: boolean;
+  };
+  app: {
+    baseUrl: string;
+    name: string;
+  };
 }
 
 const config: Config = {
@@ -105,6 +119,20 @@ const config: Config = {
   },
   admin: {
     walletAddress: process.env.ADMIN_WALLET_ADDRESS || '',
+  },
+  email: {
+    service: process.env.EMAIL_SERVICE || 'smtp',
+    user: process.env.EMAIL_USER || '',
+    password: process.env.EMAIL_PASSWORD || '',
+    from: process.env.EMAIL_FROM || 'noreply@blockroll.io',
+    adminEmail: process.env.EMAIL_ADMIN || 'admin@blockroll.io',
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT ? parseInt(process.env.EMAIL_PORT, 10) : undefined,
+    secure: process.env.EMAIL_SECURE === 'true',
+  },
+  app: {
+    baseUrl: process.env.APP_BASE_URL || 'http://localhost:3000',
+    name: process.env.APP_NAME || 'BlockRoll',
   },
 };
 

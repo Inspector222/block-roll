@@ -25,6 +25,16 @@ export interface INotification extends Document {
   expiresAt?: Date;
   createdAt: Date;
   updatedAt: Date;
+  markAsRead(): Promise<void>;
+  isExpired(): boolean;
+}
+
+export interface INotificationModel extends Model<INotification> {
+  findUnreadByUser(userId: mongoose.Types.ObjectId): Promise<INotification[]>;
+  findByUser(userId: mongoose.Types.ObjectId, limit?: number): Promise<INotification[]>;
+  markAllAsRead(userId: mongoose.Types.ObjectId): Promise<number>;
+  deleteExpired(): Promise<number>;
+  getUnreadCount(userId: mongoose.Types.ObjectId): Promise<number>;
 }
 
 const NotificationSchema: Schema<INotification> = new Schema(
@@ -159,7 +169,7 @@ NotificationSchema.statics.getUnreadCount = async function (
   return this.countDocuments({ user: userId, read: false });
 };
 
-const Notification: Model<INotification> = mongoose.model<INotification>(
+const Notification = mongoose.model<INotification, INotificationModel>(
   'Notification',
   NotificationSchema
 );

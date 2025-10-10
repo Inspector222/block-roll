@@ -44,7 +44,7 @@ export class ApiKeyService extends BaseService {
       await apiKey.save();
 
       // Add to user's API keys
-      owner.apiKeys.push(apiKey._id);
+      owner.apiKeys.push(apiKey._id as any);
       await owner.save();
 
       // Register API key on blockchain
@@ -57,10 +57,11 @@ export class ApiKeyService extends BaseService {
 
         const blockchainResult = await BlockchainService.registerAPIKey({
           apiKeyHash: '0x' + apiKeyHash,
-          developerAddress: developerAddress,
+          developerAddress: developerAddress!,
         });
 
         // Store blockchain transaction hash
+        if (!apiKey.metadata) apiKey.metadata = {};
         apiKey.metadata.blockchainTxHash = blockchainResult.txHash;
         await apiKey.save();
 

@@ -8,6 +8,12 @@ export interface IUser extends Document {
   workspaces: mongoose.Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
+  isAdmin(): boolean;
+}
+
+export interface IUserModel extends Model<IUser> {
+  findByWallet(walletAddress: string): Promise<IUser | null>;
+  getAllAdmins(): Promise<IUser[]>;
 }
 
 const UserSchema: Schema<IUser> = new Schema(
@@ -18,7 +24,6 @@ const UserSchema: Schema<IUser> = new Schema(
       unique: true,
       lowercase: true,
       trim: true,
-      index: true,
       validate: {
         validator: function (v: string) {
           return /^0x[a-fA-F0-9]{40}$/.test(v);
@@ -94,7 +99,7 @@ UserSchema.statics.getAllAdmins = function () {
   return this.find({ role: 'admin' });
 };
 
-const User: Model<IUser> = mongoose.model<IUser>('User', UserSchema);
+const User = mongoose.model<IUser, IUserModel>('User', UserSchema);
 
 export default User;
 

@@ -28,7 +28,7 @@ class EmailService extends BaseService {
 
   private createTransporter(): nodemailer.Transporter {
     if (config.email.service === 'gmail') {
-      return nodemailer.createTransporter({
+      return nodemailer.createTransport({
         service: 'gmail',
         auth: {
           user: config.email.user,
@@ -36,7 +36,7 @@ class EmailService extends BaseService {
         }
       });
     } else if (config.email.service === 'smtp') {
-      return nodemailer.createTransporter({
+      return nodemailer.createTransport({
         host: config.email.host,
         port: config.email.port,
         secure: config.email.secure,
@@ -47,7 +47,7 @@ class EmailService extends BaseService {
       });
     } else {
       // For development/testing - use ethereal email
-      return nodemailer.createTransporter({
+      return nodemailer.createTransport({
         host: 'smtp.ethereal.email',
         port: 587,
         secure: false,

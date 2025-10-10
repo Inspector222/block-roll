@@ -4,6 +4,12 @@ import { AppError } from '../utils/errors';
 import { ResponseHandler } from '../utils/response';
 
 export abstract class BaseController {
+  protected controllerName: string;
+
+  constructor(name?: string) {
+    this.controllerName = name || 'BaseController';
+  }
+
   /**
    * Catch async errors wrapper
    */
@@ -13,6 +19,37 @@ export abstract class BaseController {
     return (req: Request, res: Response, next: NextFunction) => {
       Promise.resolve(fn(req, res, next)).catch(next);
     };
+  }
+
+  /**
+   * Log error (alias for ContactController compatibility)
+   */
+  protected logError(message: string, error?: any): void {
+    logger.error(`[${this.controllerName}] ${message}`, error);
+  }
+
+  /**
+   * Send success response (alias for ContactController compatibility)
+   */
+  protected sendSuccessResponse<T>(
+    res: Response,
+    data: T,
+    message: string = 'Success',
+    statusCode: number = 200
+  ): Response {
+    return this.sendSuccess(res, data, message, statusCode);
+  }
+
+  /**
+   * Send error response (alias for ContactController compatibility)
+   */
+  protected sendErrorResponse(
+    res: Response,
+    message: string,
+    statusCode: number = 500,
+    details?: any
+  ): Response {
+    return this.sendError(res, message, statusCode, 'ERROR', details);
   }
 
   /**

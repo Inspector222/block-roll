@@ -1,0 +1,12 @@
+src/
+node_modules/
+__tests__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+tsconfig.json
+rollup.config.js
+.DS_Store
+*.log
+

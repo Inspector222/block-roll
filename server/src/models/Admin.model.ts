@@ -30,6 +30,15 @@ export interface IAdmin extends Document {
   };
   createdAt: Date;
   updatedAt: Date;
+  hasPermission(permission: string): boolean;
+  logActivity(action: string, targetType: 'user' | 'file' | 'apiKey' | 'workspace' | 'system', details: string, targetId?: mongoose.Types.ObjectId): void;
+  updateStats(stats: Partial<IAdminStats>): Promise<void>;
+}
+
+export interface IAdminModel extends Model<IAdmin> {
+  findByWallet(walletAddress: string): Promise<IAdmin | null>;
+  getAllAdmins(): Promise<IAdmin[]>;
+  getSuperAdmins(): Promise<IAdmin[]>;
 }
 
 const AdminStatsSchema = new Schema(
@@ -236,6 +245,6 @@ AdminSchema.statics.getSuperAdmins = function () {
   return this.find({ permissions: 'super_admin' });
 };
 
-const Admin: Model<IAdmin> = mongoose.model<IAdmin>('Admin', AdminSchema);
+const Admin = mongoose.model<IAdmin, IAdminModel>('Admin', AdminSchema);
 
 export default Admin;

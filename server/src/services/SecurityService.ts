@@ -1,6 +1,6 @@
 import { BaseService } from './BaseService';
 import SecurityLog, { SecurityEventType, ISecurityLog } from '../models/SecurityLog.model';
-import { User } from '../models';
+import { /* User */ } from '../models';
 import SocketService from './SocketService';
 
 export interface SecurityEventData {
@@ -47,7 +47,7 @@ export class SecurityService extends BaseService {
       // Send real-time alert for critical events
       if (data.severity === 'critical' && data.userId) {
         await SocketService.sendSecurityAlert(data.userId, {
-          id: log._id.toString(),
+          id: (log._id as any).toString(),
           severity: 'critical',
           type: data.eventType,
           message: data.description,
@@ -191,7 +191,7 @@ export class SecurityService extends BaseService {
       const skip = (page - 1) * limit;
 
       const [logs, total] = await Promise.all([
-        SecurityLog.findByUser(userId as any, limit).skip(skip),
+        SecurityLog.findByUser(userId as any, limit).then((logs) => logs.slice(skip)),
         SecurityLog.countDocuments({ user: userId }),
       ]);
 

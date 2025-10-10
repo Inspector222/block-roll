@@ -71,7 +71,7 @@ class ContactService extends BaseService {
           email: contact.email,
           subject: contact.subject,
           message: contact.message,
-          contactId: contact._id.toString()
+          contactId: (contact._id as any).toString()
         });
 
         if (autoResponderSent) {
@@ -91,7 +91,7 @@ class ContactService extends BaseService {
           email: contact.email,
           subject: contact.subject,
           message: contact.message,
-          contactId: contact._id.toString()
+          contactId: (contact._id as any).toString()
         });
         this.logInfo(`Admin notification sent for contact ${contact._id}`);
       } catch (emailError) {
@@ -143,7 +143,7 @@ class ContactService extends BaseService {
       const total = await Contact.countDocuments(query);
       const pages = Math.ceil(total / limit);
 
-      return { contacts, total, pages };
+      return { contacts: contacts as any, total, pages };
     } catch (error) {
       this.logError('Failed to get contacts', error);
       throw error;
@@ -374,7 +374,7 @@ class ContactService extends BaseService {
         .select('name email subject status priority createdAt')
         .lean();
 
-      return contacts;
+      return contacts as any;
     } catch (error) {
       this.logError('Failed to get recent contacts', error);
       throw error;
@@ -395,7 +395,7 @@ class ContactService extends BaseService {
         .limit(limit)
         .lean();
 
-      return contacts;
+      return contacts as any;
     } catch (error) {
       this.logError('Failed to search contacts', error);
       throw error;

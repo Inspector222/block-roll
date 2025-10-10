@@ -87,6 +87,7 @@ export class FileService extends BaseService {
         });
 
         // Update file with blockchain data
+        if (!file.metadata) file.metadata = {};
         file.metadata.blockchainFileId = blockchainResult.fileId;
         file.metadata.blockchainTxHash = blockchainResult.txHash;
         await file.save();
@@ -117,7 +118,7 @@ export class FileService extends BaseService {
 
       // Send real-time events via WebSocket
       await SocketService.notifyFileUploaded(ownerId, {
-        fileId: file._id.toString(),
+        fileId: (file._id as any).toString(),
         fileName: data.fileName,
         owner: ownerId,
         receiver: data.receiver,
@@ -127,7 +128,7 @@ export class FileService extends BaseService {
 
       // Notify receiver via WebSocket
       await SocketService.notifyFileShared(ownerId, data.receiver, {
-        fileId: file._id.toString(),
+        fileId: (file._id as any).toString(),
         fileName: data.fileName,
         owner: ownerId,
         receiver: data.receiver,
@@ -137,7 +138,7 @@ export class FileService extends BaseService {
 
       // Notify admins
       await SocketService.notifyAdminFileUploaded({
-        fileId: file._id.toString(),
+        fileId: (file._id as any).toString(),
         fileName: data.fileName,
         owner: ownerId,
         action: 'uploaded',
@@ -174,7 +175,7 @@ export class FileService extends BaseService {
       }
 
       if (
-        file.owner._id.toString() !== userId &&
+        (file.owner._id as any).toString() !== userId &&
         !file.hasAccess(user.walletAddress)
       ) {
         throw new AuthorizationError('No access to this file');
@@ -195,13 +196,12 @@ export class FileService extends BaseService {
     return this.executeWithErrorHandling(async () => {
       const skip = (page - 1) * limit;
 
-      const [files, total] = await Promise.all([
-        File.findByOwner(new mongoose.Types.ObjectId(ownerId))
-          .skip(skip)
-          .limit(limit)
-          .sort({ createdAt: -1 }),
-        File.countDocuments({ owner: ownerId, status: 'active' }),
-      ]);
+      const allFiles = await File.findByOwner(new mongoose.Types.ObjectId(ownerId));
+      const sortedFiles = allFiles.sort((a: any, b: any) => 
+        b.createdAt.getTime() - a.createdAt.getTime()
+      );
+      const files = sortedFiles.slice(skip, skip + limit);
+      const total = await File.countDocuments({ owner: ownerId, status: 'active' });
 
       return { files, total };
     }, 'getFilesByOwner');
@@ -247,7 +247,7 @@ export class FileService extends BaseService {
 
       // Send real-time WebSocket events
       await SocketService.notifyFileShared(ownerId, recipientWallet, {
-        fileId: file._id.toString(),
+        fileId: (file._id as any).toString(),
         fileName: file.fileName,
         owner: ownerId,
         receiver: recipientWallet,

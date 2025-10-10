@@ -40,7 +40,7 @@ export class NotificationService extends BaseService {
 
       // Send real-time notification via WebSocket
       await SocketService.sendNotification(userId, {
-        id: notification._id.toString(),
+        id: (notification._id as any).toString(),
         type: data.type,
         title: data.title,
         message: data.message,

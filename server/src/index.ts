@@ -88,7 +88,7 @@ class Server {
     this.app.use('/api/v1', routes);
 
     // Root route
-    this.app.get('/', (req, res) => {
+    this.app.get('/', (_req, res) => {
       res.json({
         success: true,
         message: 'Welcome to BlockRoll API',

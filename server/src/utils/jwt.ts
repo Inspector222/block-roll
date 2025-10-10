@@ -4,6 +4,7 @@ import { AuthenticationError } from './errors';
 
 export interface JWTPayload {
   userId: string;
+  id?: string; // Alias for userId
   walletAddress: string;
   role: 'user' | 'admin';
   iat?: number;
@@ -15,18 +16,18 @@ export class JWTService {
    * Generate access token
    */
   static generateAccessToken(payload: Omit<JWTPayload, 'iat' | 'exp'>): string {
-    return jwt.sign(payload, config.jwt.secret, {
-      expiresIn: config.jwt.expiresIn,
-    });
+    return jwt.sign(payload, config.jwt.secret, { 
+      expiresIn: config.jwt.expiresIn 
+    } as any);
   }
 
   /**
    * Generate refresh token
    */
   static generateRefreshToken(payload: Omit<JWTPayload, 'iat' | 'exp'>): string {
-    return jwt.sign(payload, config.jwt.refreshSecret, {
-      expiresIn: config.jwt.refreshExpiresIn,
-    });
+    return jwt.sign(payload, config.jwt.refreshSecret, { 
+      expiresIn: config.jwt.refreshExpiresIn 
+    } as any);
   }
 
   /**

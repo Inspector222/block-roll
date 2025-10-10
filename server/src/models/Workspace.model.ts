@@ -19,6 +19,18 @@ export interface IWorkspace extends Document {
   createdBy: mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
+  hasMember(walletAddress: string): boolean;
+  getMemberRole(walletAddress: string): string | null;
+  addMember(walletAddress: string, role?: 'admin' | 'editor' | 'viewer'): void;
+  removeMember(walletAddress: string): void;
+  updateMemberRole(walletAddress: string, newRole: 'admin' | 'editor' | 'viewer'): void;
+  canEdit(walletAddress: string): boolean;
+  isOwner(walletAddress: string): boolean;
+}
+
+export interface IWorkspaceModel extends Model<IWorkspace> {
+  findByMember(walletAddress: string): Promise<IWorkspace[]>;
+  findByCreator(creatorId: mongoose.Types.ObjectId): Promise<IWorkspace[]>;
 }
 
 const WorkspaceMemberSchema = new Schema(
@@ -96,7 +108,6 @@ const WorkspaceSchema: Schema<IWorkspace> = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
-      index: true,
     },
   },
   {
@@ -184,7 +195,7 @@ WorkspaceSchema.statics.findByCreator = function (creatorId: mongoose.Types.Obje
   return this.find({ createdBy: creatorId });
 };
 
-const Workspace: Model<IWorkspace> = mongoose.model<IWorkspace>(
+const Workspace = mongoose.model<IWorkspace, IWorkspaceModel>(
   'Workspace',
   WorkspaceSchema
 );

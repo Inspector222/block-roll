@@ -79,18 +79,15 @@ const AccountSecuritySchema: Schema<IAccountSecurity> = new Schema(
       required: true,
       lowercase: true,
       unique: true,
-      index: true,
     },
     isLocked: {
       type: Boolean,
       default: false,
-      index: true,
     },
     lockReason: String,
     lockedAt: Date,
     lockExpiresAt: {
       type: Date,
-      index: true,
     },
     failedLoginAttempts: {
       type: Number,

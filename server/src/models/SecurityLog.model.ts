@@ -42,6 +42,13 @@ export interface ISecurityLog extends Document {
   createdAt: Date;
 }
 
+export interface ISecurityLogModel extends Model<ISecurityLog> {
+  findByUser(userId: mongoose.Types.ObjectId, limit?: number): Promise<ISecurityLog[]>;
+  findSuspiciousActivity(timeRange?: number): Promise<ISecurityLog[]>;
+  findByIP(ipAddress: string, limit?: number): Promise<ISecurityLog[]>;
+  getFailedLoginAttempts(ipAddress: string, timeRange?: number): Promise<number>;
+}
+
 const SecurityLogSchema: Schema<ISecurityLog> = new Schema(
   {
     user: {
@@ -180,7 +187,7 @@ SecurityLogSchema.statics.getFailedLoginAttempts = async function (
   });
 };
 
-const SecurityLog: Model<ISecurityLog> = mongoose.model<ISecurityLog>(
+const SecurityLog = mongoose.model<ISecurityLog, ISecurityLogModel>(
   'SecurityLog',
   SecurityLogSchema
 );

@@ -123,4 +123,7 @@ ContactSchema.pre('save', function(next) {
   next();
 });
 
-export default mongoose.model<IContact>('Contact', ContactSchema);
+const Contact = mongoose.model<IContact>('Contact', ContactSchema);
+
+export { Contact };
+export default Contact;
