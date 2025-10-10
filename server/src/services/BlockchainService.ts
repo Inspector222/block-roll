@@ -40,12 +40,12 @@ export class BlockchainService extends BaseService {
         );
         this.logInfo('Blockchain wallet initialized');
       } catch (error) {
-        this.logWarn('Invalid blockchain private key - blockchain features will be limited', { error });
+        this.logWarning('Invalid blockchain private key - blockchain features will be limited', { error });
         // Create a random wallet for development
         this.wallet = ethers.Wallet.createRandom().connect(this.provider);
       }
     } else {
-      this.logWarn('No blockchain private key configured - using random wallet for development');
+      this.logWarning('No blockchain private key configured - using random wallet for development');
       // Create a random wallet for development (won't have funds but won't crash)
       this.wallet = ethers.Wallet.createRandom().connect(this.provider);
     }
@@ -61,7 +61,7 @@ export class BlockchainService extends BaseService {
         address: config.blockchain.blockRollAddress,
       });
     } else {
-      this.logWarn('BlockRoll contract address not configured - blockchain features will be limited');
+      this.logWarning('BlockRoll contract address not configured - blockchain features will be limited');
       // Create a dummy contract to prevent crashes
       this.blockRollContract = new ethers.Contract(
         ethers.ZeroAddress,

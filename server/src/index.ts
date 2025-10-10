@@ -26,20 +26,14 @@ class Server {
   private port: number;
 
   constructor() {
-    console.log('📦 Creating Express app...');
     this.app = express();
     this.httpServer = http.createServer(this.app);
     this.port = config.port;
 
-    console.log('📦 Initializing middleware...');
     this.initializeMiddleware();
-    console.log('📦 Initializing routes...');
     this.initializeRoutes();
-    console.log('📦 Initializing error handling...');
     this.initializeErrorHandling();
-    console.log('📦 Initializing WebSocket...');
     this.initializeWebSocket();
-    console.log('✅ Server constructor complete');
   }
 
   /**
@@ -214,16 +208,27 @@ class Server {
 // Create and start server
 async function bootstrap() {
   try {
-    console.log('🚀 Bootstrapping BlockRoll Server...');
     const server = new Server();
-    console.log('✅ Server instance created');
     await server.start();
   } catch (error) {
     console.error('❌ Fatal error during server startup:');
     console.error(error);
+    console.error('Stack trace:', error?.stack);
     process.exit(1);
   }
 }
+
+// Handle uncaught exceptions and rejections
+process.on('uncaughtException', (error) => {
+  console.error('❌ Uncaught Exception:', error);
+  console.error('Stack:', error.stack);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
+});
 
 // Start the server
 bootstrap();
