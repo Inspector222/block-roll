@@ -62,7 +62,7 @@ export class ExpressServer {
         });
       }
 
-      res.json({
+      return res.json({
         qr: this.currentQRCode,
         timestamp: new Date().toISOString()
       });
@@ -90,10 +90,10 @@ export class ExpressServer {
 
         res.setHeader('Content-Type', 'image/png');
         res.setHeader('Content-Length', qrCodeBuffer.length);
-        res.send(qrCodeBuffer);
+        return res.send(qrCodeBuffer);
       } catch (error) {
         logger.error('Error generating QR code image', error);
-        res.status(500).json({
+        return res.status(500).json({
           error: 'Failed to generate QR code image',
           message: error instanceof Error ? error.message : 'Unknown error'
         });
