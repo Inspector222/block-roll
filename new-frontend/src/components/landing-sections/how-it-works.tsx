@@ -1,32 +1,32 @@
 
-import { Sparkles, Upload, Zap } from "lucide-react";
+import { Upload, Shield, Share2 } from "lucide-react";
 import Features from "../ui/features";
 import Header from "../ui/header";
 
 const data = [
     {
         id: 1,
-        title: "1. Set Your Filters",
+        title: "1. Upload",
         content:
-            "Choose the languages, stack, activity level, and other preferences that matter to you.",
-        image: "/assets/filter.png",
+            "Choose the file or dataset you want to share, BlockRoll encrypts it instantly on your device for total privacy.",
+        image: "/assets/upload.jpg",
         icon: <Upload className="w-6 h-6 text-primary" />,
     },
     {
         id: 2,
-        title: "2. Search Instantly",
+        title: "2. Control",
         content:
-            "Hit search and explore thousands of open-source repositories matched to your criteria.",
-        image: "/assets/search.png",
-        icon: <Zap className="w-6 h-6 text-primary" />,
+            "Set access permissions, expiry dates, and who can unlock your data using wallet-based encryption.",
+        image: "/assets/control.png",
+        icon: <Shield className="w-6 h-6 text-primary" />,
     },
     {
         id: 3,
-        title: "3. Discover & Contribute",
+        title: "3. Share",
         content:
-            "Find the perfect project for your stack, start exploring the code, and make meaningful contributions.",
-        image: "/assets/contribute.png",
-        icon: <Sparkles className="w-6 h-6 text-primary" />,
+            "Generate a secure data link or QR for your recipient. They can instantly decrypt and view with their wallet, no central server, no leaks.",
+        image: "/assets/share.png",    
+        icon: <Share2 className="w-6 h-6 text-primary" />,
     },
 ];
 

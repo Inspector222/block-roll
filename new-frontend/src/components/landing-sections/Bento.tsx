@@ -1,39 +1,37 @@
 'use client'
-import React from 'react'
-import OrbitComponent from '../ui/orbit'
-import CardStack from '../ui/card-stack'
+import { cn } from '@/lib/utils'
+import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { AnimatedList } from '../ui/animated-list'
-import { cn } from '@/lib/utils'
-import { Cap, Lucid, Mail0, SupMemory } from '../icons/icons'
-import { motion } from 'framer-motion'
+import CardStack from '../ui/card-stack'
 import Header from '../ui/header'
+import OrbitComponent from '../ui/orbit'
 
 
 let notifications = [
     {
-        name: "Start Contributing Now!",
-        description: "Mail0",
-        icon: <Mail0 />,
+        name: "File Uploaded Successfully",
+        description: "document.pdf • 2.4 MB",
+        icon: <div className="text-2xl">🔒</div>,
+        color: "#8B5CF6",
+    },
+    {
+        name: "New Share Request",
+        description: "0x742d...89Ab wants access",
+        icon: <div className="text-2xl">👤</div>,
         color: "#101010",
     },
     {
-        name: "Based on your Tech Stack",
-        description: "Cap",
-        icon: <div className="p-1.5 h-full w-full flex items-center justify-center"> <Cap /></div>,
-        color: "#fff",
+        name: "Security Alert",
+        description: "New device detected",
+        icon: <div className="text-2xl">🛡️</div>,
+        color: "#EF4444",
     },
     {
-        name: "Dive into AI",
-        description: "SuperMemory AI",
-        icon: <div className=" h-full flex items-center justify-center w-7"> <SupMemory /></div>,
-        color: "#101010",
-    },
-    {
-        name: "OSS Google Docs!",
-        description: "Lucid",
-        icon: <div className=" h-full flex items-center justify-center w-7 rotate-180"> <Lucid /></div>,
-        color: "#fff",
+        name: "File Shared",
+        description: "presentation.pdf with 3 users",
+        icon: <div className="text-2xl">📤</div>,
+        color: "#10B981",
     },
 ];
 
@@ -42,7 +40,7 @@ notifications = Array.from({ length: 10 }, () => notifications).flat();
 const Bento = () => {
     return (
         <div id='features' className="flex flex-col w-full">
-            <Header title="Supercharge Your Open Source Journey"/>
+            <Header title="Secure File Storage Reimagined"/>
             <div className="w-full border-b border-[#252525] flex flex-col  lg:flex-row overflow-hidden">
                 <div className="lg:w-1/3 border-b lg:border-b-0 lg:border-r border-[#252525] lg:aspect-square relative overflow-hidden p-2 flex-shrink-0 space-y-1 h-[400px] lg:h-full ">
                     <div className="border border-dashed border-[#252525] w-full h-full  relative overflow-hidden p-[30px] flex-shrink-0 flex flex-col gap-4 lg:gap-0 ">
@@ -51,12 +49,12 @@ const Bento = () => {
                                 initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
                                 animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                                 transition={{ duration: 0.6, ease: 'easeOut', type: 'spring', delay: 0.35 }}
-                                className='text-2xl lg:text-3xl tracking-tighter text-left'>Personalized Recommendations</motion.h5>
+                                className='text-2xl lg:text-3xl tracking-tighter text-left'>Real-Time Notifications</motion.h5>
                             <motion.p
                                 initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
                                 animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                                 transition={{ duration: 0.6, ease: 'easeOut', type: 'spring', delay: 0.35 }}
-                                className='tracking-tight text-sm lg:text-lg text-[#d1d1d1]'>Get personalized repos you can contribute to.</motion.p>
+                                className='tracking-tight text-sm lg:text-lg text-[#d1d1d1]'>Stay updated with instant WebSocket notifications for all file activities.</motion.p>
                         </div>
                         <div className="h-full overflow-hidden w-full flex items-start lg:pt-10 lg:pb-4  relative z-10">
                             <AnimatedList className='w-full'>
@@ -87,12 +85,12 @@ const Bento = () => {
                                 initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
                                 animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                                 transition={{ duration: 0.6, ease: 'easeOut', type: 'spring', delay: 0.35 }}
-                                className='text-2xl lg:text-3xl tracking-tighter text-left'>Seamless Search </motion.h5>
+                                className='text-2xl lg:text-3xl tracking-tighter text-left'>Encrypted Storage</motion.h5>
                             <motion.p
                                 initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
                                 animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                                 transition={{ duration: 0.6, ease: 'easeOut', type: 'spring', delay: 0.35 }}
-                                className='tracking-tight text-sm lg:text-lg text-[#d1d1d1]'>Search thousands of open-source repos instantly.</motion.p>
+                                className='tracking-tight text-sm lg:text-lg text-[#d1d1d1]'>Military-grade AES-256-GCM encryption. Your files, your keys.</motion.p>
                         </div>
                         <div className="absolute w-full h-full top-0 left-0">
                             <div className="absolute h-full w-full z-10"></div>
@@ -119,12 +117,12 @@ const Bento = () => {
                                 initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
                                 animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                                 transition={{ duration: 0.6, ease: 'easeOut', type: 'spring', delay: 0.35 }}
-                                className='text-2xl lg:text-3xl tracking-tighter text-left'>Precision Filters </motion.h5>
+                                className='text-2xl lg:text-3xl tracking-tighter text-left'>Wallet-Based Access</motion.h5>
                             <motion.p
                                 initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
                                 animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                                 transition={{ duration: 0.6, ease: 'easeOut', type: 'spring', delay: 0.35 }}
-                                className='tracking-tight text-sm lg:text-lg text-[#d1d1d1]'>Zero in on projects by language, stack and activity level.</motion.p>
+                                className='tracking-tight text-sm lg:text-lg text-[#d1d1d1]'>Share files by wallet address. Revoke access anytime. True ownership.</motion.p>
                         </div>
                         <div className="h-full w-full flex items-center lg:pt-10 lg:pb-4  relative overflow-hidden z-20">
                             <CardStack />
