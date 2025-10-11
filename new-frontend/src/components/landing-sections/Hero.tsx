@@ -1,10 +1,9 @@
 "use client";
-import { Terminal } from "lucide-react";
-import Image from "next/image";
-import React from "react";
-import PrimaryButtom from "../ui/custom-button";
-import Link from "next/link";
 import { motion } from "framer-motion";
+import { Shield } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import PrimaryButtom from "../ui/custom-button";
 
 const Hero = () => {
   return (
@@ -23,13 +22,13 @@ const Hero = () => {
           transition={{ duration: 1, ease: "easeOut", type: "spring" }}
           className="flex items-center justify-center gap-2 mb-4"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-black/40 backdrop-blur-sm border border-[#252525]">
-            <span className="text-[#e1e1e1] text-sm font-medium">Backed by</span>
+          <div className="hidden items-center gap-2 px-4 py-2 rounded-md bg-black/40 backdrop-blur-sm border border-[#252525]">
+            <span className="text-[#e1e1e1] text-sm font-medium">Powered by</span>
             <div className="flex items-center gap-1.5">
-              <div className="w-5 h-5 bg-gradient-to-br from-[#FF6154] to-[#FF8C00] rounded flex items-center justify-center">
-                <span className="text-white text-xs font-bold">U</span>
+              <div className="w-5 h-5 bg-gradient-to-br from-[#8B5CF6] to-[#6366F1] rounded flex items-center justify-center">
+                <span className="text-white text-xs font-bold">B</span>
               </div>
-              <span className="text-white text-sm font-medium">sers</span>
+              <span className="text-white text-sm font-medium">lockDAG</span>
             </div>
           </div>
         </motion.div>
@@ -39,7 +38,7 @@ const Hero = () => {
           transition={{ duration: 1.2, ease: "easeOut", type: "spring" }}
           className="text-5xl text-[2.8rem] lg:text-7xl lg:text-[6rem] font-medium tracking-tighter"
         >
-          Find your perfect Open-Source Repo
+          Own. Encrypt. Share. Control.
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
@@ -52,8 +51,8 @@ const Hero = () => {
           }}
           className="w-full lg:text-2xl tracking-tight font-light sm:max-w-lg mx-auto lg:max-w-4xl lg:text-balance text-[#e1e1e1]"
         >
-          Find top open-source repos in seconds. Filter by your language,
-          framework, or niche. Start contributing in seconds, not hours.
+          The next generation of secure, decentralized file storage. Built on BlockDAG. 
+          Your files, your keys, your control. Bank-level security meets Web3.
         </motion.p>
       </div>
       <motion.div
@@ -69,7 +68,7 @@ const Hero = () => {
       >
         <Link href="/dashboard/home" className="block">
           <PrimaryButtom>
-            <Terminal />
+            <Shield className="w-5 h-5" />
             Get Started
           </PrimaryButtom>
         </Link>
