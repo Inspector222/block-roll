@@ -37,22 +37,22 @@ export default function Sidebar() {
   };
   const shareProjectHandler = () => {
     const msg: string =
-      "Check opensox.in\n\nIt helps you find the perfect open-source project to contribute within 10 minutes.\n\ncreated by @ajeetunc";
+      "Check BlockRoll.in\n\nIt helps you find the perfect open-source project to contribute within 10 minutes.\n\ncreated by @ajeetunc";
     const xUrl = `https://x.com/intent/post?text=${encodeURIComponent(msg)}`;
     window.open(xUrl, "_blank");
   };
 
   const handleEmailClick = () => {
-    const emailSubject = encodeURIComponent("[Inquiry about Opensox AI]");
+    const emailSubject = encodeURIComponent("[Inquiry about BlockRoll AI]");
     const emailBody = encodeURIComponent("Heyyo,\n\nwanna chat?");
-    const mailtoLink = `mailto:hi@opensox.ai?subject=${emailSubject}&body=${emailBody}`;
+    const mailtoLink = `mailto:hi@BlockRoll.ai?subject=${emailSubject}&body=${emailBody}`;
 
     window.open(mailtoLink, "_blank");
   };
 
   const handleLogout = () => {
-    signOut({callbackUrl: "/"});
-  }
+    signOut({ callbackUrl: "/" });
+  };
 
   return (
     <div
@@ -60,7 +60,7 @@ export default function Sidebar() {
     >
       <div className="sidebar-header flex justify-between px-2 py-3 border-b border-ox-gray block xl:hidden">
         <div className="flex items-center space-x-3">
-          <h1 className="text-md font-semibold text-ox-white">Opensox</h1>
+          <h1 className="text-md font-semibold text-ox-white">BlockRoll</h1>
         </div>
         <div className="flex items-center justify-end space-x-3">
           <IconWrapper onClick={() => setShowSidebar(false)}>
@@ -86,7 +86,7 @@ export default function Sidebar() {
           onclick={reqFeatureHandler}
         ></SidebarItem>
         <SidebarItem
-          itemName="Opensox premium"
+          itemName="BlockRoll premium"
           onclick={supportClickHandler}
         ></SidebarItem>
         <SidebarItem
@@ -97,10 +97,7 @@ export default function Sidebar() {
           itemName="Contact"
           onclick={handleEmailClick}
         ></SidebarItem>
-        <SidebarItem
-          itemName="Logout"
-          onclick={handleLogout}
-        ></SidebarItem>
+        <SidebarItem itemName="Logout" onclick={handleLogout}></SidebarItem>
         <SidebarItem
           itemName="Twitter"
           onclick={() => {

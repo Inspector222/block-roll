@@ -24,9 +24,14 @@ const SignInPage = () => {
             className="object-cover rounded-2xl w-full h-full"
           />
         </div>
-        <p className="tracking-tighter font-semibold text-2xl leading-tight">Welcome to Opensox AI</p>
+        <p className="tracking-tighter font-semibold text-2xl leading-tight">
+          Welcome to BlockRoll
+        </p>
       </div>
-      <PrimaryButton onClick={() => signIn("google", { callbackUrl: "/dashboard/home" })} classname="w-full max-w-[380px] z-20 ">
+      <PrimaryButton
+        onClick={() => signIn("google", { callbackUrl: "/dashboard/home" })}
+        classname="w-full max-w-[380px] z-20 "
+      >
         <div className="w-6">
           <Google />
         </div>
@@ -37,4 +42,3 @@ const SignInPage = () => {
 };
 
 export default SignInPage;
-

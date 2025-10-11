@@ -1,5 +1,5 @@
 import { UserInputFilterProps, DashboardProjectsProps } from "@/types";
-import { FilterProps, RepositoryProps } from "@opensox/shared/types";
+import { FilterProps, RepositoryProps } from "@BlockRoll/shared/types";
 
 const getDateFromPast = (days: number): string => {
   const now = new Date();

@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { FilterProps, RepositoryProps } from "@opensox/shared/types";
+import { FilterProps, RepositoryProps } from "@BlockRoll/shared/types";
 import { trpc } from "@/lib/trpc";
 
 export const useGetProjects = () => {

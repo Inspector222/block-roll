@@ -50,7 +50,7 @@ const Navbar = () => {
             className="object-cover w-full h-full"
           />
         </div>
-        Opensox AI
+        BlockRoll
       </div>
       <div className="hidden md:flex items-center gap-5 tracking-tight text-lg font-light text-[#d1d1d1]">
         {links.map((link, index) => {
@@ -71,7 +71,7 @@ const Navbar = () => {
       </div>
       <div className="flex items-center gap-3">
         <Link
-          href="https://github.com/apsinghdev/opensox"
+          href="https://github.com/apsinghdev/BlockRoll"
           target="_blank"
           rel="noopener noreferrer"
           className="hidden lg:flex items-center gap-2 px-4 py-2.5 bg-[#0d1117] hover:bg-[#161b22] transition-colors rounded-lg border border-[#30363d] text-white"

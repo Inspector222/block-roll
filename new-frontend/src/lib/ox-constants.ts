@@ -7,7 +7,7 @@ export const SUPPORT_CONFIG = {
   UPI_ID: "ajeetunc@ptaxis",
   PAYEE_NAME: "Ajeet Pratap Singh",
   UPI_MSG: "Build something useful!",
-  RAZORPAY_URL: "https://razorpay.me/@opensox",
+  RAZORPAY_URL: "https://razorpay.me/@BlockRoll",
   BUY_ME_COFFEE_URL: "",
 } as const;
 

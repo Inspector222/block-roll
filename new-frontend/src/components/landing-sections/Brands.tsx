@@ -43,7 +43,7 @@ const Brands = () => {
             </span>
           )}
           <span
-            style={{ "--text": "Opensox" } as any}
+            style={{ "--text": "BlockRoll" } as any}
             className=" relative pointer-events-none text-center before:bg-gradient-to-b  before:from-[#9159E2] before:to-[#321D76] before:to-80% before:bg-clip-text before:text-transparent before:content-['Queries'] after:absolute after:inset-0 after:bg-purple-600 after:bg-clip-text after:text-transparent  after:mix-blend-lighten after:content-['Queries'] after:[text-shadow:0_1px_0_black] overflow-hidden font-mono tracking-tighter font-medium text-3xl md:text-5xl"
           ></span>
         </div>
@@ -63,7 +63,7 @@ const Brands = () => {
             </span>
           )}
           <span
-            style={{ "--text": "Opensox" } as any}
+            style={{ "--text": "BlockRoll" } as any}
             className=" relative pointer-events-none text-center before:bg-gradient-to-b  before:from-[#9159E2] before:to-[#321D76] before:to-80% before:bg-clip-text before:text-transparent before:content-['Users'] after:absolute after:inset-0 after:bg-purple-600 after:bg-clip-text after:text-transparent  after:mix-blend-lighten after:content-['Users'] after:[text-shadow:0_1px_0_black] overflow-hidden font-mono tracking-tighter font-medium text-3xl md:text-5xl"
           ></span>
         </div>

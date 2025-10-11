@@ -26,7 +26,7 @@ export const DashboardHeader = () => {
         <IconWrapper className="block xl:hidden" onClick={menuClickHander}>
           <Bars3Icon className="size-4 text-ox-purple"></Bars3Icon>
         </IconWrapper>
-        <h1 className="text-lg md:text-2xl font-medium">Opensox</h1>
+        <h1 className="text-lg md:text-2xl font-medium">BlockRoll</h1>
       </div>
       <div
         id="header-right-container"

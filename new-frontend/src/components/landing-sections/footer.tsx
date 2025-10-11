@@ -6,9 +6,11 @@ import Image from "next/image";
 
 const Footer = () => {
   const handleEmailClick = () => {
-    const emailSubject = encodeURIComponent("[Inquiry about Opensox AI]");
-    const emailBody = encodeURIComponent("Heyyo,\n\nwanna chat?");
-    const mailtoLink = `mailto:hi@opensox.ai?subject=${emailSubject}&body=${emailBody}`;
+    const emailSubject = encodeURIComponent("[Inquiry about BlockRoll]");
+    const emailBody = encodeURIComponent(
+      "Heyyo,\n\nwanna chat about BlockRoll?"
+    );
+    const mailtoLink = `mailto:hi@blockroll.com?subject=${emailSubject}&body=${emailBody}`;
     window.open(mailtoLink, "_blank");
   };
 
@@ -25,22 +27,22 @@ const Footer = () => {
           <div className="flex flex-col gap-4">
             <div>
               <h4 className="text-white text-4xl lg:text-5xl font-medium tracking-tight">
-                Opensox AI
+                BlockRoll
               </h4>
               <p className="text-[#b1b1b1] text-base lg:text-lg tracking-tight mt-1">
-                Search. Find. Contribute. Win
+                Discover blockchain projects. Contribute. Earn rewards.
               </p>
             </div>
             <div className="flex items-center gap-2">
               <Image
-                src="/ajeetunc.jpeg"
-                alt="ajeetunc"
+                src="/assets/logo.svg"
+                alt="BlockRoll"
                 width={32}
                 height={32}
-                className="rounded-full object-cover object-[center_20%] aspect-square w-8 h-8"
+                className="rounded-full object-cover aspect-square w-8 h-8"
               />
               <span className="text-[#b1b1b1] text-xs font-mono">
-                Cooked by ajeetunc
+                Built by the BlockRoll team
               </span>
             </div>
           </div>
@@ -53,24 +55,24 @@ const Footer = () => {
                 Platform
               </h3>
               <div className="flex flex-col gap-2">
-                {/* <Link
+                <Link
                   href="/dashboard/home"
                   className="text-[#b1b1b1] hover:text-white transition-colors text-xs"
                 >
                   Features
-                </Link> */}
+                </Link>
                 <Link
                   href="/pricing"
                   className="text-[#b1b1b1] hover:text-white transition-colors text-xs"
                 >
                   Pricing
                 </Link>
-                {/* <Link
+                <Link
                   href="#"
                   className="text-[#b1b1b1] hover:text-white transition-colors text-xs"
                 >
                   FAQ
-                </Link> */}
+                </Link>
               </div>
             </div>
 
@@ -102,7 +104,7 @@ const Footer = () => {
               </h3>
               <div className="flex flex-col gap-2">
                 <Link
-                  href="https://x.com/opensoxai"
+                  href="https://x.com/blockroll"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#b1b1b1] hover:text-white transition-colors text-xs flex items-center gap-1.5"
@@ -113,7 +115,7 @@ const Footer = () => {
                   Twitter
                 </Link>
                 <Link
-                  href="https://github.com/apsinghdev/opensox"
+                  href="https://github.com/blockroll"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#b1b1b1] hover:text-white transition-colors text-xs flex items-center gap-1.5"
@@ -124,7 +126,7 @@ const Footer = () => {
                   GitHub
                 </Link>
                 <Link
-                  href="https://www.youtube.com/channel/UC7QV7uSxlbha-bNPaev5MeQ"
+                  href="https://www.youtube.com/@blockroll"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#b1b1b1] hover:text-white transition-colors text-xs flex items-center gap-1.5"
@@ -135,7 +137,7 @@ const Footer = () => {
                   YouTube
                 </Link>
                 <Link
-                  href="https://discord.gg/zbHzgMNBrm"
+                  href="https://discord.gg/blockroll"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#b1b1b1] hover:text-white transition-colors text-xs flex items-center gap-1.5"
@@ -162,10 +164,10 @@ const Footer = () => {
         {/* Bottom Row - Copyright */}
         <div className="text-center">
           <p className="font-mono text-xs lg:text-sm text-[#b1b1b1]">
-            © {new Date().getFullYear()} Opensox AI. All rights reserved.
+            © {new Date().getFullYear()} BlockRoll. All rights reserved.
           </p>
           <p className="font-mono text-xs lg:text-xs italic text-[#b1b1b1] mt-2">
-            Building 21st century open-source infrastructure
+            Build Fast. Build Secure. Build Free. Build the Future.
           </p>
         </div>
       </div>

@@ -18,20 +18,21 @@ export default function TermsOfServicePage() {
           {/* Introduction */}
           <section>
             <p className="text-lg">
-              Welcome to Opensox.ai ("Opensox," "we," "us," or "our"). Please
-              read these Terms of Service ("Terms") carefully as they govern
-              your use of our platform, website, and services. By accessing or
-              using Opensox.ai, you agree to be bound by these Terms. If you do
-              not agree to these Terms, please do not use our Services.
+              Welcome to BlockRoll.ai ("BlockRoll," "we," "us," or "our").
+              Please read these Terms of Service ("Terms") carefully as they
+              govern your use of our platform, website, and services. By
+              accessing or using BlockRoll.ai, you agree to be bound by these
+              Terms. If you do not agree to these Terms, please do not use our
+              Services.
             </p>
             <p className="text-lg mt-4">
               For questions or concerns regarding these Terms, please contact us
               at:{" "}
               <a
-                href="mailto:hi@opensox.ai"
+                href="mailto:hi@BlockRoll.ai"
                 className="text-blue-400 hover:text-blue-300 transition-colors"
               >
-                hi@opensox.ai
+                hi@BlockRoll.ai
               </a>
             </p>
           </section>
@@ -42,8 +43,8 @@ export default function TermsOfServicePage() {
               1. Description of Service
             </h2>
             <p className="mb-4">
-              Opensox.ai is a platform designed to help developers discover and
-              contribute to open-source projects efficiently. Our Services
+              BlockRoll.ai is a platform designed to help developers discover
+              and contribute to open-source projects efficiently. Our Services
               include:
             </p>
             <ul className="list-disc list-inside space-y-2 ml-4">
@@ -72,7 +73,7 @@ export default function TermsOfServicePage() {
               2. User Accounts and Registration
             </h2>
             <p className="mb-4">
-              To access certain features of Opensox.ai, you may need to create
+              To access certain features of BlockRoll.ai, you may need to create
               an account. You agree to:
             </p>
             <ul className="list-disc list-inside space-y-2 ml-4">
@@ -103,7 +104,7 @@ export default function TermsOfServicePage() {
             <h2 className="text-2xl lg:text-3xl font-semibold mb-4">
               3. Acceptable Use Policy
             </h2>
-            <p className="mb-4">When using Opensox.ai, you agree NOT to:</p>
+            <p className="mb-4">When using BlockRoll.ai, you agree NOT to:</p>
             <ul className="list-disc list-inside space-y-2 ml-4">
               <li>Violate any applicable laws or regulations</li>
               <li>
@@ -139,7 +140,7 @@ export default function TermsOfServicePage() {
               4. Premium Subscription Services
             </h2>
             <p className="mb-4">
-              Opensox.ai offers premium subscription plans with enhanced
+              BlockRoll.ai offers premium subscription plans with enhanced
               features including:
             </p>
             <ul className="list-disc list-inside space-y-2 ml-4">
@@ -182,7 +183,7 @@ export default function TermsOfServicePage() {
             </h2>
             <p className="mb-4">
               We collect and process personal information as described in our
-              Privacy Policy. By using Opensox.ai, you consent to such
+              Privacy Policy. By using BlockRoll.ai, you consent to such
               processing and warrant that all data provided by you is accurate.
               We use your data to:
             </p>
@@ -204,7 +205,7 @@ export default function TermsOfServicePage() {
               6. Third-Party Content and Links
             </h2>
             <p>
-              Opensox.ai aggregates information about open-source projects
+              BlockRoll.ai aggregates information about open-source projects
               hosted on third-party platforms (GitHub, GitLab, etc.). We are not
               responsible for:
             </p>
@@ -237,9 +238,9 @@ export default function TermsOfServicePage() {
             </h2>
             <p className="mb-4">
               <strong>Our Content:</strong> All content, features, and
-              functionality of Opensox.ai (including but not limited to text,
-              graphics, logos, software, and design) are owned by Opensox.ai and
-              protected by international copyright, trademark, and other
+              functionality of BlockRoll.ai (including but not limited to text,
+              graphics, logos, software, and design) are owned by BlockRoll.ai
+              and protected by international copyright, trademark, and other
               intellectual property laws.
             </p>
             <p className="mb-4">
@@ -250,7 +251,7 @@ export default function TermsOfServicePage() {
             </p>
             <p className="mb-4">
               <strong>Open Source Projects:</strong> Information about
-              open-source projects displayed on Opensox.ai remains subject to
+              open-source projects displayed on BlockRoll.ai remains subject to
               the respective licenses of those projects. We do not claim
               ownership of any third-party project data.
             </p>
@@ -320,7 +321,7 @@ export default function TermsOfServicePage() {
               11. Disclaimers and Warranties
             </h2>
             <p className="mb-4">
-              <strong>AS-IS BASIS:</strong> Opensox.ai is provided "AS IS" and
+              <strong>AS-IS BASIS:</strong> BlockRoll.ai is provided "AS IS" and
               "AS AVAILABLE" without warranties of any kind, either express or
               implied, including but not limited to:
             </p>
@@ -348,7 +349,7 @@ export default function TermsOfServicePage() {
               12. Limitation of Liability
             </h2>
             <p>
-              To the maximum extent permitted by law, Opensox.ai, its founders
+              To the maximum extent permitted by law, BlockRoll.ai, its founders
               (including Ajeet Pratap Singh), and affiliates shall not be liable
               for any indirect, incidental, special, consequential, or punitive
               damages, including but not limited to loss of profits, data, or
@@ -365,8 +366,8 @@ export default function TermsOfServicePage() {
             </ul>
             <p className="mt-4">
               Our total liability shall not exceed the amount you paid to
-              Opensox.ai in the twelve (12) months preceding the claim, or $100,
-              whichever is greater.
+              BlockRoll.ai in the twelve (12) months preceding the claim, or
+              $100, whichever is greater.
             </p>
           </section>
 
@@ -376,7 +377,7 @@ export default function TermsOfServicePage() {
               13. Indemnification
             </h2>
             <p>
-              You agree to indemnify, defend, and hold harmless Opensox.ai and
+              You agree to indemnify, defend, and hold harmless BlockRoll.ai and
               its affiliates from any claims, damages, losses, liabilities, and
               expenses (including legal fees) arising from:
             </p>
@@ -435,7 +436,7 @@ export default function TermsOfServicePage() {
               <li>Displaying a notice on our platform</li>
             </ul>
             <p className="mt-4">
-              Your continued use of Opensox.ai after changes take effect
+              Your continued use of BlockRoll.ai after changes take effect
               constitutes acceptance of the revised Terms. If you do not agree
               to the changes, you must discontinue use of our Services.
             </p>
@@ -452,13 +453,13 @@ export default function TermsOfServicePage() {
               law provisions.
             </p>
             <p className="mb-4">
-              Any disputes arising from these Terms or your use of Opensox.ai
+              Any disputes arising from these Terms or your use of BlockRoll.ai
               shall be resolved through:
             </p>
             <ol className="list-decimal list-inside space-y-2 ml-4">
               <li>
                 <strong>Informal Resolution:</strong> Contact us at
-                hi@opensox.ai to attempt good-faith resolution
+                hi@BlockRoll.ai to attempt good-faith resolution
               </li>
               <li>
                 <strong>Binding Arbitration:</strong> If informal resolution
@@ -475,7 +476,7 @@ export default function TermsOfServicePage() {
             <p className="mb-4">
               <strong>Entire Agreement:</strong> These Terms, along with our
               Privacy Policy, constitute the entire agreement between you and
-              Opensox.ai.
+              BlockRoll.ai.
             </p>
             <p className="mb-4">
               <strong>Severability:</strong> If any provision of these Terms is
@@ -507,21 +508,21 @@ export default function TermsOfServicePage() {
               <p>
                 <strong>Email:</strong>{" "}
                 <a
-                  href="mailto:hi@opensox.ai"
+                  href="mailto:hi@BlockRoll.ai"
                   className="text-blue-400 hover:text-blue-300 transition-colors"
                 >
-                  hi@opensox.ai
+                  hi@BlockRoll.ai
                 </a>
               </p>
               <p>
                 <strong>Platform:</strong>{" "}
                 <a
-                  href="https://opensox.ai"
+                  href="https://BlockRoll.ai"
                   className="text-blue-400 hover:text-blue-300 transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  opensox.ai
+                  BlockRoll.ai
                 </a>
               </p>
             </div>
@@ -530,7 +531,7 @@ export default function TermsOfServicePage() {
           {/* Acknowledgment */}
           <section className="border-t border-[#252525] pt-8">
             <p className="text-base italic text-[#b1b1b1]">
-              By using Opensox.ai, you acknowledge that you have read,
+              By using BlockRoll.ai, you acknowledge that you have read,
               understood, and agree to be bound by these Terms of Service.
             </p>
           </section>
@@ -539,7 +540,7 @@ export default function TermsOfServicePage() {
         {/* Footer */}
         <div className="mt-16 pt-8 border-t border-[#252525] text-center text-[#b1b1b1]">
           <p className="text-sm">
-            © {new Date().getFullYear()} Opensox AI. All rights reserved.
+            © {new Date().getFullYear()} BlockRoll AI. All rights reserved.
           </p>
         </div>
       </div>

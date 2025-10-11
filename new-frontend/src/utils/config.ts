@@ -16,9 +16,9 @@ export const CONFIG = {
 export const projectsOfTheWeek = [
   {
     id: "1",
-    name: "Opensox AI",
+    name: "BlockRoll",
     description: "Find the perfect open source project to contribute",
-    url: "https://github.com/apsinghdev/opensox",
+    url: "https://github.com/apsinghdev/BlockRoll",
     avatarUrl: "https://avatars.githubusercontent.com/u/109718740?s=48&v=4",
     totalIssueCount: 13,
     primaryLanguage: "Typescript",

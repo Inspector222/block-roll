@@ -22,7 +22,7 @@ const dmMed = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Opensox",
+  title: "BlockRoll",
   description: "Find the perfect open source project to contribute",
   icons: {
     icon: "/images/os-image.ico",

@@ -23,13 +23,13 @@ const CheckoutConfirmation: React.FC<CheckoutConfirmationProps> = ({
         <div className="text-center space-y-6">
           <p className="text-lg lg:text-xl text-white/90 leading-relaxed font-light max-w-3xl mx-auto">
             Hell yeah, you&apos;ve made it! Congratulations on becoming the
-            premium member of Opensox AI. Very soon you&apos;ll receive an email
-            with the next steps from our side.
+            premium member of BlockRoll . Very soon you&apos;ll receive an
+            email with the next steps from our side.
           </p>
 
           <p className="text-lg lg:text-xl text-white/90 leading-relaxed font-light max-w-3xl mx-auto">
             If you have any doubts, feel free to ping us here:{" "}
-            <span className="text-[#A970FF]">hi@opensox.ai</span>
+            <span className="text-[#A970FF]">hi@BlockRoll.ai</span>
           </p>
         </div>
       </div>

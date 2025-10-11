@@ -8,10 +8,10 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import PrimaryButton from "@/components/ui/custom-button";
-const opensoxFeatures = [
+const BlockRollFeatures = [
   {
     id: 1,
-    title: "Opensox Advanced search tool",
+    title: "BlockRoll Advanced search tool",
     description:
       "One and only tool in the market that let you find open source with blizzing speed and scary accuracy. It will have:",
     features: [
@@ -36,7 +36,7 @@ const opensoxFeatures = [
   },
   {
     id: 3,
-    title: "30 days Opensox challenge sheet",
+    title: "30 days BlockRoll challenge sheet",
     description: [
       "A comprehensive sheet of 30+ modules along with detailed videos to give you a clear path to start rocking in open source.",
       "It will contain videos, resouces and hand made docs.",
@@ -60,7 +60,7 @@ const opensoxFeatures = [
 const whySub = [
   {
     content:
-      "Currently, Opensox 2.0 is in progress (70% done) so till the launch, we are offering premium plan at a discounted price - $49 for the whole year",
+      "Currently, BlockRoll 2.0 is in progress (70% done) so till the launch, we are offering premium plan at a discounted price - $49 for the whole year",
   },
   {
     content:
@@ -68,7 +68,7 @@ const whySub = [
   },
   {
     content:
-      "After the launch, this $49 offer be removed and Opensox premium will be around ~ $120 for whole year ($10/mo.)",
+      "After the launch, this $49 offer be removed and BlockRoll premium will be around ~ $120 for whole year ($10/mo.)",
   },
   {
     content: "The price of the dollar is constantly increasing.",
@@ -82,7 +82,7 @@ const freePlanCard = {
   ],
   whatYouGetAfterLaunch: [
     "Everything mentioned above",
-    "30 days opensox challenge sheet",
+    "30 days BlockRoll challenge sheet",
   ],
 };
 
@@ -101,7 +101,7 @@ const premiumPlanCard = {
     "Everything mentioned above",
     "Advanced tool with premium filters to find open source projects",
     "Premium newsletter",
-    "30 days opensox challenge sheet",
+    "30 days BlockRoll challenge sheet",
     "Upcoming premium features.",
   ],
 };
@@ -110,7 +110,7 @@ const Pricing = () => {
   return (
     <>
       <main className="w-full  overflow-hidden flex flex-col items-center justify-center relative">
-        <Header title="We are working on Opensox 2.0" />
+        <Header title="We are working on BlockRoll 2.0" />
         <div className="flex flex-col bg-[#151515]/20 backdrop-blur-xl relative w-full ">
           <div className="h-full  pv relative">
             <div className=" py-8 border-b border-[#252525]">
@@ -125,12 +125,12 @@ const Pricing = () => {
                 }}
                 className="text-center text-3xl tracking-tight font-medium"
               >
-                What is Opensox 2.0?
+                What is BlockRoll 2.0?
               </motion.h2>
             </div>
             <div className=" w-full h-full flex flex-col gap-6  border-b border-[#252525]">
               <ul className="flex flex-col lg:flex-row [&>li]:w-full  [&>li]:p-6 divide-y lg:divide-y-0 lg:divide-x divide-[#252525] h-full ">
-                {opensoxFeatures.map((feature, index) => {
+                {BlockRollFeatures.map((feature, index) => {
                   return (
                     <motion.li
                       initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
@@ -201,7 +201,7 @@ const Pricing = () => {
                 }}
                 className="text-center text-3xl tracking-tight font-medium"
               >
-                Why should you subscribe to Opensox premium now?
+                Why should you subscribe to BlockRoll premium now?
               </motion.h2>
             </div>
             <div className="w-full border-b border-[#252525]">
@@ -248,10 +248,10 @@ const Pricing = () => {
           <div className=" border-b border-[#252525] text-center py-4 font-bold px-4">
             For any doubts or queries, feel free to ping us at{" "}
             <Link
-              href="mailto:hi@opensox.ai"
+              href="mailto:hi@BlockRoll.ai"
               className="hover:underline bg-gradient-to-b from-[#a472ea] via-[#a472ea]/80 to-[#432ba0] bg-clip-text text-transparent"
             >
-              hi@opensox.ai
+              hi@BlockRoll.ai
             </Link>
           </div>
         </div>
@@ -427,7 +427,7 @@ const PremiumTestimonialCard = ({
       <p className="text-xl">{username}</p>
       {showPremium && (
         <div className="bg-gradient-to-b from-[#ad84e7] via-[#986cd6] to-[#432d8e] bg-clip-text text-transparent">
-          <p className="">Opensox Premium</p>
+          <p className="">BlockRoll Premium</p>
         </div>
       )}
     </div>
@@ -440,14 +440,14 @@ const TestimonialsSection = () => {
       id: 1,
       username: "Tarun Parmar",
       content:
-        "Getting the Opensox Premium Subscription has been such a game-changer for me. I really like the personal touch in the way the team guides you-it feels like someone is genuinely there to help you navigate. It gave me the initial push I needed and made it so much easier to cut through all the chaos and focus on the right and simple steps. The best part is, it helps you start your open source journey quickly and I know I can reach out to the team anytime. Honestly, it's been an awesome experience so far!",
+        "Getting the BlockRoll Premium Subscription has been such a game-changer for me. I really like the personal touch in the way the team guides you-it feels like someone is genuinely there to help you navigate. It gave me the initial push I needed and made it so much easier to cut through all the chaos and focus on the right and simple steps. The best part is, it helps you start your open source journey quickly and I know I can reach out to the team anytime. Honestly, it's been an awesome experience so far!",
       column: 1,
     },
     {
       id: 2,
       username: "Daksh Yadav",
       content:
-        "My experience with your guidance and opensox has been great. Your tips have really helped in doing my tasks quicker and better. And I would definitely recommend others to opt for opensox premium.",
+        "My experience with your guidance and BlockRoll has been great. Your tips have really helped in doing my tasks quicker and better. And I would definitely recommend others to opt for BlockRoll premium.",
       column: 1,
     },
     {
@@ -456,7 +456,7 @@ const TestimonialsSection = () => {
       content: (
         <div className="space-y-3 text-pretty">
           <p>
-            Okay so there are a few things I genuinely value about OpenSox
+            Okay so there are a few things I genuinely value about BlockRoll
             Premium, and I&apos;ll focus on the core points because everything
             else is just a natural extension of these.
           </p>
@@ -491,7 +491,7 @@ const TestimonialsSection = () => {
               right direction.
             </li>
             <li>
-              Overall, I&apos;d absolutely recommend OpenSox Premium to anyone
+              Overall, I&apos;d absolutely recommend BlockRoll Premium to anyone
               serious about open source. The personalized guidance is exactly
               what most of us hope for, since everyone is at a different stage
               of their journey.
