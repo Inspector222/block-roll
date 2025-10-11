@@ -33,12 +33,16 @@ export class WhatsAppBot {
   private messageService: MessageService;
   private mediaService: MediaService;
   private eventHandlerManager: EventHandlerManager;
+  private expressServer: ExpressServer;
   private config: AppConfig;
   private isInitialized: boolean = false;
 
   constructor() {
     this.config = configManager.getConfig();
     this.eventHandlerManager = new EventHandlerManager();
+    
+    // Initialize Express server
+    this.expressServer = new ExpressServer(3001);
     
     // Initialize services
     this.whatsappService = new WhatsAppService(this.config.whatsapp);
@@ -56,6 +60,10 @@ export class WhatsAppBot {
   public async initialize(): Promise<void> {
     try {
       logger.info('🚀 Initializing WhatsApp Bot...');
+      
+      // Start Express server
+      await this.expressServer.start();
+      logger.info('✅ Express server started');
       
       // Configure logger
       logger.configure(this.config.logging);
@@ -146,15 +154,24 @@ export class WhatsAppBot {
    */
   private setupEventHandlers(): void {
     // QR Code handler
-    const qrHandler = new QRCodeEventHandler((qr: string) => {
-      logger.info('📱 QR Code received! Scan this with your WhatsApp mobile app:');
-      qrcode.generate(qr, { small: true });
-      logger.info('Alternatively, you can copy this QR code data:');
-      logger.info(qr);
-    });
+    const qrHandler = new QRCodeEventHandler(
+      // Terminal callback for console display
+      (qr: string) => {
+        logger.info('📱 QR Code received! Scan this with your WhatsApp mobile app:');
+        qrcode.generate(qr, { small: true });
+        logger.info('Alternatively, you can copy this QR code data:');
+        logger.info(qr);
+      },
+      // Express server callback for HTTP serving
+      (qr: string) => {
+        this.expressServer.updateQRCode(qr);
+      }
+    );
 
     // Ready handler
-    const readyHandler = new ReadyEventHandler();
+    const readyHandler = new ReadyEventHandler(() => {
+      this.expressServer.clearQRCode();
+    });
 
     // Authentication handler
     const authHandler = new AuthEventHandler();
@@ -296,5 +313,12 @@ export class WhatsAppBot {
    */
   public unregisterCommand(trigger: string): void {
     this.messageService.unregisterCommand(trigger);
+  }
+
+  /**
+   * Get Express server instance
+   */
+  public getExpressServer(): ExpressServer {
+    return this.expressServer;
   }
 }

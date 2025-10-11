@@ -1,12 +1,12 @@
 "use client";
-import React, { useState } from "react";
-import PrimaryButtom from "../ui/custom-button";
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { motion, useMotionValueEvent, useScroll } from "framer-motion";
+import { Terminal } from "lucide-react";
 import Image from "next/image";
-import { Terminal, Github } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
+import { useState } from "react";
+import PrimaryButtom from "../ui/custom-button";
 
 const Navbar = () => {
   const { scrollYProgress } = useScroll();
@@ -21,12 +21,8 @@ const Navbar = () => {
   });
 
   const links = [
-    { name: "Pricing", href: "/pricing" },
     { name: "Features", href: "/#features" },
-    { name: "Demo", href: "/#demo" },
     { name: "How it works", href: "/#HIW" },
-    { name: "Stats", href: "/#Stats" },
-    { name: "Contact", href: "/#Contact" },
   ];
 
   return (
@@ -50,7 +46,7 @@ const Navbar = () => {
             className="object-cover w-full h-full"
           />
         </div>
-        Opensox AI
+        BlockRoll
       </div>
       <div className="hidden md:flex items-center gap-5 tracking-tight text-lg font-light text-[#d1d1d1]">
         {links.map((link, index) => {
@@ -70,15 +66,6 @@ const Navbar = () => {
         })}
       </div>
       <div className="flex items-center gap-3">
-        <Link
-          href="https://github.com/apsinghdev/opensox"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden lg:flex items-center gap-2 px-4 py-2.5 bg-[#0d1117] hover:bg-[#161b22] transition-colors rounded-lg border border-[#30363d] text-white"
-        >
-          <Github className="w-5 h-5" />
-          <span className="text-sm font-medium">Contribute</span>
-        </Link>
         <Link href="/dashboard/home" className="cursor-pointer z-30">
           <PrimaryButtom>
             <Terminal />

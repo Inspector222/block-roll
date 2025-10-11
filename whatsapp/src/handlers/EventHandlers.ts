@@ -44,10 +44,22 @@ export class QRCodeEventHandler extends BaseEventHandler<string> {
  * Ready event handler
  */
 export class ReadyEventHandler extends BaseEventHandler {
+  private clearQRCodeCallback?: () => void;
+
+  constructor(clearQRCodeCallback?: () => void) {
+    super();
+    this.clearQRCodeCallback = clearQRCodeCallback;
+  }
+
   public async handle(event: WhatsAppEvent): Promise<void> {
     if (event.type === 'ready') {
       logger.info('WhatsApp client is ready');
       logger.info('📱 You can now send and receive messages');
+      
+      // Clear QR code from Express server when ready
+      if (this.clearQRCodeCallback) {
+        this.clearQRCodeCallback();
+      }
     }
   }
 }
