@@ -7,6 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import PrimaryButtom from "../ui/custom-button";
+import { Github } from "lucide-react";
 
 const Navbar = () => {
   const { scrollYProgress } = useScroll();

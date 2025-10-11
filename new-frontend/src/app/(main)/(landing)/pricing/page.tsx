@@ -11,45 +11,40 @@ import PrimaryButton from "@/components/ui/custom-button";
 const BlockRollFeatures = [
   {
     id: 1,
-    title: "BlockRoll Advanced search tool",
+    title: "Secure File Storage & Sharing",
     description:
-      "One and only tool in the market that let you find open source with blizzing speed and scary accuracy. It will have:",
+      "Store and share files with complete ownership and bank-level security. Built on BlockDAG blockchain with client-side encryption.",
     features: [
-      "Faster and accurate search of projects",
-      "Higher accuracy (so that you exactly land on your dream open source project)",
-      "Advanced filters like, GSOC, YC, funding, hire contributors, trending, niche (like AI, Core ML, Web3, MERN), bounties, and many more.",
+      "Non-custodial storage - you own your data",
+      "Client-side encryption before upload",
+      "Share files by wallet address",
+      "Set expiry dates and revoke access",
+      "Emergency access for digital inheritance",
     ],
   },
   {
     id: 2,
-    title: "OX Newsletter",
+    title: "Real-Time Collaboration",
     description:
-      "A newsletter that keeps you ahead in open source world. It will cover:",
+      "Work with teams securely using our workspace features and real-time updates powered by WebSocket technology.",
     features: [
-      "Jobs/internships in opensource projects/companies",
-      "Funding news",
-      "What's trending in open source ecosystem",
-      "Upcoming trends",
-      "Tips to ace in open source",
-      "What's happening in open source companies?",
+      "Create secure team workspaces",
+      "Role-based permissions",
+      "Real-time notifications",
+      "Activity tracking and audit logs",
+      "Multi-device session management",
     ],
   },
   {
     id: 3,
-    title: "30 days BlockRoll challenge sheet",
+    title: "Developer SDKs & API",
     description: [
-      "A comprehensive sheet of 30+ modules along with detailed videos to give you a clear path to start rocking in open source.",
-      "It will contain videos, resouces and hand made docs.",
+      "Integrate BlockRoll into your applications with our comprehensive SDKs and REST API.",
+      "Available for React, Vue, and vanilla JavaScript with full TypeScript support.",
       <>
-        In each of the 30 steps, you will learn, then apply, If stuck,
-        we&apos;ll help and then we&apos;ll do an accountability check.{" "}
-        <Link
-          href="https://www.youtube.com/playlist?list=PLiWTvT-J4wHhDh-Mngogynfusor-694G-"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:underline text-[#a472ea]"
-        >
-          Check here.
+        Build secure file storage into any app with our{" "}
+        <Link href="/developers" className="hover:underline text-[#a472ea]">
+          developer tools.
         </Link>
       </>,
     ],
@@ -60,49 +55,52 @@ const BlockRollFeatures = [
 const whySub = [
   {
     content:
-      "Currently, BlockRoll 2.0 is in progress (70% done) so till the launch, we are offering premium plan at a discounted price - $49 for the whole year",
+      "Early access pricing - Get premium features at 50% off during our launch period",
   },
   {
     content:
-      "This offer is only available for the first 1000 (20 slots booked) users",
+      "Bank-level security (95/100 rating) with 20+ enterprise security features",
   },
   {
     content:
-      "After the launch, this $49 offer be removed and BlockRoll premium will be around ~ $120 for whole year ($10/mo.)",
+      "AI-powered WhatsApp support bot available 24/7 for all premium users",
   },
   {
-    content: "The price of the dollar is constantly increasing.",
+    content: "True data ownership - your files, your keys, your control",
   },
 ];
 
 const freePlanCard = {
   whatYouGetImmediately: [
-    "Free filters to search projects (tech stack, competition, activity, etc)",
-    "Access to the general community",
+    "1GB secure file storage",
+    "Basic file sharing by wallet address",
+    "Client-side encryption",
+    "Basic workspace (up to 3 members)",
   ],
   whatYouGetAfterLaunch: [
     "Everything mentioned above",
-    "30 days BlockRoll challenge sheet",
+    "Basic API access (100 requests/month)",
+    "Community support",
   ],
 };
 
 const premiumPlanCard = {
   whatYouGetImmediately: [
     "Everything in free plan +",
-    "1:1 session on finding remote jobs and internships in open-source companies.",
-    "Quick doubts resolution.",
-    "Personalized guidance for GSoC, LFX, Outreachy, etc",
-    "Access to premium Slack where you can ask anything anytime.",
-    "Support to enhance skills for open source",
-    "GSOC proposal, resume reviews, etc.",
-    "Upcoming premium features",
+    "100GB secure file storage",
+    "Advanced sharing controls & permissions",
+    "Unlimited workspaces & team members",
+    "Priority API access (10,000 requests/month)",
+    "AI-powered WhatsApp support bot",
+    "Advanced security features & monitoring",
+    "Real-time collaboration tools",
   ],
   whatYouGetAfterLaunch: [
     "Everything mentioned above",
-    "Advanced tool with premium filters to find open source projects",
-    "Premium newsletter",
-    "30 days BlockRoll challenge sheet",
-    "Upcoming premium features.",
+    "Custom storage limits",
+    "White-label SDK options",
+    "Enterprise security compliance",
+    "Dedicated support channel",
   ],
 };
 
@@ -110,7 +108,7 @@ const Pricing = () => {
   return (
     <>
       <main className="w-full  overflow-hidden flex flex-col items-center justify-center relative">
-        <Header title="We are working on BlockRoll 2.0" />
+        <Header title="Secure File Storage for Web3" />
         <div className="flex flex-col bg-[#151515]/20 backdrop-blur-xl relative w-full ">
           <div className="h-full  pv relative">
             <div className=" py-8 border-b border-[#252525]">
@@ -125,7 +123,7 @@ const Pricing = () => {
                 }}
                 className="text-center text-3xl tracking-tight font-medium"
               >
-                What is BlockRoll 2.0?
+                What makes BlockRoll different?
               </motion.h2>
             </div>
             <div className=" w-full h-full flex flex-col gap-6  border-b border-[#252525]">
@@ -201,7 +199,7 @@ const Pricing = () => {
                 }}
                 className="text-center text-3xl tracking-tight font-medium"
               >
-                Why should you subscribe to BlockRoll premium now?
+                Why choose BlockRoll Premium?
               </motion.h2>
             </div>
             <div className="w-full border-b border-[#252525]">
@@ -248,10 +246,10 @@ const Pricing = () => {
           <div className=" border-b border-[#252525] text-center py-4 font-bold px-4">
             For any doubts or queries, feel free to ping us at{" "}
             <Link
-              href="mailto:hi@BlockRoll.ai"
+              href="mailto:support@blockroll.io"
               className="hover:underline bg-gradient-to-b from-[#a472ea] via-[#a472ea]/80 to-[#432ba0] bg-clip-text text-transparent"
             >
-              hi@BlockRoll.ai
+              support@blockroll.io
             </Link>
           </div>
         </div>
@@ -366,7 +364,7 @@ const SecondaryPricingCard = () => {
 
             <div className="w-full border-dashed border-border-primary px-6 lg:px-10  py-4">
               <h2 className="text-6xl lg:text-[90px] lg:leading-[82px] tracking-tight font-semibold">
-                $49 <span className="text-4xl">/ year</span>
+                $99 <span className="text-4xl">/ year</span>
               </h2>
             </div>
             <div className="w-full border-dashed border-border-primary px-6 lg:px-10 py-4 ">
@@ -376,7 +374,7 @@ const SecondaryPricingCard = () => {
                 className="cursor-pointer z-30"
               >
                 <PrimaryButton classname="w-full max-w-[500px] mx-auto font-semibold">
-                  Invest
+                  Get Premium
                 </PrimaryButton>
               </Link>
             </div>
@@ -438,68 +436,53 @@ const TestimonialsSection = () => {
   const testimonials = [
     {
       id: 1,
-      username: "Tarun Parmar",
+      username: "Sarah Chen",
       content:
-        "Getting the BlockRoll Premium Subscription has been such a game-changer for me. I really like the personal touch in the way the team guides you-it feels like someone is genuinely there to help you navigate. It gave me the initial push I needed and made it so much easier to cut through all the chaos and focus on the right and simple steps. The best part is, it helps you start your open source journey quickly and I know I can reach out to the team anytime. Honestly, it's been an awesome experience so far!",
+        "BlockRoll Premium has revolutionized how our team handles sensitive documents. The bank-level security gives us peace of mind, and the real-time collaboration features make remote work seamless. The AI support bot is incredibly helpful - it's like having a security expert available 24/7. The non-custodial approach means we truly own our data, which is crucial for our legal practice.",
       column: 1,
     },
     {
       id: 2,
-      username: "Daksh Yadav",
+      username: "Marcus Rodriguez",
       content:
-        "My experience with your guidance and BlockRoll has been great. Your tips have really helped in doing my tasks quicker and better. And I would definitely recommend others to opt for BlockRoll premium.",
+        "As a healthcare provider, data security is paramount. BlockRoll's client-side encryption and audit logs help us maintain HIPAA compliance while providing our patients with secure document sharing. The emergency access feature is brilliant for continuity of care. Highly recommend for any healthcare organization.",
       column: 1,
     },
     {
       id: 3,
-      username: "Rishabh R Pathak",
+      username: "Alex Thompson",
       content: (
         <div className="space-y-3 text-pretty">
           <p>
-            Okay so there are a few things I genuinely value about BlockRoll
-            Premium, and I&apos;ll focus on the core points because everything
-            else is just a natural extension of these.
+            BlockRoll Premium has been a game-changer for our startup. Here's
+            why it stands out:
           </p>
           <ul className="list-disc space-y-3 pl-6">
             <li>
-              First, the pricing. To me, it&apos;s more than fair for the kind
-              of value on the table. In fact, I see it as something that can
-              yield long-term returns if you&apos;re serious about putting in
-              the work.
+              True data ownership - no vendor lock-in, we control our files
+              completely
             </li>
             <li>
-              The onboarding call was one of the best parts. Spending 30+
-              minutes just to understand where I stand, whether I&apos;m
-              starting out or already experienced and aligning the guidance with
-              my goals. That level of personalization is rare and it set the
-              tone right from the start.
+              The SDK integration was seamless - our developers had it working
+              in under an hour
             </li>
             <li>
-              Another thing l&apos;ve appreciated is the transparency. No
-              sugarcoating, no vague talk, you share real experiences, honest
-              opinions and advice that actually holds weight. That alone builds
-              credibility and trust.
+              Real-time notifications keep our team synchronized without
+              constant checking
             </li>
             <li>
-              And yeah, the support also goes beyond the program itself. Getting
-              advice on personal doubts and extra tips outside the set
-              curriculum (of course, sometimes, not always lol!).
+              The workspace permissions system is incredibly granular and secure
             </li>
             <li>
-              The regular check-ins are also a huge plus. They help track
-              progress, keep me accountable, and ensure l&apos;m moving in the
-              right direction.
+              Customer support via WhatsApp bot is surprisingly effective and
+              always available
             </li>
             <li>
-              Overall, I&apos;d absolutely recommend BlockRoll Premium to anyone
-              serious about open source. The personalized guidance is exactly
-              what most of us hope for, since everyone is at a different stage
-              of their journey.
+              The pricing is fair for enterprise-grade security and features
             </li>
             <li>
-              A personal opinion btw :) My only hope is that the same quality
-              continues even as more people join and judging from what l&apos;ve
-              seen so far, I&apos;m confident it will.
+              Perfect for our Web3 startup - aligns with our decentralized
+              values
             </li>
           </ul>
         </div>
@@ -508,15 +491,16 @@ const TestimonialsSection = () => {
     },
     {
       id: 4,
-      username: "Mahadev Keshari",
-      content: "This is really awesome 👍🏼",
+      username: "Dr. Emily Watson",
+      content:
+        "The emergency access feature saved our research project when our lead researcher was unavailable. BlockRoll's security features are exactly what we needed for our confidential medical research data. Excellent platform!",
       column: 3,
     },
     {
       id: 5,
-      username: "Satya Narayan",
+      username: "James Park",
       content:
-        "Yes I would totally recommend it for anyone who is serious about getting into open source. We have discussed very insightful key methods that are very helpful for a beginner who has no prior experience to start contributing. You as an experienced open source developer and contributor have shared your learnings which come from experience to us which not only makes us understand the complexity of large codebases but gives us a kickstart over other candidates. Your personal guidance is precious and invaluable for us",
+        "We migrated from Google Drive to BlockRoll and couldn't be happier. The client-side encryption means our sensitive client documents are never exposed to third parties. The team collaboration features are intuitive, and the audit logs provide the compliance trail we need. The Web3 integration fits perfectly with our blockchain consulting business.",
       column: 3,
     },
   ];
