@@ -60,9 +60,11 @@ export const MockTestimonialCard: React.FC<MockTestimonialCardProps> = ({
       {/* Header */}
       <div className="flex flex-row justify-between tracking-tight">
         <div className="flex items-center space-x-2">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-lg">
-            {testimonial.avatar}
-          </div>
+          <img
+            src={testimonial.avatar}
+            alt={`Profile picture of ${testimonial.name}`}
+            className="w-12 h-12 rounded-full object-cover"
+          />
           <div>
             <div className="flex items-center whitespace-nowrap font-semibold">
               {testimonial.name}

@@ -15,18 +15,26 @@ export abstract class BaseEventHandler<T = any> implements EventHandler<T> {
  */
 export class QRCodeEventHandler extends BaseEventHandler<string> {
   private qrCodeCallback?: (qr: string) => void;
+  private expressServerCallback?: (qr: string) => void;
 
-  constructor(qrCodeCallback?: (qr: string) => void) {
+  constructor(qrCodeCallback?: (qr: string) => void, expressServerCallback?: (qr: string) => void) {
     super();
     this.qrCodeCallback = qrCodeCallback;
+    this.expressServerCallback = expressServerCallback;
   }
 
   public async handle(event: WhatsAppEvent): Promise<void> {
     if (event.type === 'qr' && event.data) {
       logger.info('QR Code received - scan with WhatsApp mobile app');
       
+      // Call terminal callback for console display
       if (this.qrCodeCallback) {
         this.qrCodeCallback(event.data);
+      }
+
+      // Call Express server callback for HTTP serving
+      if (this.expressServerCallback) {
+        this.expressServerCallback(event.data);
       }
     }
   }

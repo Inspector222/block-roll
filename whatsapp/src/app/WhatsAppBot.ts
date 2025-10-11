@@ -17,6 +17,7 @@ import {
 } from '../handlers/EventHandlers';
 import { ErrorHandler } from '../middleware/ErrorHandler';
 import { ProcessManager } from '../middleware/ProcessManager';
+import { ExpressServer } from '../server/ExpressServer';
 import { configManager } from '../config';
 import { logger } from '../utils/logger';
 import { AppConfig, ServiceError } from '../types';
