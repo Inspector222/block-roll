@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import QRCode from 'qrcode';
 import { logger } from '../utils/logger';
 
@@ -128,7 +128,7 @@ export class ExpressServer {
         `);
       }
 
-      res.send(`
+      return res.send(`
         <!DOCTYPE html>
         <html>
         <head>
@@ -243,7 +243,7 @@ export class ExpressServer {
 
     // Root endpoint with instructions
     this.app.get('/', (req: Request, res: Response) => {
-      res.send(`
+      return res.send(`
         <!DOCTYPE html>
         <html>
         <head>
@@ -291,7 +291,7 @@ export class ExpressServer {
    */
   public updateQRCode(qrCode: string): void {
     this.currentQRCode = qrCode;
-    logger.info('QR code updated and available at http://localhost:' + this.port + '/qr/page');
+    logger.info('📱 QR code available at http://localhost:' + this.port + '/qr/page');
   }
 
   /**
@@ -299,7 +299,7 @@ export class ExpressServer {
    */
   public clearQRCode(): void {
     this.currentQRCode = null;
-    logger.info('QR code cleared');
+    logger.debug('QR code cleared');
   }
 
   /**
@@ -316,9 +316,7 @@ export class ExpressServer {
     return new Promise((resolve, reject) => {
       this.server = this.app.listen(this.port, () => {
         logger.info(`🌐 Express server started on http://localhost:${this.port}`);
-        logger.info(`📱 QR code available at: http://localhost:${this.port}/qr/page`);
-        logger.info(`📄 QR data available at: http://localhost:${this.port}/qr`);
-        logger.info(`🖼️ QR image available at: http://localhost:${this.port}/qr/image`);
+        logger.info(`📱 QR code page: http://localhost:${this.port}/qr/page`);
         resolve();
       });
 

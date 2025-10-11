@@ -1,28 +1,27 @@
-import { Client } from 'whatsapp-web.js';
 import * as qrcode from 'qrcode-terminal';
 
-import { 
-  WhatsAppService, 
-  MessageService, 
-  MediaService 
-} from '../services';
-import { 
-  EventHandlerManager,
-  QRCodeEventHandler,
-  ReadyEventHandler,
-  AuthEventHandler,
-  ConnectionEventHandler,
-  MessageEventHandler,
-  MessageAckEventHandler
+import { registerCustomCommands } from '../commands/CustomCommands';
+import { registerMediaCommands } from '../commands/MediaCommands';
+import { configManager } from '../config';
+import {
+    AuthEventHandler,
+    ConnectionEventHandler,
+    EventHandlerManager,
+    MessageAckEventHandler,
+    MessageEventHandler,
+    QRCodeEventHandler,
+    ReadyEventHandler
 } from '../handlers/EventHandlers';
 import { ErrorHandler } from '../middleware/ErrorHandler';
 import { ProcessManager } from '../middleware/ProcessManager';
 import { ExpressServer } from '../server/ExpressServer';
-import { configManager } from '../config';
-import { logger } from '../utils/logger';
+import {
+    MediaService,
+    MessageService,
+    WhatsAppService
+} from '../services';
 import { AppConfig, ServiceError } from '../types';
-import { registerCustomCommands } from '../commands/CustomCommands';
-import { registerMediaCommands } from '../commands/MediaCommands';
+import { logger } from '../utils/logger';
 
 /**
  * Main WhatsApp Bot application class
@@ -59,11 +58,10 @@ export class WhatsAppBot {
    */
   public async initialize(): Promise<void> {
     try {
-      logger.info('🚀 Initializing WhatsApp Bot...');
+      logger.info('🚀 Starting WhatsApp Bot...');
       
       // Start Express server
       await this.expressServer.start();
-      logger.info('✅ Express server started');
       
       // Configure logger
       logger.configure(this.config.logging);
@@ -73,6 +71,7 @@ export class WhatsAppBot {
       
       // Register custom commands
       registerCustomCommands(this.messageService);
+      logger.info('✅ Commands registered');
       
       // Register media commands
       registerMediaCommands(this.messageService);
@@ -82,7 +81,7 @@ export class WhatsAppBot {
       
       this.isInitialized = true;
       
-      logger.info('✅ WhatsApp Bot initialized successfully');
+      logger.info('✅ WhatsApp Bot ready!');
       
     } catch (error) {
       logger.error('❌ Failed to initialize WhatsApp Bot', error);
@@ -157,10 +156,9 @@ export class WhatsAppBot {
     const qrHandler = new QRCodeEventHandler(
       // Terminal callback for console display
       (qr: string) => {
-        logger.info('📱 QR Code received! Scan this with your WhatsApp mobile app:');
+        logger.info('📱 QR Code received! Scan with WhatsApp:');
         qrcode.generate(qr, { small: true });
-        logger.info('Alternatively, you can copy this QR code data:');
-        logger.info(qr);
+        logger.info('Or visit: http://localhost:3001/qr/page');
       },
       // Express server callback for HTTP serving
       (qr: string) => {
@@ -199,7 +197,7 @@ export class WhatsAppBot {
     this.eventHandlerManager.registerHandler('message', messageHandler);
     this.eventHandlerManager.registerHandler('message_ack', messageAckHandler);
 
-    logger.info('Event handlers setup complete');
+    logger.debug('Event handlers setup complete');
   }
 
   /**
@@ -254,7 +252,7 @@ export class WhatsAppBot {
       }
     });
 
-    logger.info('Client event listeners setup complete');
+    logger.debug('Client event listeners setup complete');
   }
 
   /**
@@ -269,7 +267,7 @@ export class WhatsAppBot {
     // Setup process monitoring
     ProcessManager.setupProcessMonitoring();
 
-    logger.info('Process management setup complete');
+    logger.debug('Process management setup complete');
   }
 
   /**
@@ -277,7 +275,7 @@ export class WhatsAppBot {
    */
   private setupErrorHandling(): void {
     ErrorHandler.setupGlobalErrorHandlers();
-    logger.info('Error handling setup complete');
+    logger.debug('Error handling setup complete');
   }
 
   /**

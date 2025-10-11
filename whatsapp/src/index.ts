@@ -12,9 +12,9 @@ import 'dotenv/config';
 
 import { WhatsAppBot } from './app/WhatsAppBot';
 import { configManager } from './config';
-import { logger } from './utils/logger';
 import { ErrorHandler } from './middleware/ErrorHandler';
 import { ProcessManager } from './middleware/ProcessManager';
+import { logger } from './utils/logger';
 
 /**
  * Main application class
@@ -32,12 +32,9 @@ class WhatsAppBotApp {
   public async start(): Promise<void> {
     try {
       logger.info('🚀 Starting WhatsApp Bot Application...');
-      logger.info('📝 Make sure you have Node.js v18+ installed');
-      logger.info('📱 You will need to scan a QR code with your WhatsApp mobile app');
 
       // Load configuration
       const config = configManager.loadConfig();
-      logger.info('Configuration loaded successfully');
 
       // Initialize bot
       await this.bot.initialize();
