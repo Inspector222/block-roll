@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import PrimaryButton from "@/components/ui/custom-button";
+import StellarPayButton from "@/components/ui/StellarPayButton";
 const BlockRollFeatures = [
   {
     id: 1,
@@ -367,7 +368,7 @@ const SecondaryPricingCard = () => {
                 $99 <span className="text-4xl">/ year</span>
               </h2>
             </div>
-            <div className="w-full border-dashed border-border-primary px-6 lg:px-10 py-4 ">
+            <div className="w-full border-dashed border-border-primary px-6 lg:px-10 py-4 flex flex-col gap-3">
               <Link
                 target="_blanko"
                 href="https://pages.razorpay.com/pl_R6WHnm15Fm98fI/view"
@@ -377,6 +378,7 @@ const SecondaryPricingCard = () => {
                   Get Premium
                 </PrimaryButton>
               </Link>
+              <StellarPayButton classname="w-full max-w-[500px] mx-auto font-semibold" />
             </div>
             <div className="w-full border-dashed border-border-primary px-6 lg:px-10 py-4 flex flex-col gap-4 flex-1">
               <h2 className="text-lg lg:text-xl tracking-tight text-left font-bold">

@@ -1,13 +1,16 @@
 import React from "react";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { STELLAR_NETWORK } from "@/lib/stellar/config";
 
 interface CheckoutConfirmationProps {
   className?: string;
+  stellarTxHash?: string;
 }
 
 const CheckoutConfirmation: React.FC<CheckoutConfirmationProps> = ({
   className,
+  stellarTxHash,
 }) => {
   return (
     <div className={cn("max-w-4xl mx-auto p-8 lg:p-16", className)}>
@@ -31,6 +34,20 @@ const CheckoutConfirmation: React.FC<CheckoutConfirmationProps> = ({
             If you have any doubts, feel free to ping us here:{" "}
             <span className="text-[#A970FF]">hi@BlockRoll.ai</span>
           </p>
+
+          {stellarTxHash && (
+            <p className="text-sm text-white/60 font-mono break-all">
+              Stellar payment confirmed:{" "}
+              <a
+                href={`https://stellar.expert/explorer/${STELLAR_NETWORK === "mainnet" ? "public" : "testnet"}/tx/${stellarTxHash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#A970FF] hover:underline"
+              >
+                {stellarTxHash}
+              </a>
+            </p>
+          )}
         </div>
       </div>
     </div>

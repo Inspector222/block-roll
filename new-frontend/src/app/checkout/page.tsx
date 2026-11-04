@@ -1,7 +1,13 @@
+
 import CheckoutConfirmation from "@/components/checkout/checkout-confirmation";
 import Image from "next/image";
 
-export default function Checkout() {
+export default async function Checkout({
+  searchParams,
+}: {
+  searchParams: Promise<{ tx?: string }>;
+}) {
+  const { tx } = await searchParams;
   return (
     <div className="flex flex-col h-screen w-full justify-center items-center relative">
       <Image
@@ -12,7 +18,7 @@ export default function Checkout() {
         priority
       />
       <div className=" z-10">
-        <CheckoutConfirmation></CheckoutConfirmation>
+        <CheckoutConfirmation stellarTxHash={tx} />
       </div>
     </div>
   );

@@ -24,6 +24,7 @@ const Navbar = () => {
   const links = [
     { name: "Features", href: "/#features" },
     { name: "How it works", href: "/#HIW" },
+    { name: "Notary", href: "/notary" },
   ];
 
   return (

@@ -68,6 +68,12 @@ const Footer = () => {
                   Pricing
                 </Link>
                 <Link
+                  href="/notary"
+                  className="text-[#b1b1b1] hover:text-white transition-colors text-xs"
+                >
+                  Stellar Notary
+                </Link>
+                <Link
                   href="#"
                   className="text-[#b1b1b1] hover:text-white transition-colors text-xs"
                 >
