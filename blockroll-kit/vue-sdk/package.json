@@ -9,8 +9,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
+    "build": "node init && rollup -c",
+    "dev": "node init && rollup -c -w",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build"
@@ -49,4 +49,3 @@
     "directory": "packages/vue-sdk"
   }
 }
-

@@ -4,9 +4,9 @@
   "private": true,
   "description": "BlockRoll React SDK Demo Application",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "dev": "node init && next dev",
+    "build": "node init && next build",
+    "start": "node init && next start"
   },
   "dependencies": {
     "@blockroll/react-sdk": "file:../../react-sdk",
@@ -20,4 +20,3 @@
     "typescript": "^5.3.0"
   }
 }
-
