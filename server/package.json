@@ -4,10 +4,10 @@
   "description": "BlockRoll backend API - Non-custodial data exchange platform",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "nodemon --exec ts-node --transpile-only src/index.ts",
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "dev:debug": "node --loader ts-node/esm src/index.ts"
+    "dev": "node init && nodemon --exec ts-node --transpile-only src/index.ts",
+    "build": "node init && tsc",
+    "start": "node init && node dist/index.js",
+    "dev:debug": "node init && node --loader ts-node/esm src/index.ts"
   },
   "keywords": [
     "blockroll",

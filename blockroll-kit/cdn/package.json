@@ -8,8 +8,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
+    "build": "node init && rollup -c",
+    "dev": "node init && rollup -c -w",
     "serve": "http-server dist -p 8080"
   },
   "keywords": [
@@ -35,4 +35,3 @@
     "typescript": "^5.3.0"
   }
 }
-
