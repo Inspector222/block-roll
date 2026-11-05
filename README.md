@@ -2,7 +2,18 @@
 
 > Own. Encrypt. Share. Control.
 
-The next generation of secure, decentralized file storage and sharing. Built on BlockDAG.
+The next generation of secure, decentralized file storage and sharing.
+
+---
+
+## ⭐ Stellar Integration
+
+BlockRoll uses [Stellar](https://stellar.org) for two real, working features (not just a payment button):
+
+- **USDC payments** - the Premium plan can be paid in USDC on Stellar, signed client-side with the [Freighter](https://www.freighter.app/) wallet. No custody of funds, no backend involved - [`new-frontend/src/lib/stellar/payment.ts`](new-frontend/src/lib/stellar/payment.ts).
+- **Stellar File Notary** - a free, standalone tool that hashes a file in your browser (the file itself never leaves your device) and anchors that hash on Stellar via a `ManageData` operation, giving anyone a public, permanent, verifiable proof the file existed, unmodified, at that point in time. Includes a verification flow that re-hashes a file and checks it against the on-chain record. See [`new-frontend/src/lib/stellar/notary.ts`](new-frontend/src/lib/stellar/notary.ts) and the [`/notary`](new-frontend/src/app/(main)/(landing)/notary/page.tsx) page.
+
+Currently running on Stellar Testnet; see [`new-frontend/.env.example`](new-frontend/.env.example) for configuration.
 
 ---
 
@@ -67,7 +78,7 @@ BlockRoll/
 - **Auth:** Reown AppKit (Wallet Connect) + httpOnly Cookies
 - **Real-Time:** Socket.IO WebSocket
 - **Database:** MongoDB + Mongoose
-- **Blockchain:** BlockDAG
+- **Blockchain:** BlockDAG, Stellar (payments + file notarization)
 - **Storage:** IPFS
 - **Smart Contracts:** Foundry (Solidity)
 - **Security:** Bank-level (20+ features)
@@ -251,10 +262,9 @@ npm run dev  # Scan QR code first time
 
 ## 🔗 Links
 
-- [Documentation](#)
-- [API Reference](#)
-- [Discord Community](#)
-- [Twitter/X](#)
+- [Issues & feature requests](https://github.com/zeemscript/block-roll/issues)
+- [Server API docs](server/README.md)
+- [Smart contracts docs](contracts/README.md)
 
 ---
 
